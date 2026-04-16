@@ -42,6 +42,11 @@ const SettingsSchema = new mongoose.Schema({
     borderRadius: { type: Number, default: 20 },
     primaryFont: { type: String, default: 'Inter' }
   },
+  dimensions: {
+    heroHeight: { type: Number, default: 650 },
+    containerWidth: { type: Number, default: 1280 },
+    sectionSpacing: { type: Number, default: 80 }
+  },
   updatedAt: {
     type: Date,
     default: Date.now
