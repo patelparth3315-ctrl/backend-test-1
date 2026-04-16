@@ -115,7 +115,25 @@ app.get('/api/dev/seed', async (req, res) => {
       await Trip.findOneAndUpdate({ slug: t.slug }, t, { upsert: true });
     }
 
-    res.json({ success: true, message: 'Production data seeded successfully v2.0.2' });
+    // 3. Create Sample Booking (optional but helpful for testing)
+    const Booking = require('./models/Booking');
+    const firstTrip = await Trip.findOne({ slug: 'manali-kasol-amritsar-backpacking' });
+    if (firstTrip) {
+      await Booking.findOneAndUpdate(
+        { email: 'guest@example.com' },
+        {
+          userName: 'Guest User',
+          email: 'guest@example.com',
+          phone: '1234567890',
+          tripId: firstTrip._id,
+          totalAmount: firstTrip.price,
+          status: 'pending'
+        },
+        { upsert: true }
+      );
+    }
+
+    res.json({ success: true, message: 'Production data seeded successfully v2.0.3' });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }

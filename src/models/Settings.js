@@ -36,6 +36,12 @@ const SettingsSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  theme: {
+    primaryColor: { type: String, default: '#000000' },
+    accentColor: { type: String, default: '#fbbf24' },
+    borderRadius: { type: Number, default: 20 },
+    primaryFont: { type: String, default: 'Inter' }
+  },
   updatedAt: {
     type: Date,
     default: Date.now
