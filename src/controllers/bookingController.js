@@ -59,8 +59,11 @@ exports.getBookings = async (req, res, next) => {
         tripId: b.tripId?._id || b.tripId,
         tripTitle: b.tripId?.title || b.tripTitle || 'Trip',
         status: b.status,
+        paymentStatus: b.paymentStatus,
         amount: b.totalAmount || 0,
         paidAmount: b.paidAmount || 0,
+        adminNotes: b.adminNotes,
+        trainTickets: b.trainTickets || [],
         createdAt: b.createdAt
       }))
     });
@@ -89,16 +92,23 @@ exports.getBooking = async (req, res, next) => {
 // @access  Private/Admin
 exports.updateBookingStatus = async (req, res, next) => {
   try {
-    const { status, paymentStatus, adminNotes } = req.body;
+    const { status, paymentStatus, adminNotes, paidAmount } = req.body;
     let booking = await Booking.findById(req.params.id);
 
     if (!booking) {
       return res.status(404).json({ success: false, message: 'Booking not found' });
     }
 
+    const updateData = {};
+    if (status) updateData.status = status;
+    if (paymentStatus) updateData.paymentStatus = paymentStatus;
+    if (adminNotes !== undefined) updateData.adminNotes = adminNotes;
+    if (paidAmount !== undefined) updateData.paidAmount = paidAmount;
+    if (req.body.trainTickets !== undefined) updateData.trainTickets = req.body.trainTickets;
+
     booking = await Booking.findByIdAndUpdate(
       req.params.id,
-      { status, paymentStatus, adminNotes },
+      updateData,
       { new: true, runValidators: true }
     );
 
@@ -109,7 +119,8 @@ exports.updateBookingStatus = async (req, res, next) => {
         status: booking.status,
         paymentStatus: booking.paymentStatus,
         adminNotes: booking.adminNotes,
-        paidAmount: booking.paidAmount
+        paidAmount: booking.paidAmount,
+        trainTickets: booking.trainTickets
       }
     });
   } catch (error) {

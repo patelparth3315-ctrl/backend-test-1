@@ -4,6 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const compression = require('compression');
 const rateLimit = require('express-rate-limit');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/errorHandler');
@@ -18,16 +19,30 @@ const blogRoutes = require('./routes/blogRoutes');
 const pageRoutes = require('./routes/pageRoutes');
 const settingsRoutes = require('./routes/settingsRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
+const seoRoutes = require('./routes/seoRoutes');
+const uploadRoutes = require('./routes/uploadRoutes');
 
 // Connect to database
 connectDB();
 
 const app = express();
 
+// Use compression
+app.use(compression());
+
 // Body parser
 app.use(express.json({ limit: '10mb' }));
 
+// Static Files
+const path = require('path');
+app.use('/uploads', express.static(path.join(__dirname, '../public/uploads'), {
+  maxAge: '1d',
+  immutable: true
+}));
+app.use('/', seoRoutes);
+
 // Enable CORS
+// ...
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin || origin.includes('vercel.app') || origin.includes('railway.app') || origin.includes('localhost')) {
@@ -48,7 +63,7 @@ app.options('*', cors());
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 100,
+  max: process.env.NODE_ENV === 'production' ? 100 : 1000,
   message: { success: false, message: 'Too many requests' }
 });
 app.use('/api', limiter);
@@ -64,6 +79,7 @@ app.use('/api/blogs', blogRoutes);
 app.use('/api/pages', pageRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/reviews', reviewRoutes);
+app.use('/api/upload', uploadRoutes);
 
 // Health check
 app.get('/health', (req, res) => {
@@ -79,8 +95,30 @@ app.get('/api/dev/seed', async (req, res) => {
 
     // 1. Create System Pages
     const pages = [
-      { title: 'Home', slug: 'home', status: 'published', isSystem: true, sections: [{ id: 'hero-1', type: 'hero', data: { title: 'Adventure Awaits' } }] },
-      { title: 'Tours', slug: 'tours', status: 'published', isSystem: true, sections: [{ id: 'grid-1', type: 'trip-grid', data: {} }] }
+      { 
+        title: 'Home', 
+        slug: 'home', 
+        status: 'published', 
+        isSystem: true, 
+        sections: [{ id: 'hero-1', type: 'hero', data: { title: 'Adventure Awaits' } }],
+        seo: {
+          metaTitle: 'Master the Outdoors | Adventure Tours in India',
+          metaDescription: 'Discover incredible adventures with YouthCamping. From Spiti Valley to Manali, we curate trips that inspire.',
+          focusKeyword: 'Adventure Tours India'
+        }
+      },
+      { 
+        title: 'Tours', 
+        slug: 'tour-packages', 
+        status: 'published', 
+        isSystem: true, 
+        sections: [{ id: 'grid-1', type: 'trip-grid', data: {} }],
+        seo: {
+          metaTitle: 'Explore All Tour Packages | YouthCamping',
+          metaDescription: 'Browse our full collection of adventure trips, road trips, and trekking expeditions.',
+          focusKeyword: 'Tour Packages India'
+        }
+      }
     ];
 
     for (const p of pages) {
@@ -97,7 +135,12 @@ app.get('/api/dev/seed', async (req, res) => {
          price: 11999, 
          category: "adventure", 
          status: "published", 
-         description: "A thrilling journey through the Himalayas." 
+         description: "A thrilling journey through the Himalayas. Explore the culture of Amritsar and the serenity of Kasol.",
+         seo: {
+           metaTitle: 'Manali Kasol Amritsar Trip | 9 Days Backpacking Adventure',
+           metaDescription: 'Join our backpacking trip to Manali, Kasol, and Amritsar. Experience the perfect blend of culture and mountains.',
+           focusKeyword: 'Manali Kasol Trip'
+         }
        },
        { 
          title: "Winter Spiti Trip", 
@@ -107,7 +150,12 @@ app.get('/api/dev/seed', async (req, res) => {
          price: 19999, 
          category: "road-trip", 
          status: "published", 
-         description: "An epic winter expedition in the Spiti Valley." 
+         description: "An epic winter expedition in the Spiti Valley. Experience the white desert like never before.",
+         seo: {
+           metaTitle: 'Winter Spiti Road Trip | 10 Days White Desert Adventure',
+           metaDescription: 'Explore Spiti Valley in winter. Witness frozen lakes, remote monasteries, and pristine snow landscapes.',
+           focusKeyword: 'Winter Spiti Trip'
+         }
        }
     ];
 

@@ -44,9 +44,30 @@ const bookingSchema = new mongoose.Schema({
     default: 'unpaid'
   },
   notes: String,
-  adminNotes: String
+  adminNotes: String,
+  trainTickets: [{
+    pnr: String,
+    trainNo: String,
+    trainName: String,
+    from: String,
+    to: String,
+    departureDate: Date,
+    arrivalDate: Date,
+    coach: String,
+    seat: String,
+    status: {
+      type: String,
+      default: 'Confirmed'
+    },
+    ticketUrl: String
+  }]
 }, {
   timestamps: true
 });
+
+// Indexes for performance
+bookingSchema.index({ userId: 1 });
+bookingSchema.index({ email: 1 });
+bookingSchema.index({ createdAt: -1 });
 
 module.exports = mongoose.model('Booking', bookingSchema);

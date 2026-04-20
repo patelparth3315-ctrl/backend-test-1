@@ -7,40 +7,76 @@ const Inquiry = require('../models/Inquiry');
 // @access  Private/Admin
 exports.getStats = async (req, res, next) => {
   try {
-    // Basic counts
     const totalTrips = await Trip.countDocuments();
-    const activeTrips = await Trip.countDocuments({ isActive: true });
-    
     const totalBookings = await Booking.countDocuments();
-    const pendingBookings = await Booking.countDocuments({ status: 'pending' });
-    const confirmedBookings = await Booking.countDocuments({ status: 'confirmed' });
-
     const totalInquiries = await Inquiry.countDocuments();
-    const newInquiries = await Inquiry.countDocuments({ status: 'new' });
 
-    // Revenue calculation (sum of totalAmount where status=confirmed)
-    const revenueData = await Booking.aggregate([
+    // 1. Total Revenue (Confirmed Bookings + Converted Inquiries)
+    const bookingRevenue = await Booking.aggregate([
       { $match: { status: 'confirmed' } },
-      { $group: { _id: null, totalRevenue: { $sum: '$totalAmount' } } }
+      { $group: { _id: null, total: { $sum: '$totalAmount' } } }
     ]);
-    const revenue = revenueData.length > 0 ? revenueData[0].totalRevenue : 0;
+    
+    const inquiryRevenue = await Inquiry.aggregate([
+      { $match: { status: 'converted' } },
+      { $group: { _id: null, total: { $sum: '$convertedAmount' } } }
+    ]);
 
-    // Recent data
+    const totalRevenue = (bookingRevenue[0]?.total || 0) + (inquiryRevenue[0]?.total || 0);
+
+    // 2. Recent Bookings
     const recentBookings = await Booking.find()
       .populate('tripId', 'title')
       .sort('-createdAt')
       .limit(5);
 
-    const recentInquiries = await Inquiry.find()
-      .sort('-createdAt')
-      .limit(5);
+    // 3. Dynamic Monthly Revenue (Last 6 months)
+    const sixMonthsAgo = new Date();
+    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 5);
+    sixMonthsAgo.setDate(1);
+
+    const monthlyData = await Booking.aggregate([
+      { $match: { status: 'confirmed', createdAt: { $gte: sixMonthsAgo } } },
+      {
+        $group: {
+          _id: { month: { $month: '$createdAt' }, year: { $year: '$createdAt' } },
+          revenue: { $sum: '$totalAmount' }
+        }
+      },
+      { $sort: { '_id.year': 1, '_id.month': 1 } }
+    ]);
+
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const monthlyRevenue = [];
+    for (let i = 0; i < 6; i++) {
+      const d = new Date();
+      d.setMonth(d.getMonth() - (5 - i));
+      const monthIndex = d.getMonth();
+      const year = d.getFullYear();
+      
+      const match = monthlyData.find(m => m._id.month === (monthIndex + 1) && m._id.year === year);
+      monthlyRevenue.push({
+        month: monthNames[monthIndex],
+        revenue: match ? match.revenue : 0
+      });
+    }
+
+    // 4. Booking Status Distribution
+    const statusCounts = await Booking.aggregate([
+      { $group: { _id: '$status', count: { $sum: 1 } } }
+    ]);
+
+    const bookingsByStatus = statusCounts.map(s => ({
+      status: s._id.charAt(0).toUpperCase() + s._id.slice(1),
+      count: s.count
+    }));
 
     res.json({
       success: true,
       data: {
         totalTrips,
         totalBookings,
-        totalRevenue: revenue,
+        totalRevenue,
         totalInquiries,
         recentBookings: recentBookings.map(b => ({
           id: b._id,
@@ -50,17 +86,8 @@ exports.getStats = async (req, res, next) => {
           status: b.status,
           createdAt: b.createdAt
         })),
-        monthlyRevenue: [
-          { month: 'Jan', revenue: 0 },
-          { month: 'Feb', revenue: 0 },
-          { month: 'Mar', revenue: 0 },
-          { month: 'Apr', revenue: revenue }
-        ],
-        bookingsByStatus: [
-          { status: 'Confirmed', count: confirmedBookings },
-          { status: 'Pending', count: pendingBookings },
-          { status: 'Cancelled', count: totalBookings - confirmedBookings - pendingBookings }
-        ]
+        monthlyRevenue,
+        bookingsByStatus
       }
     });
   } catch (error) {

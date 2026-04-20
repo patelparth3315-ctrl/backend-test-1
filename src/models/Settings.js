@@ -37,15 +37,84 @@ const SettingsSchema = new mongoose.Schema({
     default: ''
   },
   theme: {
-    primaryColor: { type: String, default: '#000000' },
-    accentColor: { type: String, default: '#fbbf24' },
+    primaryColor: { type: String, default: '#FF5B00' },
+    accentColor: { type: String, default: '#00CBD0' },
     borderRadius: { type: Number, default: 20 },
-    primaryFont: { type: String, default: 'Inter' }
+    primaryFont: { type: String, default: 'Montserrat' },
+    handwritingFont: { type: String, default: 'Dancing Script' },
+    headerTitle: { type: String, default: 'YouthCamping' }
   },
   dimensions: {
     heroHeight: { type: Number, default: 650 },
     containerWidth: { type: Number, default: 1280 },
     sectionSpacing: { type: Number, default: 80 }
+  },
+  organization: {
+    name: { type: String, default: 'YouthCamping' },
+    logo: { type: String, default: '' },
+    website: { type: String, default: 'https://youthcamping.in' },
+    supportEmail: { type: String, default: 'youthcampingmedia@gmail.com' },
+    supportPhone: { type: String, default: '+919924246267' },
+    mailingAddress: { type: String, default: 'A - 738, Money Plant High Street, IIM Road, Ahmedabad, Gujarat 380015' }
+  },
+  seo: {
+    metaTitle: { type: String, default: 'YouthCamping - Adventure & Travel' },
+    metaDescription: { type: String, default: 'Experience the best adventure tours and camping trips with YouthCamping.' },
+    googleAnalyticsId: { type: String, default: '' },
+    googleSearchConsoleId: { type: String, default: '' },
+    ogImage: { type: String, default: '' },
+    robotsTxt: { type: String, default: '' },
+    schemaEnabled: { type: Boolean, default: true },
+    redirects: [{
+      from: { type: String, required: true },
+      to: { type: String, required: true },
+      type: { type: String, enum: ['301', '302'], default: '301' }
+    }]
+  },
+  inquiryPopup: {
+    enabled: { type: Boolean, default: true },
+    delay: { type: Number, default: 15 },
+    cooldown: { type: Number, default: 900 }
+  },
+  smtp: {
+    host: { type: String, default: 'smtp.gmail.com' },
+    port: { type: Number, default: 587 },
+    user: { type: String, default: '' },
+    pass: { type: String, default: '' },
+    isEnabled: { type: Boolean, default: false }
+  },
+  taxes: [{
+    name: { type: String, required: true },
+    registrationNumber: String,
+    startDate: Date,
+    endDate: Date,
+    amount: { type: Number, required: true },
+    amountType: { type: String, enum: ['percentage', 'fixed'], default: 'percentage' },
+    leviedOn: { type: String, enum: ['all', 'specific', 'filter'], default: 'all' },
+    isEnabled: { type: Boolean, default: true }
+  }],
+  tripCustomFields: [{
+    label: { type: String, required: true },
+    type: { type: String, enum: ['rich-text', 'html', 'video', 'text'], default: 'rich-text' },
+    helpText: String,
+    isRequired: { type: Boolean, default: false }
+  }],
+  navigation: {
+    headerLinks: [{
+      label: { type: String, default: '' },
+      url: { type: String, default: '' },
+      isExternal: { type: Boolean, default: false },
+      items: [{ label: String, url: String }]
+    }]
+  },
+  footer: {
+    columns: [{
+      title: { type: String, default: '' },
+      type: { type: String, enum: ['links', 'text', 'contact', 'social'], default: 'links' },
+      content: { type: String, default: '' },
+      links: [{ label: String, url: String }]
+    }],
+    copyrightText: { type: String, default: '© 2026 YouthCamping. All rights reserved.' }
   },
   updatedAt: {
     type: Date,

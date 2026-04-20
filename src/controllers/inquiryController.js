@@ -61,7 +61,11 @@ exports.getInquiries = async (req, res, next) => {
         count: inq.count,
         status: inq.status,
         read: inq.status !== 'new',
-        createdAt: inq.createdAt
+        createdAt: inq.createdAt,
+        isDuplicate: inq.isDuplicate,
+        convertedAmount: inq.convertedAmount,
+        adminNotes: inq.adminNotes,
+        responseTimeMinutes: inq.responseTimeMinutes
       }))
     });
   } catch (error) {
@@ -97,17 +101,15 @@ exports.updateInquiryStatus = async (req, res, next) => {
       return res.status(404).json({ success: false, message: 'Inquiry not found' });
     }
 
-    const updateData = { adminNotes, nextFollowUp };
+    const updateData = {};
+    if (adminNotes !== undefined) updateData.adminNotes = adminNotes;
+    if (nextFollowUp !== undefined) updateData.nextFollowUp = nextFollowUp;
+    if (convertedAmount !== undefined) updateData.convertedAmount = convertedAmount;
     
     // CRM: Track first response time
     if (inquiry.status === 'new' && status === 'contacted') {
       updateData.firstRespondedAt = new Date();
-      updateData.responseTimeMinutes = (updateData.firstRespondedAt - inquiry.createdAt) / 60000;
-    }
-
-    // CRM: Finacials on conversion
-    if (status === 'converted') {
-      updateData.convertedAmount = convertedAmount || 0;
+      updateData.responseTimeMinutes = Math.round((updateData.firstRespondedAt - inquiry.createdAt) / 60000);
     }
 
     if (status) updateData.status = status;

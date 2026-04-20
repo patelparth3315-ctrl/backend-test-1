@@ -17,9 +17,15 @@ const PageSchema = new mongoose.Schema({
     default: []
   },
   seo: {
-    title: String,
-    description: String,
-    ogImage: String
+    metaTitle: String,
+    metaDescription: String,
+    focusKeyword: String,
+    ogImage: String,
+    canonicalUrl: String,
+    faqSchema: [{
+      question: String,
+      answer: String
+    }]
   },
   status: {
     type: String,

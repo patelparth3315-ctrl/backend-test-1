@@ -12,7 +12,7 @@ const inquirySchema = new mongoose.Schema({
   email: String,
   message: {
     type: String,
-    required: true
+    required: false
   },
   tripId: {
     type: mongoose.Schema.Types.ObjectId,

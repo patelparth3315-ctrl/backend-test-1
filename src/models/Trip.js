@@ -106,6 +106,25 @@ const tripSchema = new mongoose.Schema({
     type: String,
     enum: ['draft', 'published'],
     default: 'published'
+  },
+  customSections: [{
+    label: String,
+    content: String
+  }],
+  seo: {
+    metaTitle: { type: String, trim: true },
+    metaDescription: { type: String, trim: true },
+    focusKeyword: { type: String, trim: true },
+    ogImage: { type: String },
+    canonicalUrl: { type: String },
+    faqSchema: [{
+      question: String,
+      answer: String
+    }],
+    internalLinks: [{
+      tripId: { type: mongoose.Schema.Types.ObjectId, ref: 'Trip' },
+      label: String
+    }]
   }
 }, {
   timestamps: true
@@ -114,10 +133,23 @@ const tripSchema = new mongoose.Schema({
 // Trip auto-generated fields in pre-save hook
 tripSchema.pre('save', function(next) {
   // Slug
-  if (this.isModified('title')) {
+  if (this.isModified('title') && !this.slug) {
     this.slug = slugify(this.title, { lower: true, strict: true });
   }
   
+  // Auto SEO Logic
+  if (this.isModified('title') || this.isModified('location')) {
+    if (!this.seo.metaTitle) {
+      this.seo.metaTitle = `${this.title} | ${this.duration} ${this.location} Tour`;
+    }
+    if (!this.seo.metaDescription) {
+      this.seo.metaDescription = `Book your ${this.title} at best prices. Experience ${this.location} like never before with YouthCamping. ${this.duration} of adventure and fun.`;
+    }
+    if (!this.seo.focusKeyword) {
+      this.seo.focusKeyword = `${this.title} ${this.location}`;
+    }
+  }
+
   // Map status to isActive for backward compatibility with existing queries
   if (this.isModified('status')) {
     this.isActive = this.status === 'published';
@@ -125,5 +157,11 @@ tripSchema.pre('save', function(next) {
   
   next();
 });
+
+// Indexes for performance
+tripSchema.index({ slug: 1 });
+tripSchema.index({ isActive: 1 });
+tripSchema.index({ category: 1 });
+tripSchema.index({ createdAt: -1 });
 
 module.exports = mongoose.model('Trip', tripSchema);

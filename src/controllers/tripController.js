@@ -3,21 +3,32 @@ const Trip = require('../models/Trip');
 // @desc    Get all trips (active only for public)
 // @route   GET /api/trips
 // @access  Public
+// @desc    Get all trips (active only for public)
+// @route   GET /api/trips
+// @access  Public
 exports.getTrips = async (req, res, next) => {
   try {
     const page = parseInt(req.query.page, 10) || 1;
-    const limit = parseInt(req.query.limit, 10) || 100; // Increased limit for better sync
+    const limit = parseInt(req.query.limit, 10) || 100;
     const skip = (page - 1) * limit;
 
     const query = {};
-    if (req.query.status === 'published') query.isActive = true;
-    else if (req.query.status === 'draft') query.isActive = false;
-    // Default: show all if no specific status (useful for admin)
+    const status = req.query.status;
+    if (status === 'published') query.isActive = true;
+    else if (status === 'draft') query.isActive = false;
+
+    // Category filter
+    const category = req.query.category;
+    if (category) {
+      query.category = { $regex: new RegExp(`^${category}$`, 'i') };
+    }
 
     const trips = await Trip.find(query)
+      .select('title slug location price duration heroImage images category isActive description createdAt')
       .skip(skip)
       .limit(limit)
-      .sort('-createdAt');
+      .sort('-createdAt')
+      .lean();
 
     const total = await Trip.countDocuments(query);
 
@@ -26,22 +37,11 @@ exports.getTrips = async (req, res, next) => {
       count: trips.length,
       total,
       data: trips.map(t => ({
+        ...t,
         id: t._id,
         _id: t._id,
-        title: t.title,
-        location: t.location,
-        price: t.price,
-        duration: t.duration,
-        category: t.category,
-        description: t.description,
-        heroImage: t.thumbnail || t.images[0],
-        images: t.images,
-        status: t.isActive ? 'published' : 'draft',
-        itinerary: t.itinerary,
-        highlights: t.highlights,
-        inclusions: t.inclusions,
-        exclusions: t.exclusions,
-        createdAt: t.createdAt
+        heroImage: t.heroImage || t.thumbnail || (t.images && t.images[0]) || "",
+        status: t.isActive ? 'published' : 'draft'
       }))
     });
   } catch (error) {
@@ -57,30 +57,23 @@ exports.getTrip = async (req, res, next) => {
     const { id } = req.params;
     let trip;
 
-    // Try finding by ID first if it looks like an ObjectId
     if (id.match(/^[0-9a-fA-F]{24}$/)) {
-      trip = await Trip.findById(id);
+      trip = await Trip.findById(id).lean();
     }
 
-    // If not found by ID or not an ID format, try finding by slug
     if (!trip) {
-      trip = await Trip.findOne({ 
-        $or: [
-          { slug: id },
-          { _id: id.match(/^[0-9a-fA-F]{24}$/) ? id : undefined }
-        ].filter(q => q._id || q.slug)
-      });
+      trip = await Trip.findOne({ slug: id }).lean();
     }
 
     if (!trip) {
       return res.status(404).json({ success: false, message: 'Trip not found' });
     }
     
-    // Map to normalized format
     const data = {
-      ...trip._doc,
+      ...trip,
       id: trip._id,
-      heroImage: trip.thumbnail || trip.images[0]
+      heroImage: trip.heroImage || trip.thumbnail || (trip.images && trip.images[0]) || "",
+      status: trip.isActive ? 'published' : 'draft'
     };
 
     res.json({ success: true, data });
@@ -102,7 +95,8 @@ exports.getTripBySlug = async (req, res, next) => {
     const data = {
       ...trip._doc,
       id: trip._id,
-      heroImage: trip.thumbnail || trip.images[0]
+      heroImage: trip.heroImage || trip.thumbnail || (trip.images && trip.images[0]) || "",
+      status: trip.isActive ? 'published' : 'draft'
     };
 
     res.json({ success: true, data });
@@ -116,15 +110,11 @@ exports.getTripBySlug = async (req, res, next) => {
 // @access  Private/Admin
 exports.createTrip = async (req, res, next) => {
   try {
-    if (req.body.status) {
-      req.body.isActive = req.body.status === 'published';
+    const tripData = { ...req.body };
+    if (tripData.status) {
+      tripData.isActive = tripData.status === 'published';
     }
-    if (req.body.heroImage) {
-      req.body.thumbnail = req.body.heroImage;
-    } else if (req.body.thumbnail) {
-      req.body.heroImage = req.body.thumbnail;
-    }
-    const trip = await Trip.create(req.body);
+    const trip = await Trip.create(tripData);
     res.status(201).json({ success: true, data: trip });
   } catch (error) {
     next(error);
@@ -141,15 +131,12 @@ exports.updateTrip = async (req, res, next) => {
       return res.status(404).json({ success: false, message: 'Trip not found' });
     }
 
-    if (req.body.status) {
-      req.body.isActive = req.body.status === 'published';
+    const tripData = { ...req.body };
+    if (tripData.status) {
+      tripData.isActive = tripData.status === 'published';
     }
-    if (req.body.heroImage) {
-      req.body.thumbnail = req.body.heroImage;
-    } else if (req.body.thumbnail) {
-      req.body.heroImage = req.body.thumbnail;
-    }
-    trip = await Trip.findByIdAndUpdate(req.params.id, req.body, {
+
+    trip = await Trip.findByIdAndUpdate(req.params.id, tripData, {
       new: true,
       runValidators: true
     });
