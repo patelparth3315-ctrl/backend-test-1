@@ -14,8 +14,8 @@ const { protect } = require('../middleware/auth');
 // Public routes
 router.get('/', getTrips);
 router.get('/seed/live-data', seedLiveData);
-router.get('/:id', getTrip);
 router.get('/slug/:slug', getTripBySlug);
+router.get('/:id', getTrip);
 
 // Admin routes
 const requireRole = require('../middleware/role');
