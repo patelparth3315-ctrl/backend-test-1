@@ -134,12 +134,24 @@ exports.getTripBySlug = async (req, res, next) => {
 exports.createTrip = async (req, res, next) => {
   try {
     const tripData = { ...req.body };
+    console.log("🚀 CREATE TRIP REQ BODY:", JSON.stringify(tripData, null, 2));
+
     if (tripData.status) {
       tripData.isActive = tripData.status === 'published';
     }
     const trip = await Trip.create(tripData);
     res.status(201).json({ success: true, data: trip });
   } catch (error) {
+    console.error("🚨 CREATE TRIP ERROR:", error.message);
+    if (error.name === 'ValidationError') {
+      const messages = Object.values(error.errors).map((err) => err.message);
+      return res.status(400).json({ 
+        success: false, 
+        message: "Validation failed", 
+        errors: messages,
+        receivedData: req.body 
+      });
+    }
     next(error);
   }
 };
@@ -205,13 +217,19 @@ exports.updateTrip = async (req, res, next) => {
       } 
     });
   } catch (error) {
+    console.error("🚨 UPDATE TRIP ERROR:", error.message);
     const fs = require('fs');
     const logMsg = `ERROR: ${error.message}\nDATA: ${JSON.stringify(req.body, null, 2)}\n\n`;
     fs.appendFileSync('error_log.txt', logMsg);
 
     if (error.name === 'ValidationError') {
       const messages = Object.values(error.errors).map((err) => err.message);
-      return res.status(400).json({ success: false, message: messages.join(', ') });
+      return res.status(400).json({ 
+        success: false, 
+        message: "Validation failed", 
+        errors: messages,
+        receivedData: req.body 
+      });
     }
     next(error);
   }

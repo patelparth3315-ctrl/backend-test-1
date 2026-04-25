@@ -34,9 +34,20 @@ exports.getBlog = async (req, res) => {
 // @route   POST /api/blogs
 exports.createBlog = async (req, res) => {
   try {
+    console.log("🚀 CREATE BLOG REQ BODY:", JSON.stringify(req.body, null, 2));
     const blog = await Blog.create(req.body);
     res.status(201).json({ success: true, data: blog });
   } catch (err) {
+    console.error("🚨 CREATE BLOG ERROR:", err.message);
+    if (err.name === 'ValidationError') {
+      const messages = Object.values(err.errors).map((e) => e.message);
+      return res.status(400).json({ 
+        success: false, 
+        message: "Validation failed", 
+        errors: messages,
+        receivedData: req.body 
+      });
+    }
     res.status(400).json({ success: false, error: err.message });
   }
 };
@@ -45,6 +56,7 @@ exports.createBlog = async (req, res) => {
 // @route   PUT /api/blogs/:id
 exports.updateBlog = async (req, res) => {
   try {
+    console.log("🚀 UPDATE BLOG REQ BODY:", JSON.stringify(req.body, null, 2));
     const blog = await Blog.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true
@@ -52,6 +64,16 @@ exports.updateBlog = async (req, res) => {
     if (!blog) return res.status(404).json({ success: false, error: 'Blog not found' });
     res.status(200).json({ success: true, data: blog });
   } catch (err) {
+    console.error("🚨 UPDATE BLOG ERROR:", err.message);
+    if (err.name === 'ValidationError') {
+      const messages = Object.values(err.errors).map((e) => e.message);
+      return res.status(400).json({ 
+        success: false, 
+        message: "Validation failed", 
+        errors: messages,
+        receivedData: req.body 
+      });
+    }
     res.status(400).json({ success: false, error: err.message });
   }
 };

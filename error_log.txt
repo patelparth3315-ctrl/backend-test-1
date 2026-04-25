@@ -1,0 +1,2098 @@
+ERROR: Cast to [string] failed for value "[\n' +
+  '  {\n' +
+  "    name: 'Manali Cottage',\n" +
+  "    location: '',\n" +
+  "    nights: '1 Night in Manali',\n" +
+  "    type: '',\n" +
+  "    starRating: '3 Star',\n" +
+  "    roomType: 'Deluxe',\n" +
+  "    meals: 'Breakfast & Dinner',\n" +
+  "    image: '',\n" +
+  '    gallery: []\n' +
+  '  }\n' +
+  ']" (type string) at path "accommodations.0" because of "CastError"
+DATA: {
+  "title": "Bhrigu Lake Trek with Manali, Kasol & Amritsar",
+  "slug": "bhrigu-lake-trek-manali-kasol-amritsar",
+  "location": "Himachal Pradesh & Punjab",
+  "price": 12999,
+  "duration": "9 Days / 8 Nights",
+  "maxGroupSize": 25,
+  "difficulty": "moderate",
+  "description": "Experience the magic of the Himalayas with a 9D/8N adventure that combines spiritual vibes, hippie culture, and a high-altitude trek to the mystical Bhrigu Lake at 14,300 ft.",
+  "departureCity": "Ahmedabad",
+  "ageLimit": "15-35 years",
+  "highlights": [
+    "tttt"
+  ],
+  "inclusions": [
+    "6yfyf",
+    "f66"
+  ],
+  "exclusions": [
+    "f6f6f"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1544735716-392fe2709496",
+    "https://images.unsplash.com/photo-1597037750734-450f6f406560",
+    "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23",
+    "https://images.unsplash.com/photo-1582239014603-7b3b7548d80c"
+  ],
+  "gallery": [
+    {
+      "url": "https://images.unsplash.com/photo-1544735716-392fe2709496",
+      "alt": "Bhrigu Lake Summit",
+      "order": 1
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1597037750734-450f6f406560",
+      "alt": "Golden Temple",
+      "order": 2
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23",
+      "alt": "Manali Meadows",
+      "order": 3
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1582239014603-7b3b7548d80c",
+      "alt": "Kasol Riverside",
+      "order": 4
+    }
+  ],
+  "thumbnail": "https://images.unsplash.com/photo-1544735716-392fe2709496?auto=format&fit=crop&q=80&w=800",
+  "heroImage": "/uploads/trips/1777096582208-ChatGPT Image Apr 22, 2026, 05_08_10 PM.png",
+  "itinerary": [
+    {
+      "day": 1,
+      "title": "Train Journey to Jalandhar",
+      "description": "Departure from Ahmedabad. Group introduction and ice-breaking sessions. Overnight train journey.",
+      "location": "On Train",
+      "activities": [
+        "Group Introduction",
+        "Train Games"
+      ],
+      "stay": "bb",
+      "meals": "bb",
+      "photos": []
+    },
+    {
+      "day": 2,
+      "title": "Amritsar Exploration & Drive to Kasol",
+      "description": "Reach Jalandhar/Amritsar. Visit Wagah Border Ceremony and Golden Temple. Explore local Amritsar Market. Overnight drive to Kasol.",
+      "location": "Amritsar",
+      "activities": [
+        "Wagah Border Ceremony",
+        "Golden Temple Visit",
+        "Market Crawl"
+      ],
+      "photos": []
+    },
+    {
+      "day": 3,
+      "title": "Kasol & Parvati Valley",
+      "description": "Reach Kasol campsite. Chalal Village trek and visit Manikaran Sahib hot springs. Enjoy bonfire & music night.",
+      "location": "Kasol",
+      "activities": [
+        "Chalal Trek",
+        "Manikaran Sahib visit",
+        "Bonfire"
+      ],
+      "stay": "Cottage/Tent (Kasol)",
+      "meals": "Breakfast, Lunch, Dinner",
+      "photos": []
+    },
+    {
+      "day": 4,
+      "title": "Start Bhrigu Lake Trek",
+      "description": "Drive to base village. Begin trek to base camp (~10,000 ft). Enjoy scenic meadow views.",
+      "location": "Gulaba / Base Camp",
+      "activities": [
+        "Forest Trekking",
+        "Camping"
+      ],
+      "stay": "Bhrigu Base Camp",
+      "meals": "Breakfast, Lunch, Dinner",
+      "photos": []
+    },
+    {
+      "day": 5,
+      "title": "Bhrigu Lake Summit Day",
+      "description": "Trek to 14,300 ft. Navigate snow trails (seasonal) and explore the magical Bhrigu Lake. Summit celebration.",
+      "location": "Bhrigu Lake (14,300 ft)",
+      "activities": [
+        "Summit Push",
+        "Bhrigu Lake Exploration"
+      ],
+      "stay": "High Altitude Camp",
+      "meals": "Breakfast, Lunch, Dinner",
+      "photos": []
+    },
+    {
+      "day": 6,
+      "title": "Trek Down & Manali Sightseeing",
+      "description": "Descend from the trek. Visit Solang Valley, Atal Tunnel, Hadimba Temple & Mall Road shopping.",
+      "location": "Manali",
+      "activities": [
+        "Solang Valley",
+        "Atal Tunnel",
+        "Temple Visit"
+      ],
+      "stay": "Hotel (Manali)",
+      "meals": "Breakfast, Lunch, Dinner",
+      "photos": []
+    },
+    {
+      "day": 7,
+      "title": "Adventure Activities",
+      "description": "Included River Rafting experience. Optional Paragliding. Evening drive to Jalandhar.",
+      "location": "Kullu / Manali",
+      "activities": [
+        "River Rafting",
+        "Paragliding (Optional)"
+      ],
+      "meals": "Breakfast, Lunch",
+      "photos": []
+    },
+    {
+      "day": 8,
+      "title": "Return Train Journey",
+      "description": "Board train for the return journey. Share memories and play group games.",
+      "location": "On Train",
+      "activities": [
+        "Memory Sharing"
+      ],
+      "photos": []
+    },
+    {
+      "day": 9,
+      "title": "Arrival",
+      "description": "Reach your city. Trip ends with beautiful memories.",
+      "location": "Home City",
+      "activities": [
+        "Farewell"
+      ],
+      "photos": []
+    }
+  ],
+  "availableDates": [
+    {
+      "date": "2026-05-01T00:00:00.000Z",
+      "capacity": 99,
+      "bookedCount": 0
+    },
+    {
+      "date": "2026-05-08T00:00:00.000Z",
+      "capacity": 99,
+      "bookedCount": 0
+    },
+    {
+      "date": "2026-05-15T00:00:00.000Z",
+      "capacity": 99,
+      "bookedCount": 0
+    },
+    {
+      "date": "2026-05-22T00:00:00.000Z",
+      "capacity": 99,
+      "bookedCount": 0
+    }
+  ],
+  "isActive": true,
+  "isFeatured": false,
+  "category": "b",
+  "tags": [],
+  "variants": [
+    {
+      "location": "uuu",
+      "duration": "uuu",
+      "originalPrice": 0,
+      "discountedPrice": 99,
+      "image": "/uploads/trips/1777100556012-ChatGPT Image Apr 22, 2026, 04_21_18 PM.png"
+    }
+  ],
+  "travelOptions": [
+    {
+      "label": "Non-AC Sleeper Train",
+      "priceDelta": 0,
+      "description": "Standard sleeper journey."
+    },
+    {
+      "label": "AC 3 Tier Train",
+      "priceDelta": 2000,
+      "description": "Comfortable AC travel."
+    }
+  ],
+  "roomOptions": [
+    {
+      "label": "Quad Sharing",
+      "priceDelta": 0
+    },
+    {
+      "label": "Triple Sharing",
+      "priceDelta": 1000
+    },
+    {
+      "label": "Double Sharing",
+      "priceDelta": 2000
+    }
+  ],
+  "faqs": [
+    {
+      "question": "7g78g",
+      "answer": "g77gg7"
+    }
+  ],
+  "status": "published",
+  "attractions": [
+    {
+      "name": "grtghert",
+      "description": "jhtyjtyjrtyjtr",
+      "image": "",
+      "slug": "grtghert",
+      "order": 0
+    },
+    {
+      "name": "wrwrwr",
+      "description": "",
+      "image": "",
+      "slug": "wrwrwr",
+      "order": 1
+    },
+    {
+      "name": "wwwwww",
+      "description": "",
+      "image": "",
+      "slug": "wwwwww",
+      "order": 2
+    }
+  ],
+  "popupDetails": {
+    "cancellation": [
+      {
+        "label": "Before more than 40 days of Departure",
+        "val": "10% deduction"
+      },
+      {
+        "label": "Before 21 to 40 days of Departure",
+        "val": "25% deduction"
+      },
+      {
+        "label": "Before 11 to 20 days of Departure",
+        "val": "40% deduction"
+      },
+      {
+        "label": "Before 2 to 10 days of Departure",
+        "val": "60% deduction"
+      },
+      {
+        "label": "In the last 48 hours of Departure",
+        "val": "90% deduction"
+      }
+    ],
+    "terms": [
+      "Itinerary subject to change based on weather.",
+      "Valid ID proof is mandatory.",
+      "YouthCamping decision final in all disputes."
+    ],
+    "carry": [
+      {
+        "label": "Clothing",
+        "val": "Thermal wear, Jackets, Trekking shoes, Gloves, Cap"
+      },
+      {
+        "label": "Essentials",
+        "val": "Backpack, Water bottle, Sunglasses, Sunscreen, Medicines"
+      }
+    ],
+    "etiquette": [
+      {
+        "title": "No Littering",
+        "desc": "Keep the Himalayas clean."
+      },
+      {
+        "title": "Respect Local Culture",
+        "desc": "Be polite at religious sites."
+      },
+      {
+        "title": "",
+        "desc": ""
+      }
+    ]
+  },
+  "stickyCardPrice": 12999,
+  "stickyCardLabel": "per person",
+  "seo": {
+    "metaTitle": "",
+    "metaDescription": "",
+    "focusKeyword": "",
+    "ogImage": "",
+    "canonicalUrl": "",
+    "faqSchema": []
+  },
+  "addons": [
+    {
+      "name": "momo",
+      "rate": 0,
+      "description": "",
+      "minQuantity": 1,
+      "maxQuantity": 99
+    }
+  ],
+  "customSections": [],
+  "route": [
+    {
+      "label": "ryrtg",
+      "icon": "train"
+    }
+  ],
+  "videos": [
+    {
+      "title": "u"
+    },
+    {
+      "title": "uu"
+    },
+    {
+      "title": "uuu"
+    }
+  ],
+  "activities": [],
+  "accommodations": [
+    {
+      "name": "Manali Cottage",
+      "location": "",
+      "nights": "1 Night in Manali",
+      "type": "",
+      "starRating": "3 Star",
+      "roomType": "Deluxe",
+      "meals": "Breakfast & Dinner",
+      "image": "",
+      "gallery": []
+    }
+  ]
+}
+
+ERROR: Review validation failed: comment: Path `comment` is required.
+DATA: {
+  "title": "Bhrigu Lake Trek with Manali, Kasol & Amritsar",
+  "slug": "bhrigu-lake-trek-manali-kasol-amritsar",
+  "location": "Himachal Pradesh & Punjab",
+  "price": 12999,
+  "duration": "9 Days / 8 Nights",
+  "maxGroupSize": 25,
+  "difficulty": "moderate",
+  "description": "Experience the magic of the Himalayas with a 9D/8N adventure that combines spiritual vibes, hippie culture, and a high-altitude trek to the mystical Bhrigu Lake at 14,300 ft.",
+  "departureCity": "Ahmedabad",
+  "ageLimit": "15-35 years",
+  "highlights": [
+    "tttt"
+  ],
+  "inclusions": [
+    "6yfyf",
+    "f66"
+  ],
+  "exclusions": [
+    "f6f6f"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1544735716-392fe2709496",
+    "https://images.unsplash.com/photo-1597037750734-450f6f406560",
+    "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23",
+    "https://images.unsplash.com/photo-1582239014603-7b3b7548d80c"
+  ],
+  "gallery": [
+    {
+      "url": "https://images.unsplash.com/photo-1544735716-392fe2709496",
+      "alt": "Bhrigu Lake Summit",
+      "order": 1
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1597037750734-450f6f406560",
+      "alt": "Golden Temple",
+      "order": 2
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23",
+      "alt": "Manali Meadows",
+      "order": 3
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1582239014603-7b3b7548d80c",
+      "alt": "Kasol Riverside",
+      "order": 4
+    }
+  ],
+  "thumbnail": "https://images.unsplash.com/photo-1544735716-392fe2709496?auto=format&fit=crop&q=80&w=800",
+  "heroImage": "https://images.unsplash.com/photo-1544735716-392fe2709496?auto=format&fit=crop&q=80&w=800",
+  "itinerary": [
+    {
+      "day": 1,
+      "title": "Train Journey to Jalandhar",
+      "description": "Departure from Ahmedabad. Group introduction and ice-breaking sessions. Overnight train journey.",
+      "location": "On Train",
+      "activities": [
+        "Group Introduction",
+        "Train Games"
+      ],
+      "stay": "bb",
+      "meals": "bb",
+      "photos": []
+    },
+    {
+      "day": 2,
+      "title": "Amritsar Exploration & Drive to Kasol",
+      "description": "Reach Jalandhar/Amritsar. Visit Wagah Border Ceremony and Golden Temple. Explore local Amritsar Market. Overnight drive to Kasol.",
+      "location": "Amritsar",
+      "activities": [
+        "Wagah Border Ceremony",
+        "Golden Temple Visit",
+        "Market Crawl"
+      ],
+      "photos": []
+    },
+    {
+      "day": 3,
+      "title": "Kasol & Parvati Valley",
+      "description": "Reach Kasol campsite. Chalal Village trek and visit Manikaran Sahib hot springs. Enjoy bonfire & music night.",
+      "location": "Kasol",
+      "activities": [
+        "Chalal Trek",
+        "Manikaran Sahib visit",
+        "Bonfire"
+      ],
+      "stay": "Cottage/Tent (Kasol)",
+      "meals": "Breakfast, Lunch, Dinner",
+      "photos": []
+    },
+    {
+      "day": 4,
+      "title": "Start Bhrigu Lake Trek",
+      "description": "Drive to base village. Begin trek to base camp (~10,000 ft). Enjoy scenic meadow views.",
+      "location": "Gulaba / Base Camp",
+      "activities": [
+        "Forest Trekking",
+        "Camping"
+      ],
+      "stay": "Bhrigu Base Camp",
+      "meals": "Breakfast, Lunch, Dinner",
+      "photos": []
+    },
+    {
+      "day": 5,
+      "title": "Bhrigu Lake Summit Day",
+      "description": "Trek to 14,300 ft. Navigate snow trails (seasonal) and explore the magical Bhrigu Lake. Summit celebration.",
+      "location": "Bhrigu Lake (14,300 ft)",
+      "activities": [
+        "Summit Push",
+        "Bhrigu Lake Exploration"
+      ],
+      "stay": "High Altitude Camp",
+      "meals": "Breakfast, Lunch, Dinner",
+      "photos": []
+    },
+    {
+      "day": 6,
+      "title": "Trek Down & Manali Sightseeing",
+      "description": "Descend from the trek. Visit Solang Valley, Atal Tunnel, Hadimba Temple & Mall Road shopping.",
+      "location": "Manali",
+      "activities": [
+        "Solang Valley",
+        "Atal Tunnel",
+        "Temple Visit"
+      ],
+      "stay": "Hotel (Manali)",
+      "meals": "Breakfast, Lunch, Dinner",
+      "photos": []
+    },
+    {
+      "day": 7,
+      "title": "Adventure Activities",
+      "description": "Included River Rafting experience. Optional Paragliding. Evening drive to Jalandhar.",
+      "location": "Kullu / Manali",
+      "activities": [
+        "River Rafting",
+        "Paragliding (Optional)"
+      ],
+      "meals": "Breakfast, Lunch",
+      "photos": []
+    },
+    {
+      "day": 8,
+      "title": "Return Train Journey",
+      "description": "Board train for the return journey. Share memories and play group games.",
+      "location": "On Train",
+      "activities": [
+        "Memory Sharing"
+      ],
+      "photos": []
+    },
+    {
+      "day": 9,
+      "title": "Arrival",
+      "description": "Reach your city. Trip ends with beautiful memories.",
+      "location": "Home City",
+      "activities": [
+        "Farewell"
+      ],
+      "photos": []
+    }
+  ],
+  "availableDates": [
+    {
+      "date": "2026-05-01T00:00:00.000Z",
+      "capacity": 99,
+      "bookedCount": 0
+    },
+    {
+      "date": "2026-05-08T00:00:00.000Z",
+      "capacity": 99,
+      "bookedCount": 0
+    },
+    {
+      "date": "2026-05-15T00:00:00.000Z",
+      "capacity": 99,
+      "bookedCount": 0
+    },
+    {
+      "date": "2026-05-22T00:00:00.000Z",
+      "capacity": 99,
+      "bookedCount": 0
+    }
+  ],
+  "isActive": true,
+  "isFeatured": false,
+  "category": "b",
+  "tags": [],
+  "variants": [
+    {
+      "location": "uuu",
+      "duration": "uuu",
+      "originalPrice": 0,
+      "discountedPrice": 99,
+      "image": "/uploads/trips/1777100556012-ChatGPT Image Apr 22, 2026, 04_21_18 PM.png"
+    }
+  ],
+  "travelOptions": [
+    {
+      "label": "Non-AC Sleeper Train",
+      "priceDelta": 0,
+      "description": "Standard sleeper journey."
+    },
+    {
+      "label": "AC 3 Tier Train",
+      "priceDelta": 2000,
+      "description": "Comfortable AC travel."
+    }
+  ],
+  "roomOptions": [
+    {
+      "label": "Quad Sharing",
+      "priceDelta": 0
+    },
+    {
+      "label": "Triple Sharing",
+      "priceDelta": 1000
+    },
+    {
+      "label": "Double Sharing",
+      "priceDelta": 2000
+    }
+  ],
+  "faqs": [
+    {
+      "question": "7g78g",
+      "answer": "g77gg7"
+    }
+  ],
+  "status": "published",
+  "attractions": [
+    {
+      "name": "grtghert",
+      "description": "jhtyjtyjrtyjtr",
+      "image": "",
+      "slug": "grtghert",
+      "order": 0
+    },
+    {
+      "name": "wrwrwr",
+      "description": "",
+      "image": "",
+      "slug": "wrwrwr",
+      "order": 1
+    },
+    {
+      "name": "wwwwww",
+      "description": "",
+      "image": "",
+      "slug": "wwwwww",
+      "order": 2
+    }
+  ],
+  "popupDetails": {
+    "cancellation": [
+      {
+        "label": "Before more than 40 days of Departure",
+        "val": "10% deduction"
+      },
+      {
+        "label": "Before 21 to 40 days of Departure",
+        "val": "25% deduction"
+      },
+      {
+        "label": "Before 11 to 20 days of Departure",
+        "val": "40% deduction"
+      },
+      {
+        "label": "Before 2 to 10 days of Departure",
+        "val": "60% deduction"
+      },
+      {
+        "label": "In the last 48 hours of Departure",
+        "val": "90% deduction"
+      }
+    ],
+    "terms": [
+      "Itinerary subject to change based on weather.",
+      "Valid ID proof is mandatory.",
+      "YouthCamping decision final in all disputes."
+    ],
+    "carry": [
+      {
+        "label": "Clothing",
+        "val": "Thermal wear, Jackets, Trekking shoes, Gloves, Cap"
+      },
+      {
+        "label": "Essentials",
+        "val": "Backpack, Water bottle, Sunglasses, Sunscreen, Medicines"
+      }
+    ],
+    "etiquette": [
+      {
+        "title": "No Littering",
+        "desc": "Keep the Himalayas clean."
+      },
+      {
+        "title": "Respect Local Culture",
+        "desc": "Be polite at religious sites."
+      },
+      {
+        "title": "",
+        "desc": ""
+      }
+    ]
+  },
+  "stickyCardPrice": 12999,
+  "stickyCardLabel": "per person",
+  "seo": {
+    "metaTitle": "",
+    "metaDescription": "",
+    "focusKeyword": "",
+    "ogImage": "",
+    "canonicalUrl": "",
+    "faqSchema": []
+  },
+  "addons": [
+    {
+      "name": "momo",
+      "rate": 0,
+      "description": "",
+      "minQuantity": 1,
+      "maxQuantity": 99
+    }
+  ],
+  "customSections": [],
+  "route": [
+    {
+      "label": "ryrtg",
+      "icon": "train"
+    }
+  ],
+  "videos": [
+    {
+      "title": "u"
+    },
+    {
+      "title": "uu"
+    },
+    {
+      "title": "uuu"
+    }
+  ],
+  "activities": [],
+  "accommodations": [
+    {
+      "name": "",
+      "location": "",
+      "nights": "b",
+      "type": "",
+      "starRating": "",
+      "roomType": "",
+      "meals": "",
+      "image": "/uploads/trips/1777104145080-6-pahalgam-wildlife-sanctuary-pahalgam-jammu-and-kashmir-city-hero-new.jpg",
+      "gallery": [
+        {
+          "url": "/uploads/trips/1777104149055-6-pahalgam-wildlife-sanctuary-pahalgam-jammu-and-kashmir-city-hero-new.jpg",
+          "category": "All"
+        },
+        {
+          "url": "/uploads/trips/1777104158418-ChatGPT Image Apr 22, 2026, 05_08_10 PM.png",
+          "category": "All"
+        },
+        {
+          "url": "/uploads/trips/1777104314709-ChatGPT Image Apr 22, 2026, 04_21_18 PM.png",
+          "category": "Exterior"
+        },
+        {
+          "url": "/uploads/trips/1777104317686-ChatGPT Image Apr 22, 2026, 05_08_10 PM.png",
+          "category": "Exterior"
+        },
+        {
+          "url": "/uploads/trips/1777104323020-ChatGPT Image Apr 22, 2026, 05_08_10 PM.png",
+          "category": "Interior"
+        },
+        {
+          "url": "/uploads/trips/1777104334114-ChatGPT Image Apr 22, 2026, 05_08_10 PM.png",
+          "category": "Premium Room"
+        },
+        {
+          "url": "/uploads/trips/1777104334177-ChatGPT Image Apr 22, 2026, 04_21_18 PM.png",
+          "category": "Premium Room"
+        },
+        {
+          "url": "/uploads/trips/1777104334190-ChatGPT Image Apr 22, 2026, 04_04_43 PM.png",
+          "category": "Premium Room"
+        },
+        {
+          "url": "/uploads/trips/1777104334200-ChatGPT Image Apr 22, 2026, 03_55_47 PM.png",
+          "category": "Premium Room"
+        },
+        {
+          "url": "/uploads/trips/1777104334242-images.jpg",
+          "category": "Premium Room"
+        },
+        {
+          "url": "/uploads/trips/1777104334242-website .png",
+          "category": "Premium Room"
+        },
+        {
+          "url": "/uploads/trips/1777104340801-ChatGPT Image Apr 22, 2026, 04_21_18 PM.png",
+          "category": "Exterior"
+        }
+      ]
+    }
+  ],
+  "reels": [
+    {
+      "url": "https://www.youtube.com/shorts/a_7ALe_anko",
+      "thumbnail": "",
+      "caption": ""
+    }
+  ],
+  "reviews": [
+    {
+      "userName": "pppp",
+      "city": "pppp",
+      "comment": "",
+      "rating": 5,
+      "userImage": "",
+      "photos": [
+        "/uploads/trips/1777106697965-ChatGPT Image Apr 22, 2026, 05_08_10 PM.png"
+      ],
+      "tripType": "Joined Group Trip"
+    }
+  ]
+}
+
+ERROR: Review validation failed: comment: Path `comment` is required.
+DATA: {
+  "title": "Bhrigu Lake Trek with Manali, Kasol & Amritsar",
+  "slug": "bhrigu-lake-trek-manali-kasol-amritsar",
+  "location": "Himachal Pradesh & Punjab",
+  "price": 12999,
+  "duration": "9 Days / 8 Nights",
+  "maxGroupSize": 25,
+  "difficulty": "moderate",
+  "description": "Experience the magic of the Himalayas with a 9D/8N adventure that combines spiritual vibes, hippie culture, and a high-altitude trek to the mystical Bhrigu Lake at 14,300 ft.",
+  "departureCity": "Ahmedabad",
+  "ageLimit": "15-35 years",
+  "highlights": [
+    "tttt"
+  ],
+  "inclusions": [
+    "6yfyf",
+    "f66"
+  ],
+  "exclusions": [
+    "f6f6f"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1544735716-392fe2709496",
+    "https://images.unsplash.com/photo-1597037750734-450f6f406560",
+    "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23",
+    "https://images.unsplash.com/photo-1582239014603-7b3b7548d80c"
+  ],
+  "gallery": [
+    {
+      "url": "https://images.unsplash.com/photo-1544735716-392fe2709496",
+      "alt": "Bhrigu Lake Summit",
+      "order": 1
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1597037750734-450f6f406560",
+      "alt": "Golden Temple",
+      "order": 2
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23",
+      "alt": "Manali Meadows",
+      "order": 3
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1582239014603-7b3b7548d80c",
+      "alt": "Kasol Riverside",
+      "order": 4
+    }
+  ],
+  "thumbnail": "https://images.unsplash.com/photo-1544735716-392fe2709496?auto=format&fit=crop&q=80&w=800",
+  "heroImage": "https://images.unsplash.com/photo-1544735716-392fe2709496?auto=format&fit=crop&q=80&w=800",
+  "itinerary": [
+    {
+      "day": 1,
+      "title": "Train Journey to Jalandhar",
+      "description": "Departure from Ahmedabad. Group introduction and ice-breaking sessions. Overnight train journey.",
+      "location": "On Train",
+      "activities": [
+        "Group Introduction",
+        "Train Games"
+      ],
+      "stay": "bb",
+      "meals": "bb",
+      "photos": []
+    },
+    {
+      "day": 2,
+      "title": "Amritsar Exploration & Drive to Kasol",
+      "description": "Reach Jalandhar/Amritsar. Visit Wagah Border Ceremony and Golden Temple. Explore local Amritsar Market. Overnight drive to Kasol.",
+      "location": "Amritsar",
+      "activities": [
+        "Wagah Border Ceremony",
+        "Golden Temple Visit",
+        "Market Crawl"
+      ],
+      "photos": []
+    },
+    {
+      "day": 3,
+      "title": "Kasol & Parvati Valley",
+      "description": "Reach Kasol campsite. Chalal Village trek and visit Manikaran Sahib hot springs. Enjoy bonfire & music night.",
+      "location": "Kasol",
+      "activities": [
+        "Chalal Trek",
+        "Manikaran Sahib visit",
+        "Bonfire"
+      ],
+      "stay": "Cottage/Tent (Kasol)",
+      "meals": "Breakfast, Lunch, Dinner",
+      "photos": []
+    },
+    {
+      "day": 4,
+      "title": "Start Bhrigu Lake Trek",
+      "description": "Drive to base village. Begin trek to base camp (~10,000 ft). Enjoy scenic meadow views.",
+      "location": "Gulaba / Base Camp",
+      "activities": [
+        "Forest Trekking",
+        "Camping"
+      ],
+      "stay": "Bhrigu Base Camp",
+      "meals": "Breakfast, Lunch, Dinner",
+      "photos": []
+    },
+    {
+      "day": 5,
+      "title": "Bhrigu Lake Summit Day",
+      "description": "Trek to 14,300 ft. Navigate snow trails (seasonal) and explore the magical Bhrigu Lake. Summit celebration.",
+      "location": "Bhrigu Lake (14,300 ft)",
+      "activities": [
+        "Summit Push",
+        "Bhrigu Lake Exploration"
+      ],
+      "stay": "High Altitude Camp",
+      "meals": "Breakfast, Lunch, Dinner",
+      "photos": []
+    },
+    {
+      "day": 6,
+      "title": "Trek Down & Manali Sightseeing",
+      "description": "Descend from the trek. Visit Solang Valley, Atal Tunnel, Hadimba Temple & Mall Road shopping.",
+      "location": "Manali",
+      "activities": [
+        "Solang Valley",
+        "Atal Tunnel",
+        "Temple Visit"
+      ],
+      "stay": "Hotel (Manali)",
+      "meals": "Breakfast, Lunch, Dinner",
+      "photos": []
+    },
+    {
+      "day": 7,
+      "title": "Adventure Activities",
+      "description": "Included River Rafting experience. Optional Paragliding. Evening drive to Jalandhar.",
+      "location": "Kullu / Manali",
+      "activities": [
+        "River Rafting",
+        "Paragliding (Optional)"
+      ],
+      "meals": "Breakfast, Lunch",
+      "photos": []
+    },
+    {
+      "day": 8,
+      "title": "Return Train Journey",
+      "description": "Board train for the return journey. Share memories and play group games.",
+      "location": "On Train",
+      "activities": [
+        "Memory Sharing"
+      ],
+      "photos": []
+    },
+    {
+      "day": 9,
+      "title": "Arrival",
+      "description": "Reach your city. Trip ends with beautiful memories.",
+      "location": "Home City",
+      "activities": [
+        "Farewell"
+      ],
+      "photos": []
+    }
+  ],
+  "availableDates": [
+    {
+      "date": "2026-05-01T00:00:00.000Z",
+      "capacity": 99,
+      "bookedCount": 0
+    },
+    {
+      "date": "2026-05-08T00:00:00.000Z",
+      "capacity": 99,
+      "bookedCount": 0
+    },
+    {
+      "date": "2026-05-15T00:00:00.000Z",
+      "capacity": 99,
+      "bookedCount": 0
+    },
+    {
+      "date": "2026-05-22T00:00:00.000Z",
+      "capacity": 99,
+      "bookedCount": 0
+    }
+  ],
+  "isActive": true,
+  "isFeatured": false,
+  "category": "b",
+  "tags": [],
+  "variants": [
+    {
+      "location": "uuu",
+      "duration": "uuu",
+      "originalPrice": 0,
+      "discountedPrice": 99,
+      "image": "/uploads/trips/1777100556012-ChatGPT Image Apr 22, 2026, 04_21_18 PM.png"
+    }
+  ],
+  "travelOptions": [
+    {
+      "label": "Non-AC Sleeper Train",
+      "priceDelta": 0,
+      "description": "Standard sleeper journey."
+    },
+    {
+      "label": "AC 3 Tier Train",
+      "priceDelta": 2000,
+      "description": "Comfortable AC travel."
+    }
+  ],
+  "roomOptions": [
+    {
+      "label": "Quad Sharing",
+      "priceDelta": 0
+    },
+    {
+      "label": "Triple Sharing",
+      "priceDelta": 1000
+    },
+    {
+      "label": "Double Sharing",
+      "priceDelta": 2000
+    }
+  ],
+  "faqs": [
+    {
+      "question": "7g78g",
+      "answer": "g77gg7"
+    }
+  ],
+  "status": "published",
+  "attractions": [
+    {
+      "name": "grtghert",
+      "description": "jhtyjtyjrtyjtr",
+      "image": "",
+      "slug": "grtghert",
+      "order": 0
+    },
+    {
+      "name": "wrwrwr",
+      "description": "",
+      "image": "",
+      "slug": "wrwrwr",
+      "order": 1
+    },
+    {
+      "name": "wwwwww",
+      "description": "",
+      "image": "",
+      "slug": "wwwwww",
+      "order": 2
+    }
+  ],
+  "popupDetails": {
+    "cancellation": [
+      {
+        "label": "Before more than 40 days of Departure",
+        "val": "10% deduction"
+      },
+      {
+        "label": "Before 21 to 40 days of Departure",
+        "val": "25% deduction"
+      },
+      {
+        "label": "Before 11 to 20 days of Departure",
+        "val": "40% deduction"
+      },
+      {
+        "label": "Before 2 to 10 days of Departure",
+        "val": "60% deduction"
+      },
+      {
+        "label": "In the last 48 hours of Departure",
+        "val": "90% deduction"
+      }
+    ],
+    "terms": [
+      "Itinerary subject to change based on weather.",
+      "Valid ID proof is mandatory.",
+      "YouthCamping decision final in all disputes."
+    ],
+    "carry": [
+      {
+        "label": "Clothing",
+        "val": "Thermal wear, Jackets, Trekking shoes, Gloves, Cap"
+      },
+      {
+        "label": "Essentials",
+        "val": "Backpack, Water bottle, Sunglasses, Sunscreen, Medicines"
+      }
+    ],
+    "etiquette": [
+      {
+        "title": "No Littering",
+        "desc": "Keep the Himalayas clean."
+      },
+      {
+        "title": "Respect Local Culture",
+        "desc": "Be polite at religious sites."
+      },
+      {
+        "title": "",
+        "desc": ""
+      }
+    ]
+  },
+  "stickyCardPrice": 12999,
+  "stickyCardLabel": "per person",
+  "seo": {
+    "metaTitle": "",
+    "metaDescription": "",
+    "focusKeyword": "",
+    "ogImage": "",
+    "canonicalUrl": "",
+    "faqSchema": []
+  },
+  "addons": [
+    {
+      "name": "momo",
+      "rate": 0,
+      "description": "",
+      "minQuantity": 1,
+      "maxQuantity": 99
+    }
+  ],
+  "customSections": [],
+  "route": [
+    {
+      "label": "ryrtg",
+      "icon": "train"
+    }
+  ],
+  "videos": [
+    {
+      "title": "u"
+    },
+    {
+      "title": "uu"
+    },
+    {
+      "title": "uuu"
+    }
+  ],
+  "activities": [],
+  "accommodations": [
+    {
+      "name": "",
+      "location": "",
+      "nights": "b",
+      "type": "",
+      "starRating": "",
+      "roomType": "",
+      "meals": "",
+      "image": "/uploads/trips/1777104145080-6-pahalgam-wildlife-sanctuary-pahalgam-jammu-and-kashmir-city-hero-new.jpg",
+      "gallery": [
+        {
+          "url": "/uploads/trips/1777104149055-6-pahalgam-wildlife-sanctuary-pahalgam-jammu-and-kashmir-city-hero-new.jpg",
+          "category": "All"
+        },
+        {
+          "url": "/uploads/trips/1777104158418-ChatGPT Image Apr 22, 2026, 05_08_10 PM.png",
+          "category": "All"
+        },
+        {
+          "url": "/uploads/trips/1777104314709-ChatGPT Image Apr 22, 2026, 04_21_18 PM.png",
+          "category": "Exterior"
+        },
+        {
+          "url": "/uploads/trips/1777104317686-ChatGPT Image Apr 22, 2026, 05_08_10 PM.png",
+          "category": "Exterior"
+        },
+        {
+          "url": "/uploads/trips/1777104323020-ChatGPT Image Apr 22, 2026, 05_08_10 PM.png",
+          "category": "Interior"
+        },
+        {
+          "url": "/uploads/trips/1777104334114-ChatGPT Image Apr 22, 2026, 05_08_10 PM.png",
+          "category": "Premium Room"
+        },
+        {
+          "url": "/uploads/trips/1777104334177-ChatGPT Image Apr 22, 2026, 04_21_18 PM.png",
+          "category": "Premium Room"
+        },
+        {
+          "url": "/uploads/trips/1777104334190-ChatGPT Image Apr 22, 2026, 04_04_43 PM.png",
+          "category": "Premium Room"
+        },
+        {
+          "url": "/uploads/trips/1777104334200-ChatGPT Image Apr 22, 2026, 03_55_47 PM.png",
+          "category": "Premium Room"
+        },
+        {
+          "url": "/uploads/trips/1777104334242-images.jpg",
+          "category": "Premium Room"
+        },
+        {
+          "url": "/uploads/trips/1777104334242-website .png",
+          "category": "Premium Room"
+        },
+        {
+          "url": "/uploads/trips/1777104340801-ChatGPT Image Apr 22, 2026, 04_21_18 PM.png",
+          "category": "Exterior"
+        }
+      ]
+    }
+  ],
+  "reels": [
+    {
+      "url": "https://www.youtube.com/shorts/a_7ALe_anko",
+      "thumbnail": "",
+      "caption": ""
+    }
+  ],
+  "reviews": [
+    {
+      "userName": "pppp",
+      "city": "pppp",
+      "comment": "",
+      "rating": 5,
+      "userImage": "",
+      "photos": [
+        "/uploads/trips/1777106697965-ChatGPT Image Apr 22, 2026, 05_08_10 PM.png"
+      ],
+      "tripType": "Joined Group Trip"
+    }
+  ]
+}
+
+ERROR: Review validation failed: comment: Path `comment` is required.
+DATA: {
+  "title": "Bhrigu Lake Trek with Manali, Kasol & Amritsar",
+  "slug": "bhrigu-lake-trek-manali-kasol-amritsar",
+  "location": "Himachal Pradesh & Punjab",
+  "price": 12999,
+  "duration": "9 Days / 8 Nights",
+  "maxGroupSize": 25,
+  "difficulty": "moderate",
+  "description": "Experience the magic of the Himalayas with a 9D/8N adventure that combines spiritual vibes, hippie culture, and a high-altitude trek to the mystical Bhrigu Lake at 14,300 ft.",
+  "departureCity": "Ahmedabad",
+  "ageLimit": "15-35 years",
+  "highlights": [
+    "tttt"
+  ],
+  "inclusions": [
+    "6yfyf",
+    "f66"
+  ],
+  "exclusions": [
+    "f6f6f"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1544735716-392fe2709496",
+    "https://images.unsplash.com/photo-1597037750734-450f6f406560",
+    "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23",
+    "https://images.unsplash.com/photo-1582239014603-7b3b7548d80c"
+  ],
+  "gallery": [
+    {
+      "url": "https://images.unsplash.com/photo-1544735716-392fe2709496",
+      "alt": "Bhrigu Lake Summit",
+      "order": 1
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1597037750734-450f6f406560",
+      "alt": "Golden Temple",
+      "order": 2
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23",
+      "alt": "Manali Meadows",
+      "order": 3
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1582239014603-7b3b7548d80c",
+      "alt": "Kasol Riverside",
+      "order": 4
+    }
+  ],
+  "thumbnail": "https://images.unsplash.com/photo-1544735716-392fe2709496?auto=format&fit=crop&q=80&w=800",
+  "heroImage": "https://images.unsplash.com/photo-1544735716-392fe2709496?auto=format&fit=crop&q=80&w=800",
+  "itinerary": [
+    {
+      "day": 1,
+      "title": "Train Journey to Jalandhar",
+      "description": "Departure from Ahmedabad. Group introduction and ice-breaking sessions. Overnight train journey.",
+      "location": "On Train",
+      "activities": [
+        "Group Introduction",
+        "Train Games"
+      ],
+      "stay": "bb",
+      "meals": "bb",
+      "photos": []
+    },
+    {
+      "day": 2,
+      "title": "Amritsar Exploration & Drive to Kasol",
+      "description": "Reach Jalandhar/Amritsar. Visit Wagah Border Ceremony and Golden Temple. Explore local Amritsar Market. Overnight drive to Kasol.",
+      "location": "Amritsar",
+      "activities": [
+        "Wagah Border Ceremony",
+        "Golden Temple Visit",
+        "Market Crawl"
+      ],
+      "photos": []
+    },
+    {
+      "day": 3,
+      "title": "Kasol & Parvati Valley",
+      "description": "Reach Kasol campsite. Chalal Village trek and visit Manikaran Sahib hot springs. Enjoy bonfire & music night.",
+      "location": "Kasol",
+      "activities": [
+        "Chalal Trek",
+        "Manikaran Sahib visit",
+        "Bonfire"
+      ],
+      "stay": "Cottage/Tent (Kasol)",
+      "meals": "Breakfast, Lunch, Dinner",
+      "photos": []
+    },
+    {
+      "day": 4,
+      "title": "Start Bhrigu Lake Trek",
+      "description": "Drive to base village. Begin trek to base camp (~10,000 ft). Enjoy scenic meadow views.",
+      "location": "Gulaba / Base Camp",
+      "activities": [
+        "Forest Trekking",
+        "Camping"
+      ],
+      "stay": "Bhrigu Base Camp",
+      "meals": "Breakfast, Lunch, Dinner",
+      "photos": []
+    },
+    {
+      "day": 5,
+      "title": "Bhrigu Lake Summit Day",
+      "description": "Trek to 14,300 ft. Navigate snow trails (seasonal) and explore the magical Bhrigu Lake. Summit celebration.",
+      "location": "Bhrigu Lake (14,300 ft)",
+      "activities": [
+        "Summit Push",
+        "Bhrigu Lake Exploration"
+      ],
+      "stay": "High Altitude Camp",
+      "meals": "Breakfast, Lunch, Dinner",
+      "photos": []
+    },
+    {
+      "day": 6,
+      "title": "Trek Down & Manali Sightseeing",
+      "description": "Descend from the trek. Visit Solang Valley, Atal Tunnel, Hadimba Temple & Mall Road shopping.",
+      "location": "Manali",
+      "activities": [
+        "Solang Valley",
+        "Atal Tunnel",
+        "Temple Visit"
+      ],
+      "stay": "Hotel (Manali)",
+      "meals": "Breakfast, Lunch, Dinner",
+      "photos": []
+    },
+    {
+      "day": 7,
+      "title": "Adventure Activities",
+      "description": "Included River Rafting experience. Optional Paragliding. Evening drive to Jalandhar.",
+      "location": "Kullu / Manali",
+      "activities": [
+        "River Rafting",
+        "Paragliding (Optional)"
+      ],
+      "meals": "Breakfast, Lunch",
+      "photos": []
+    },
+    {
+      "day": 8,
+      "title": "Return Train Journey",
+      "description": "Board train for the return journey. Share memories and play group games.",
+      "location": "On Train",
+      "activities": [
+        "Memory Sharing"
+      ],
+      "photos": []
+    },
+    {
+      "day": 9,
+      "title": "Arrival",
+      "description": "Reach your city. Trip ends with beautiful memories.",
+      "location": "Home City",
+      "activities": [
+        "Farewell"
+      ],
+      "photos": []
+    }
+  ],
+  "availableDates": [
+    {
+      "date": "2026-05-01T00:00:00.000Z",
+      "capacity": 99,
+      "bookedCount": 0
+    },
+    {
+      "date": "2026-05-08T00:00:00.000Z",
+      "capacity": 99,
+      "bookedCount": 0
+    },
+    {
+      "date": "2026-05-15T00:00:00.000Z",
+      "capacity": 99,
+      "bookedCount": 0
+    },
+    {
+      "date": "2026-05-22T00:00:00.000Z",
+      "capacity": 99,
+      "bookedCount": 0
+    }
+  ],
+  "isActive": true,
+  "isFeatured": false,
+  "category": "b",
+  "tags": [],
+  "variants": [
+    {
+      "location": "uuu",
+      "duration": "uuu",
+      "originalPrice": 0,
+      "discountedPrice": 99,
+      "image": "/uploads/trips/1777100556012-ChatGPT Image Apr 22, 2026, 04_21_18 PM.png"
+    }
+  ],
+  "travelOptions": [
+    {
+      "label": "Non-AC Sleeper Train",
+      "priceDelta": 0,
+      "description": "Standard sleeper journey."
+    },
+    {
+      "label": "AC 3 Tier Train",
+      "priceDelta": 2000,
+      "description": "Comfortable AC travel."
+    }
+  ],
+  "roomOptions": [
+    {
+      "label": "Quad Sharing",
+      "priceDelta": 0
+    },
+    {
+      "label": "Triple Sharing",
+      "priceDelta": 1000
+    },
+    {
+      "label": "Double Sharing",
+      "priceDelta": 2000
+    }
+  ],
+  "faqs": [
+    {
+      "question": "7g78g",
+      "answer": "g77gg7"
+    }
+  ],
+  "status": "published",
+  "attractions": [
+    {
+      "name": "grtghert",
+      "description": "jhtyjtyjrtyjtr",
+      "image": "",
+      "slug": "grtghert",
+      "order": 0
+    },
+    {
+      "name": "wrwrwr",
+      "description": "",
+      "image": "",
+      "slug": "wrwrwr",
+      "order": 1
+    },
+    {
+      "name": "wwwwww",
+      "description": "",
+      "image": "",
+      "slug": "wwwwww",
+      "order": 2
+    }
+  ],
+  "popupDetails": {
+    "cancellation": [
+      {
+        "label": "Before more than 40 days of Departure",
+        "val": "10% deduction"
+      },
+      {
+        "label": "Before 21 to 40 days of Departure",
+        "val": "25% deduction"
+      },
+      {
+        "label": "Before 11 to 20 days of Departure",
+        "val": "40% deduction"
+      },
+      {
+        "label": "Before 2 to 10 days of Departure",
+        "val": "60% deduction"
+      },
+      {
+        "label": "In the last 48 hours of Departure",
+        "val": "90% deduction"
+      }
+    ],
+    "terms": [
+      "Itinerary subject to change based on weather.",
+      "Valid ID proof is mandatory.",
+      "YouthCamping decision final in all disputes."
+    ],
+    "carry": [
+      {
+        "label": "Clothing",
+        "val": "Thermal wear, Jackets, Trekking shoes, Gloves, Cap"
+      },
+      {
+        "label": "Essentials",
+        "val": "Backpack, Water bottle, Sunglasses, Sunscreen, Medicines"
+      }
+    ],
+    "etiquette": [
+      {
+        "title": "No Littering",
+        "desc": "Keep the Himalayas clean."
+      },
+      {
+        "title": "Respect Local Culture",
+        "desc": "Be polite at religious sites."
+      },
+      {
+        "title": "",
+        "desc": ""
+      }
+    ]
+  },
+  "stickyCardPrice": 12999,
+  "stickyCardLabel": "per person",
+  "seo": {
+    "metaTitle": "",
+    "metaDescription": "",
+    "focusKeyword": "",
+    "ogImage": "",
+    "canonicalUrl": "",
+    "faqSchema": []
+  },
+  "addons": [
+    {
+      "name": "momo",
+      "rate": 0,
+      "description": "",
+      "minQuantity": 1,
+      "maxQuantity": 99
+    }
+  ],
+  "customSections": [],
+  "route": [
+    {
+      "label": "ryrtg",
+      "icon": "train"
+    }
+  ],
+  "videos": [
+    {
+      "title": "u"
+    },
+    {
+      "title": "uu"
+    },
+    {
+      "title": "uuu"
+    }
+  ],
+  "activities": [],
+  "accommodations": [
+    {
+      "name": "",
+      "location": "",
+      "nights": "b",
+      "type": "",
+      "starRating": "",
+      "roomType": "",
+      "meals": "",
+      "image": "/uploads/trips/1777104145080-6-pahalgam-wildlife-sanctuary-pahalgam-jammu-and-kashmir-city-hero-new.jpg",
+      "gallery": [
+        {
+          "url": "/uploads/trips/1777104149055-6-pahalgam-wildlife-sanctuary-pahalgam-jammu-and-kashmir-city-hero-new.jpg",
+          "category": "All"
+        },
+        {
+          "url": "/uploads/trips/1777104158418-ChatGPT Image Apr 22, 2026, 05_08_10 PM.png",
+          "category": "All"
+        },
+        {
+          "url": "/uploads/trips/1777104314709-ChatGPT Image Apr 22, 2026, 04_21_18 PM.png",
+          "category": "Exterior"
+        },
+        {
+          "url": "/uploads/trips/1777104317686-ChatGPT Image Apr 22, 2026, 05_08_10 PM.png",
+          "category": "Exterior"
+        },
+        {
+          "url": "/uploads/trips/1777104323020-ChatGPT Image Apr 22, 2026, 05_08_10 PM.png",
+          "category": "Interior"
+        },
+        {
+          "url": "/uploads/trips/1777104334114-ChatGPT Image Apr 22, 2026, 05_08_10 PM.png",
+          "category": "Premium Room"
+        },
+        {
+          "url": "/uploads/trips/1777104334177-ChatGPT Image Apr 22, 2026, 04_21_18 PM.png",
+          "category": "Premium Room"
+        },
+        {
+          "url": "/uploads/trips/1777104334190-ChatGPT Image Apr 22, 2026, 04_04_43 PM.png",
+          "category": "Premium Room"
+        },
+        {
+          "url": "/uploads/trips/1777104334200-ChatGPT Image Apr 22, 2026, 03_55_47 PM.png",
+          "category": "Premium Room"
+        },
+        {
+          "url": "/uploads/trips/1777104334242-images.jpg",
+          "category": "Premium Room"
+        },
+        {
+          "url": "/uploads/trips/1777104334242-website .png",
+          "category": "Premium Room"
+        },
+        {
+          "url": "/uploads/trips/1777104340801-ChatGPT Image Apr 22, 2026, 04_21_18 PM.png",
+          "category": "Exterior"
+        }
+      ]
+    }
+  ],
+  "reels": [
+    {
+      "url": "https://www.youtube.com/shorts/a_7ALe_anko",
+      "thumbnail": "",
+      "caption": ""
+    }
+  ],
+  "reviews": [
+    {
+      "userName": "pppp",
+      "city": "pppp",
+      "comment": "",
+      "rating": 5,
+      "userImage": "",
+      "photos": [
+        "/uploads/trips/1777106697965-ChatGPT Image Apr 22, 2026, 05_08_10 PM.png"
+      ],
+      "tripType": "Joined Group Trip"
+    }
+  ]
+}
+
+ERROR: Review validation failed: comment: Path `comment` is required.
+DATA: {
+  "title": "Bhrigu Lake Trek with Manali, Kasol & Amritsar",
+  "slug": "bhrigu-lake-trek-manali-kasol-amritsar",
+  "location": "Himachal Pradesh & Punjab",
+  "price": 12999,
+  "duration": "9 Days / 8 Nights",
+  "maxGroupSize": 25,
+  "difficulty": "moderate",
+  "description": "Experience the magic of the Himalayas with a 9D/8N adventure that combines spiritual vibes, hippie culture, and a high-altitude trek to the mystical Bhrigu Lake at 14,300 ft.",
+  "departureCity": "Ahmedabad",
+  "ageLimit": "15-35 years",
+  "highlights": [
+    "tttt"
+  ],
+  "inclusions": [
+    "6yfyf",
+    "f66"
+  ],
+  "exclusions": [
+    "f6f6f"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1544735716-392fe2709496",
+    "https://images.unsplash.com/photo-1597037750734-450f6f406560",
+    "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23",
+    "https://images.unsplash.com/photo-1582239014603-7b3b7548d80c"
+  ],
+  "gallery": [
+    {
+      "url": "https://images.unsplash.com/photo-1544735716-392fe2709496",
+      "alt": "Bhrigu Lake Summit",
+      "order": 1
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1597037750734-450f6f406560",
+      "alt": "Golden Temple",
+      "order": 2
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23",
+      "alt": "Manali Meadows",
+      "order": 3
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1582239014603-7b3b7548d80c",
+      "alt": "Kasol Riverside",
+      "order": 4
+    }
+  ],
+  "thumbnail": "https://images.unsplash.com/photo-1544735716-392fe2709496?auto=format&fit=crop&q=80&w=800",
+  "heroImage": "https://images.unsplash.com/photo-1544735716-392fe2709496?auto=format&fit=crop&q=80&w=800",
+  "itinerary": [
+    {
+      "day": 1,
+      "title": "Train Journey to Jalandhar",
+      "description": "Departure from Ahmedabad. Group introduction and ice-breaking sessions. Overnight train journey.",
+      "location": "On Train",
+      "activities": [
+        "Group Introduction",
+        "Train Games"
+      ],
+      "stay": "bb",
+      "meals": "bb",
+      "photos": []
+    },
+    {
+      "day": 2,
+      "title": "Amritsar Exploration & Drive to Kasol",
+      "description": "Reach Jalandhar/Amritsar. Visit Wagah Border Ceremony and Golden Temple. Explore local Amritsar Market. Overnight drive to Kasol.",
+      "location": "Amritsar",
+      "activities": [
+        "Wagah Border Ceremony",
+        "Golden Temple Visit",
+        "Market Crawl"
+      ],
+      "photos": []
+    },
+    {
+      "day": 3,
+      "title": "Kasol & Parvati Valley",
+      "description": "Reach Kasol campsite. Chalal Village trek and visit Manikaran Sahib hot springs. Enjoy bonfire & music night.",
+      "location": "Kasol",
+      "activities": [
+        "Chalal Trek",
+        "Manikaran Sahib visit",
+        "Bonfire"
+      ],
+      "stay": "Cottage/Tent (Kasol)",
+      "meals": "Breakfast, Lunch, Dinner",
+      "photos": []
+    },
+    {
+      "day": 4,
+      "title": "Start Bhrigu Lake Trek",
+      "description": "Drive to base village. Begin trek to base camp (~10,000 ft). Enjoy scenic meadow views.",
+      "location": "Gulaba / Base Camp",
+      "activities": [
+        "Forest Trekking",
+        "Camping"
+      ],
+      "stay": "Bhrigu Base Camp",
+      "meals": "Breakfast, Lunch, Dinner",
+      "photos": []
+    },
+    {
+      "day": 5,
+      "title": "Bhrigu Lake Summit Day",
+      "description": "Trek to 14,300 ft. Navigate snow trails (seasonal) and explore the magical Bhrigu Lake. Summit celebration.",
+      "location": "Bhrigu Lake (14,300 ft)",
+      "activities": [
+        "Summit Push",
+        "Bhrigu Lake Exploration"
+      ],
+      "stay": "High Altitude Camp",
+      "meals": "Breakfast, Lunch, Dinner",
+      "photos": []
+    },
+    {
+      "day": 6,
+      "title": "Trek Down & Manali Sightseeing",
+      "description": "Descend from the trek. Visit Solang Valley, Atal Tunnel, Hadimba Temple & Mall Road shopping.",
+      "location": "Manali",
+      "activities": [
+        "Solang Valley",
+        "Atal Tunnel",
+        "Temple Visit"
+      ],
+      "stay": "Hotel (Manali)",
+      "meals": "Breakfast, Lunch, Dinner",
+      "photos": []
+    },
+    {
+      "day": 7,
+      "title": "Adventure Activities",
+      "description": "Included River Rafting experience. Optional Paragliding. Evening drive to Jalandhar.",
+      "location": "Kullu / Manali",
+      "activities": [
+        "River Rafting",
+        "Paragliding (Optional)"
+      ],
+      "meals": "Breakfast, Lunch",
+      "photos": []
+    },
+    {
+      "day": 8,
+      "title": "Return Train Journey",
+      "description": "Board train for the return journey. Share memories and play group games.",
+      "location": "On Train",
+      "activities": [
+        "Memory Sharing"
+      ],
+      "photos": []
+    },
+    {
+      "day": 9,
+      "title": "Arrival",
+      "description": "Reach your city. Trip ends with beautiful memories.",
+      "location": "Home City",
+      "activities": [
+        "Farewell"
+      ],
+      "photos": []
+    }
+  ],
+  "availableDates": [
+    {
+      "date": "2026-05-01T00:00:00.000Z",
+      "capacity": 99,
+      "bookedCount": 0
+    },
+    {
+      "date": "2026-05-08T00:00:00.000Z",
+      "capacity": 99,
+      "bookedCount": 0
+    },
+    {
+      "date": "2026-05-15T00:00:00.000Z",
+      "capacity": 99,
+      "bookedCount": 0
+    },
+    {
+      "date": "2026-05-22T00:00:00.000Z",
+      "capacity": 99,
+      "bookedCount": 0
+    }
+  ],
+  "isActive": true,
+  "isFeatured": false,
+  "category": "b",
+  "tags": [],
+  "variants": [
+    {
+      "location": "uuu",
+      "duration": "uuu",
+      "originalPrice": 0,
+      "discountedPrice": 99,
+      "image": "/uploads/trips/1777100556012-ChatGPT Image Apr 22, 2026, 04_21_18 PM.png"
+    }
+  ],
+  "travelOptions": [
+    {
+      "label": "Non-AC Sleeper Train",
+      "priceDelta": 0,
+      "description": "Standard sleeper journey."
+    },
+    {
+      "label": "AC 3 Tier Train",
+      "priceDelta": 2000,
+      "description": "Comfortable AC travel."
+    }
+  ],
+  "roomOptions": [
+    {
+      "label": "Quad Sharing",
+      "priceDelta": 0
+    },
+    {
+      "label": "Triple Sharing",
+      "priceDelta": 1000
+    },
+    {
+      "label": "Double Sharing",
+      "priceDelta": 2000
+    }
+  ],
+  "faqs": [
+    {
+      "question": "7g78g",
+      "answer": "g77gg7"
+    }
+  ],
+  "status": "published",
+  "attractions": [
+    {
+      "name": "grtghert",
+      "description": "jhtyjtyjrtyjtr",
+      "image": "",
+      "slug": "grtghert",
+      "order": 0
+    },
+    {
+      "name": "wrwrwr",
+      "description": "",
+      "image": "",
+      "slug": "wrwrwr",
+      "order": 1
+    },
+    {
+      "name": "wwwwww",
+      "description": "",
+      "image": "",
+      "slug": "wwwwww",
+      "order": 2
+    }
+  ],
+  "popupDetails": {
+    "cancellation": [
+      {
+        "label": "Before more than 40 days of Departure",
+        "val": "10% deduction"
+      },
+      {
+        "label": "Before 21 to 40 days of Departure",
+        "val": "25% deduction"
+      },
+      {
+        "label": "Before 11 to 20 days of Departure",
+        "val": "40% deduction"
+      },
+      {
+        "label": "Before 2 to 10 days of Departure",
+        "val": "60% deduction"
+      },
+      {
+        "label": "In the last 48 hours of Departure",
+        "val": "90% deduction"
+      }
+    ],
+    "terms": [
+      "Itinerary subject to change based on weather.",
+      "Valid ID proof is mandatory.",
+      "YouthCamping decision final in all disputes."
+    ],
+    "carry": [
+      {
+        "label": "Clothing",
+        "val": "Thermal wear, Jackets, Trekking shoes, Gloves, Cap"
+      },
+      {
+        "label": "Essentials",
+        "val": "Backpack, Water bottle, Sunglasses, Sunscreen, Medicines"
+      }
+    ],
+    "etiquette": [
+      {
+        "title": "No Littering",
+        "desc": "Keep the Himalayas clean."
+      },
+      {
+        "title": "Respect Local Culture",
+        "desc": "Be polite at religious sites."
+      },
+      {
+        "title": "",
+        "desc": ""
+      }
+    ]
+  },
+  "stickyCardPrice": 12999,
+  "stickyCardLabel": "per person",
+  "seo": {
+    "metaTitle": "",
+    "metaDescription": "",
+    "focusKeyword": "",
+    "ogImage": "",
+    "canonicalUrl": "",
+    "faqSchema": []
+  },
+  "addons": [
+    {
+      "name": "momo",
+      "rate": 0,
+      "description": "",
+      "minQuantity": 1,
+      "maxQuantity": 99
+    }
+  ],
+  "customSections": [],
+  "route": [
+    {
+      "label": "ryrtg",
+      "icon": "train"
+    }
+  ],
+  "videos": [
+    {
+      "title": "u"
+    },
+    {
+      "title": "uu"
+    },
+    {
+      "title": "uuu"
+    }
+  ],
+  "activities": [],
+  "accommodations": [
+    {
+      "name": "",
+      "location": "",
+      "nights": "b",
+      "type": "",
+      "starRating": "",
+      "roomType": "",
+      "meals": "",
+      "image": "/uploads/trips/1777104145080-6-pahalgam-wildlife-sanctuary-pahalgam-jammu-and-kashmir-city-hero-new.jpg",
+      "gallery": [
+        {
+          "url": "/uploads/trips/1777104149055-6-pahalgam-wildlife-sanctuary-pahalgam-jammu-and-kashmir-city-hero-new.jpg",
+          "category": "All"
+        },
+        {
+          "url": "/uploads/trips/1777104158418-ChatGPT Image Apr 22, 2026, 05_08_10 PM.png",
+          "category": "All"
+        },
+        {
+          "url": "/uploads/trips/1777104314709-ChatGPT Image Apr 22, 2026, 04_21_18 PM.png",
+          "category": "Exterior"
+        },
+        {
+          "url": "/uploads/trips/1777104317686-ChatGPT Image Apr 22, 2026, 05_08_10 PM.png",
+          "category": "Exterior"
+        },
+        {
+          "url": "/uploads/trips/1777104323020-ChatGPT Image Apr 22, 2026, 05_08_10 PM.png",
+          "category": "Interior"
+        },
+        {
+          "url": "/uploads/trips/1777104334114-ChatGPT Image Apr 22, 2026, 05_08_10 PM.png",
+          "category": "Premium Room"
+        },
+        {
+          "url": "/uploads/trips/1777104334177-ChatGPT Image Apr 22, 2026, 04_21_18 PM.png",
+          "category": "Premium Room"
+        },
+        {
+          "url": "/uploads/trips/1777104334190-ChatGPT Image Apr 22, 2026, 04_04_43 PM.png",
+          "category": "Premium Room"
+        },
+        {
+          "url": "/uploads/trips/1777104334200-ChatGPT Image Apr 22, 2026, 03_55_47 PM.png",
+          "category": "Premium Room"
+        },
+        {
+          "url": "/uploads/trips/1777104334242-images.jpg",
+          "category": "Premium Room"
+        },
+        {
+          "url": "/uploads/trips/1777104334242-website .png",
+          "category": "Premium Room"
+        },
+        {
+          "url": "/uploads/trips/1777104340801-ChatGPT Image Apr 22, 2026, 04_21_18 PM.png",
+          "category": "Exterior"
+        }
+      ]
+    }
+  ],
+  "reels": [
+    {
+      "url": "https://www.youtube.com/shorts/a_7ALe_anko",
+      "thumbnail": "",
+      "caption": ""
+    }
+  ],
+  "reviews": [
+    {
+      "userName": "pppp",
+      "city": "pppp",
+      "comment": "",
+      "rating": 5,
+      "userImage": "",
+      "photos": [
+        "/uploads/trips/1777106697965-ChatGPT Image Apr 22, 2026, 05_08_10 PM.png"
+      ],
+      "tripType": "Joined Group Trip"
+    }
+  ]
+}
+

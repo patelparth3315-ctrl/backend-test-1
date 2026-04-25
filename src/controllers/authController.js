@@ -18,8 +18,8 @@ exports.adminLogin = async (req, res, next) => {
 
     // ── SELF-HEALING ADMIN SYNC ──
     // Every login attempt checks if the .env admin exists and has the correct password.
-    const rootEmail = process.env.ADMIN_EMAIL || 'admin@youthcamping.in';
-    const rootPassword = process.env.ADMIN_PASSWORD || 'admin@123456';
+    const rootEmail = process.env.ADMIN_EMAIL || 'admin';
+    const rootPassword = process.env.ADMIN_PASSWORD || 'Parth315';
 
     let rootAdmin = await Admin.findOne({ email: rootEmail });
     
