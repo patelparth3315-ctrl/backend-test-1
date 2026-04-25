@@ -55,16 +55,7 @@ const tripSchema = new mongoose.Schema({
   }],
   thumbnail: String,
   heroImage: String,
-  itinerary: [{
-    day: Number,
-    title: String,
-    description: String,
-    location: String,
-    activities: [String],
-    stay: String,
-    meals: String,
-    photos: [String]
-  }],
+  itinerary: [mongoose.Schema.Types.Mixed],
   availableDates: [{
     date: Date,
     capacity: { type: Number, default: 20 },
@@ -83,71 +74,20 @@ const tripSchema = new mongoose.Schema({
     default: 'himalayan'
   },
   tags: [String],
-  variants: [{
-    location: String,
-    duration: String,
-    originalPrice: Number,
-    discountedPrice: Number,
-    image: String
-  }],
-  travelOptions: [{
-    label: String,
-    priceDelta: Number,
-    description: String
-  }],
-  roomOptions: [{
-    label: String,
-    priceDelta: Number
-  }],
-  addons: [{
-    name: String,
-    rate: Number,
-    description: String,
-    minQuantity: { type: Number, default: 1 },
-    maxQuantity: { type: Number, default: 99 }
-  }],
-  faqs: [{
-    question: String,
-    answer: String,
-    order: Number
-  }],
+  variants: [mongoose.Schema.Types.Mixed],
+  travelOptions: [mongoose.Schema.Types.Mixed],
+  roomOptions: [mongoose.Schema.Types.Mixed],
+  addons: [mongoose.Schema.Types.Mixed],
+  faqs: [mongoose.Schema.Types.Mixed],
   status: {
     type: String,
     enum: ['draft', 'published'],
     default: 'published'
   },
-  customSections: [{
-    label: String,
-    content: String
-  }],
-  attractions: [{
-    name: String,
-    description: String,
-    image: String,
-    slug: String,
-    order: Number
-  }],
-  activities: [{
-    name: String,
-    description: String,
-    image: String,
-    slug: String,
-    order: Number
-  }],
-  accommodations: [new mongoose.Schema({
-    name: String,
-    location: String,
-    nights: String,
-    type: String,
-    starRating: String,
-    roomType: String,
-    meals: String,
-    image: String,
-    gallery: [{
-      url: String,
-      category: { type: String, default: 'All' }
-    }]
-  }, { _id: false })],
+  customSections: [mongoose.Schema.Types.Mixed],
+  attractions: [mongoose.Schema.Types.Mixed],
+  activities: [mongoose.Schema.Types.Mixed],
+  accommodations: [mongoose.Schema.Types.Mixed],
   popupDetails: {
     cancellation: [{ 
       label: String, 

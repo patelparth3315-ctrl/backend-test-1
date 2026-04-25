@@ -140,6 +140,25 @@ exports.createTrip = async (req, res, next) => {
       tripData.isActive = tripData.status === 'published';
     }
     const trip = await Trip.create(tripData);
+
+    // Handle embedded reviews if present
+    if (req.body.reviews && Array.isArray(req.body.reviews)) {
+      const Review = require('../models/Review');
+      for (const revData of req.body.reviews) {
+        if (!revData.userName || !revData.comment || String(revData.userName).trim() === '' || String(revData.comment).trim() === '') continue;
+
+        const revPayload = {
+          ...revData,
+          tripId: trip._id,
+          tripName: trip.title,
+          isFeatured: revData.isFeatured ?? true
+        };
+        delete revPayload._id;
+        delete revPayload.id;
+        await Review.create(revPayload);
+      }
+    }
+
     res.status(201).json({ success: true, data: trip });
   } catch (error) {
     console.error("🚨 CREATE TRIP ERROR:", error.message);
@@ -180,8 +199,11 @@ exports.updateTrip = async (req, res, next) => {
     if (req.body.reviews && Array.isArray(req.body.reviews)) {
       const Review = require('../models/Review');
       for (const revData of req.body.reviews) {
-        // Skip incomplete reviews
-        if (!revData.userName || !revData.comment) continue;
+        // Skip incomplete reviews - check for existence and non-empty strings
+        if (!revData.userName || !revData.comment || String(revData.userName).trim() === '' || String(revData.comment).trim() === '') {
+          console.log(`[TRIP SYNC] Skipping incomplete review for: ${revData.userName || 'Anonymous'}`);
+          continue;
+        }
 
         // Ensure we use the correct Trip ID and Name from the updated trip
         const revPayload = {
