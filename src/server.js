@@ -65,7 +65,7 @@ app.options('*', cors());
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: process.env.NODE_ENV === 'production' ? 100 : 1000,
+  max: 5000, // Increased for production testing
   message: { success: false, message: 'Too many requests' }
 });
 app.use('/api', limiter);
