@@ -19,6 +19,19 @@ const reviewSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  instagram: {
+    type: String,
+    validate: {
+      validator: function(v) {
+        return !v || (v.startsWith('https://instagram.com/') && v.length > 22);
+      },
+      message: props => `${props.value} is not a valid Instagram URL!`
+    }
+  },
+  city: {
+    type: String,
+    required: [true, 'City is required for the reviewer']
+  },
   tripId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Trip'
@@ -27,6 +40,11 @@ const reviewSchema = new mongoose.Schema({
   isFeatured: {
     type: Boolean,
     default: false
+  },
+  photos: [String],
+  tripType: {
+    type: String,
+    default: 'Joined Group Trip'
   },
   createdAt: {
     type: Date,

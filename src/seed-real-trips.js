@@ -43,10 +43,10 @@ const trips = [
       "GST"
     ],
     images: [
-      "https://vl-prod-static.b-cdn.net/system/images/000/888/076/6f012c2f939c45fd491d86b3d33b0cbb/original/IMG_3309.jpg"
+      "https://vl-prod-static.b-cdn.net/system/images/000/888/076/6f012c2f939c45fd491d86b3d33b0cbb/original/IMG_3309.jpg}"
     ],
-    gallery: [
-      "https://vl-prod-static.b-cdn.net/system/images/000/888/076/6f012c2f939c45fd491d86b3d33b0cbb/original/IMG_3309.jpg"
+    gallery: [{url: 
+      "https://vl-prod-static.b-cdn.net/system/images/000/888/076/6f012c2f939c45fd491d86b3d33b0cbb/original/IMG_3309.jpg}"
     ],
     tags: ["backpacking", "himalayan", "kasol", "amritsar", "manali", "from-gujarat"],
     isFeatured: true,
@@ -89,11 +89,11 @@ const trips = [
       "Trip leader"
     ],
     images: [
-      "https://vl-prod-static.b-cdn.net/system/images/000/751/384/13bebee8f5dfb67ee1756619de11e44a/original/Untitled_design__50_.png"
+      "https://vl-prod-static.b-cdn.net/system/images/000/751/384/13bebee8f5dfb67ee1756619de11e44a/original/Untitled_design__50_.png}"
     ],
-    gallery: [
-      "https://vl-prod-static.b-cdn.net/system/images/000/751/383/f9e9b476346ed8ae84d29f5837f6e093/original/Untitled_design__51_.png",
-      "https://vl-prod-static.b-cdn.net/system/images/000/751/385/0b859075c5accb9bb1decb348aa419ad/original/Untitled_design__49_.png"
+    gallery: [{url: 
+      "https://vl-prod-static.b-cdn.net/system/images/000/751/383/f9e9b476346ed8ae84d29f5837f6e093/original/Untitled_design__51_.png}",
+      "https://vl-prod-static.b-cdn.net/system/images/000/751/385/0b859075c5accb9bb1decb348aa419ad/original/Untitled_design__49_.png}"
     ],
     tags: ["road-trip", "spiti", "himalayan", "chandratal"],
     isFeatured: true,
@@ -123,10 +123,10 @@ const trips = [
     departureCity: "Ahmedabad",
     description: "Kashmir, referred to as 'Paradise on Earth,' renowned for snow-capped mountains, lush valleys, and iconic Dal Lake with floating gardens and houseboats.",
     highlights: ["Dal Lake houseboat stay", "Shikara ride", "Gulmarg gondola", "Pahalgam shepherd valley", "Sonamarg gold meadow"],
-    images: ["https://vl-prod-static.b-cdn.net/system/images/000/795/283/de9764fba137abc8fbbb2be98bf0a119/original/27121997__27_.jpg"],
-    gallery: [
-      "https://vl-prod-static.b-cdn.net/system/images/000/751/331/e74c08989c1a3ac852770bc07aab60f2/original/Untitled_design__34_.png",
-      "https://vl-prod-static.b-cdn.net/system/images/000/751/332/a846b84a4f8f9bba8383a2266cf3b96d/original/Untitled_design__33_.png"
+    images: ["https://vl-prod-static.b-cdn.net/system/images/000/795/283/de9764fba137abc8fbbb2be98bf0a119/original/27121997__27_.jpg}"],
+    gallery: [{url: 
+      "https://vl-prod-static.b-cdn.net/system/images/000/751/331/e74c08989c1a3ac852770bc07aab60f2/original/Untitled_design__34_.png}",
+      "https://vl-prod-static.b-cdn.net/system/images/000/751/332/a846b84a4f8f9bba8383a2266cf3b96d/original/Untitled_design__33_.png}"
     ],
     tags: ["kashmir", "houseboat", "nature", "paradise"],
     isFeatured: true,
@@ -155,8 +155,8 @@ const trips = [
     departureCity: "Delhi",
     description: "Sacred Chota Char Dham and Panch Kedar pilgrimage. Breathtaking views and spiritual peace at world's highest Shiva temple.",
     highlights: ["Ganga Aarti Rishikesh", "Kedarnath 21km Trek", "Tungnath (highest Shiva temple)", "Badrinath Temple", "Mana Village"],
-    images: ["https://vl-prod-static.b-cdn.net/system/images/000/748/925/95ce9359f68bd2d93dee6aa2e3a18d17/original/Untitled_design__11_.png"],
-    gallery: ["https://vl-prod-static.b-cdn.net/system/images/000/748/920/5abeca5343adce67a22013a929647f71/original/Untitled_design__12_.png"],
+    images: ["https://vl-prod-static.b-cdn.net/system/images/000/748/925/95ce9359f68bd2d93dee6aa2e3a18d17/original/Untitled_design__11_.png}"],
+    gallery: [{url: "https://vl-prod-static.b-cdn.net/system/images/000/748/920/5abeca5343adce67a22013a929647f71/original/Untitled_design__12_.png}"],
     tags: ["spiritual", "kedarnath", "chardham", "trek"],
     isFeatured: true,
     itinerary: [
@@ -182,8 +182,8 @@ const trips = [
     departureCity: "Leh",
     description: "Starting and ending in Leh, this journey takes you across world's highest motorable roads, stunning valleys, and crystal-clear lakes.",
     highlights: ["Khardung La Pass", "Nubra Valley desert", "Pangong Lake Tso", "Magnetic Hill", "Shanti Stupa"],
-    images: ["https://vl-prod-static.b-cdn.net/system/images/000/888/077/e84148f8d1adacaa5dc96e8f834b8cdd/original/t2-graphy-IJfpVYlRv5I-unsplash.jpg"],
-    gallery: ["https://vl-prod-static.b-cdn.net/system/images/000/888/133/bae231ef3cdd69e7dc0d467e3ba04cbe/original/Website_Itinerary_Ohotos__4_.jpg"],
+    images: ["https://vl-prod-static.b-cdn.net/system/images/000/888/077/e84148f8d1adacaa5dc96e8f834b8cdd/original/t2-graphy-IJfpVYlRv5I-unsplash.jpg}"],
+    gallery: [{url: "https://vl-prod-static.b-cdn.net/system/images/000/888/133/bae231ef3cdd69e7dc0d467e3ba04cbe/original/Website_Itinerary_Ohotos__4_.jpg}"],
     tags: ["bike", "ladakh", "adventure", "roadtrip"],
     isFeatured: true,
     itinerary: [
@@ -208,8 +208,8 @@ const trips = [
     departureCity: "Ahmedabad",
     description: "Spiti in winter is a world straight out of a postcard — blanketed in pristine white snow, frozen rivers, and towering peaks.",
     highlights: ["Frozen Spiti River", "Key Monastery in snow", "Hikkim (14k ft)", "Stargazing", "Snowy Manali"],
-    images: ["https://vl-prod-static.b-cdn.net/system/images/000/862/062/b7cb9dc7ccc9fe863f0f009c4fe1746f/original/Website_Itinerary_Ohotos__2_.png"],
-    gallery: ["https://vl-prod-static.b-cdn.net/system/images/000/862/061/9b72e8a2d0b5f7708ed73d1c712eed1a/original/Website_Itinerary_Ohotos__3_.png"],
+    images: ["https://vl-prod-static.b-cdn.net/system/images/000/862/062/b7cb9dc7ccc9fe863f0f009c4fe1746f/original/Website_Itinerary_Ohotos__2_.png}"],
+    gallery: [{url: "https://vl-prod-static.b-cdn.net/system/images/000/862/061/9b72e8a2d0b5f7708ed73d1c712eed1a/original/Website_Itinerary_Ohotos__3_.png}"],
     tags: ["winter", "spiti", "snow", "offbeat"],
     isFeatured: false,
     itinerary: [
@@ -233,8 +233,8 @@ const trips = [
     departureCity: "Kochi",
     description: "Experience 'God's Own Country' — from misty Munnar tea plantations to Alleppey backwaters on a houseboat.",
     highlights: ["Munnar Tea Plantations", "Periyar Sanctuary", "Alleppey Houseboat", "Waterfalls enroute"],
-    images: ["https://vl-prod-static.b-cdn.net/system/images/000/899/117/e79b48de54e83646c865c90dee281eb2/original/ravi-sangar-dfB4L6PfS4w-unsplash__1_.jpg"],
-    gallery: ["https://vl-prod-static.b-cdn.net/system/images/000/899/117/e79b48de54e83646c865c90dee281eb2/original/ravi-sangar-dfB4L6PfS4w-unsplash__1_.jpg"],
+    images: ["https://vl-prod-static.b-cdn.net/system/images/000/899/117/e79b48de54e83646c865c90dee281eb2/original/ravi-sangar-dfB4L6PfS4w-unsplash__1_.jpg}"],
+    gallery: [{url: "https://vl-prod-static.b-cdn.net/system/images/000/899/117/e79b48de54e83646c865c90dee281eb2/original/ravi-sangar-dfB4L6PfS4w-unsplash__1_.jpg}"],
     tags: ["kerala", "houseboat", "nature", "coastal"],
     isFeatured: false,
     itinerary: [
@@ -278,7 +278,7 @@ const trips = [
     departureCity: "Ahmedabad",
     description: "Classic circuit covering colonial Shimla, adventure Manali, and scenic Kullu Valley.",
     highlights: ["Mall Road", "Hadimba Temple", "River Rafting", "Atal Tunnel"],
-    images: ["https://vl-prod-static.b-cdn.net/system/images/000/795/284/3bba832671671da87e0f23ce9864e6c1/original/27121997__26_.jpg"],
+    images: ["https://vl-prod-static.b-cdn.net/system/images/000/795/284/3bba832671671da87e0f23ce9864e6c1/original/27121997__26_.jpg}"],
     tags: ["beginner", "budget", "himachal"],
     itinerary: [
         { day: 1, title: "Train Journey", location: "Train", activities: ["Gujarat to Punjab"] },
@@ -298,7 +298,7 @@ const trips = [
     departureCity: "Ahmedabad",
     description: "Summer special including Bhrigu Lake Trek — a high-altitude alpine lake at 14,100 ft.",
     highlights: ["Bhrigu Lake (14k ft)", "Alpine Meadows", "Kasol Vibe", "Golden Temple"],
-    images: ["https://vl-prod-static.b-cdn.net/system/images/000/887/000/placeholder/manali_kasol.jpg"],
+    images: ["https://vl-prod-static.b-cdn.net/system/images/000/887/000/placeholder/manali_kasol.jpg}"],
     tags: ["trekking", "summer", "backpacking"],
     itinerary: [
         { day: 1, title: "Gujarat to Punjab", location: "Train", activities: ["Group bonding"] },
@@ -318,7 +318,7 @@ const trips = [
     departureCity: "Delhi",
     description: "Focussed spiritual trek covering the essential Kedarnath and Tungnath temples.",
     highlights: ["Kedarnath Temple", "Ganga Aarti", "Highest Shiva Temple"],
-    images: ["https://vl-prod-static.b-cdn.net/system/images/000/748/931/95ce9359f68bd2d93dee6aa2e3a18d17/original/Untitled_design__11_.png"],
+    images: ["https://vl-prod-static.b-cdn.net/system/images/000/748/931/95ce9359f68bd2d93dee6aa2e3a18d17/original/Untitled_design__11_.png}"],
     tags: ["spiritual", "trek", "efficient"],
     itinerary: [
         { day: 1, title: "Rishikesh Aarti", location: "Rishikesh", activities: ["Spiritual start"] },

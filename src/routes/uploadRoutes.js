@@ -5,12 +5,18 @@ const upload = require('../middleware/upload');
 // @route   POST /api/upload/single
 // @desc    Upload a single image
 router.post('/single', upload.single('image'), (req, res) => {
+  console.log('--- UPLOAD DEBUG ---');
+  console.log('File:', req.file);
+  console.log('Body:', req.body);
+  
   if (!req.file) {
     return res.status(400).json({ success: false, message: 'No file uploaded' });
   }
   
-  // Return the path/url
-  const url = req.file.path || `/uploads/trips/${req.file.filename}`;
+  // Return the web-accessible path/url
+  const filename = req.file.filename;
+  const url = `/uploads/trips/${filename}`;
+  
   res.status(200).json({
     success: true,
     url: url
@@ -24,7 +30,7 @@ router.post('/multiple', upload.array('images', 10), (req, res) => {
     return res.status(400).json({ success: false, message: 'No files uploaded' });
   }
   
-  const urls = req.files.map(file => file.path || `/uploads/trips/${file.filename}`);
+  const urls = req.files.map(file => `/uploads/trips/${file.filename}`);
   res.status(200).json({
     success: true,
     urls: urls

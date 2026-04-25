@@ -18,8 +18,9 @@ router.get('/:id', getTrip);
 router.get('/slug/:slug', getTripBySlug);
 
 // Admin routes
-router.post('/', protect, createTrip);
-router.put('/:id', protect, updateTrip);
-router.delete('/:id', protect, deleteTrip);
+const requireRole = require('../middleware/role');
+router.post('/', protect, requireRole('agent'), createTrip);
+router.put('/:id', protect, requireRole('agent'), updateTrip);
+router.delete('/:id', protect, requireRole('agent'), deleteTrip);
 
 module.exports = router;

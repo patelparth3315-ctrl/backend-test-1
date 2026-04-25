@@ -1,5 +1,34 @@
+const SeoMeta = require('../models/SeoMeta');
 const Trip = require('../models/Trip');
 const Page = require('../models/Page');
+
+// @desc    Get SEO meta for a page
+// @route   GET /api/seo/:page
+// @access  Public
+exports.getSeo = async (req, res, next) => {
+  try {
+    const seo = await SeoMeta.findOne({ page: req.params.page });
+    res.json({ success: true, data: seo });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Update SEO meta for a page
+// @route   PUT /api/seo/:page
+// @access  Private/Admin
+exports.updateSeo = async (req, res, next) => {
+  try {
+    const seo = await SeoMeta.findOneAndUpdate(
+      { page: req.params.page },
+      req.body,
+      { new: true, upsert: true, runValidators: true }
+    );
+    res.json({ success: true, data: seo });
+  } catch (error) {
+    next(error);
+  }
+};
 
 exports.getSitemap = async (req, res) => {
   try {

@@ -13,9 +13,10 @@ const { protect } = require('../middleware/auth');
 router.post('/', createInquiry);
 
 // Admin routes
-router.get('/', protect, getInquiries);
-router.get('/:id', protect, getInquiry);
-router.patch('/:id/status', protect, updateInquiryStatus);
-router.delete('/:id', protect, deleteInquiry);
+const requireRole = require('../middleware/role');
+router.get('/', protect, requireRole('agent'), getInquiries);
+router.get('/:id', protect, requireRole('agent'), getInquiry);
+router.patch('/:id/status', protect, requireRole('agent'), updateInquiryStatus);
+router.delete('/:id', protect, requireRole('agent'), deleteInquiry);
 
 module.exports = router;

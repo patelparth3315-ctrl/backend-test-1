@@ -23,7 +23,8 @@ const storage = new CloudinaryStorage({
 // For Local Fallback (if Cloudinary is not configured)
 const localStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'public/uploads/trips');
+    const uploadPath = path.join(__dirname, '../../public/uploads/trips');
+    cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}-${file.originalname}`);

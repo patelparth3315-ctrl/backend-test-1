@@ -13,7 +13,11 @@ const PageSchema = new mongoose.Schema({
     trim: true
   },
   sections: {
-    type: Array, // Array of { id: string, type: string, data: object }
+    type: Array, // Published sections: Array of { id: string, type: string, data: object }
+    default: []
+  },
+  draftSections: {
+    type: Array, // Working draft sections
     default: []
   },
   seo: {
@@ -29,13 +33,14 @@ const PageSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['draft', 'published'],
+    enum: ['draft', 'published', 'changes_pending'],
     default: 'draft'
   },
   isSystem: {
     type: Boolean,
     default: false
-  }
+  },
+  lastPublishedAt: Date
 }, {
   timestamps: true
 });

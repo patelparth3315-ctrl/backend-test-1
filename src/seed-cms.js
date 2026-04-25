@@ -1,68 +1,87 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
-const Page = require('./models/Page');
+const PageLayout = require('./models/PageLayout');
+const Trip = require('./models/Trip');
 
 const seedCMS = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URI);
-    console.log('Connected to MongoDB for CMS Seeding...');
+    console.log('Connected for PageLayout Seeding...');
 
-    const homePage = {
-      title: 'Home Page',
-      slug: 'home',
-      status: 'published',
-      isSystem: true,
+    const allTrips = await Trip.find({});
+    const vietnamTrips = allTrips.filter(t => t.category === 'vietnam').map(t => t._id);
+    const baliTrips = allTrips.filter(t => t.category === 'bali').map(t => t._id);
+    const himalayanTrips = allTrips.filter(t => t.category === 'himalayan' || t.category === 'spiritual').map(t => t._id);
+
+    const homeLayout = {
+      name: 'home',
+      isDraft: false,
+      publishedAt: new Date(),
       sections: [
         {
-          id: 'vhero1',
-          type: 'videohero',
-          data: {
-            title: 'YouthCamping',
-            subtitle: 'Redefining Adventure Since 2021',
-            url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-            image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b'
+          id: 'hero-slider-1',
+          name: 'Hero Slider',
+          type: 'hero',
+          order: 0,
+          visible: true,
+          content: {
+            slides: [
+              {
+                image: 'https://images.unsplash.com/photo-1595054350563-397193f8e5b4',
+                subtitle: 'Experiences for',
+                title: '[s]Tourist[/s] Explorers'
+              },
+              {
+                image: 'https://images.unsplash.com/photo-1528127269322-539801943592',
+                subtitle: 'Discover the',
+                title: 'Hidden Vietnam'
+              },
+              {
+                image: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4',
+                subtitle: 'Adventure in',
+                title: 'Bali Paradise'
+              }
+            ]
           }
         },
         {
-          id: 'banner1',
-          type: 'banner',
-          data: {
-            title: 'Winter Trips',
-            subtitle: 'Kashmir • Spiti Valley • Kasol Manali',
-            image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b'
+          id: 'vietnam-sec-1',
+          name: 'Vietnam Packages',
+          type: 'featured',
+          order: 1,
+          visible: true,
+          content: {
+            title: 'Vietnam Tour Packages',
+            tripIds: vietnamTrips
           }
         },
         {
-          id: 'trips1',
-          type: 'trips',
-          data: {
-            title: 'Trending'
+          id: 'bali-sec-1',
+          name: 'Bali Packages',
+          type: 'featured',
+          order: 2,
+          visible: true,
+          content: {
+            title: 'Bali Tour Packages',
+            tripIds: baliTrips
           }
         },
         {
-          id: 'blogs1',
-          type: 'blogs',
-          data: {
-            title: 'Watch & Read',
-            count: 4
-          }
-        },
-        {
-          id: 'grid1',
-          type: 'grid',
-          data: {
-            title: 'Our Packages',
-            subtitle: 'Recommended Journeys',
-            count: 6
+          id: 'himalayan-sec-1',
+          name: 'Himalayan Escapes',
+          type: 'featured',
+          order: 3,
+          visible: true,
+          content: {
+            title: 'Himalayan Escapes',
+            tripIds: himalayanTrips
           }
         }
       ]
     };
 
-    // Update or create
-    await Page.findOneAndUpdate({ slug: 'home' }, homePage, { upsert: true, new: true });
-    
-    console.log('CMS Seeded successfully!');
+    await PageLayout.findOneAndUpdate({ name: 'home' }, homeLayout, { upsert: true, new: true });
+    console.log('PageLayout Seeded successfully! Home page should now show the slider.');
     process.exit(0);
   } catch (err) {
     console.error('Seed Error:', err);

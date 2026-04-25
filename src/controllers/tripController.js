@@ -24,7 +24,6 @@ exports.getTrips = async (req, res, next) => {
     }
 
     const trips = await Trip.find(query)
-      .select('title slug location price duration heroImage images category isActive description createdAt')
       .skip(skip)
       .limit(limit)
       .sort('-createdAt')
@@ -68,15 +67,27 @@ exports.getTrip = async (req, res, next) => {
     if (!trip) {
       return res.status(404).json({ success: false, message: 'Trip not found' });
     }
-    
-    const data = {
-      ...trip,
-      id: trip._id,
-      heroImage: trip.heroImage || trip.thumbnail || (trip.images && trip.images[0]) || "",
-      status: trip.isActive ? 'published' : 'draft'
-    };
 
-    res.json({ success: true, data });
+    // Fetch related reviews (by ID or by name for legacy data)
+    const Review = require('../models/Review');
+    const reviews = await Review.find({ 
+      $or: [
+        { tripId: trip._id },
+        { tripName: trip.title }
+      ]
+    }).sort({ createdAt: -1 }).lean();
+
+    res.json({
+      success: true,
+      data: {
+        ...trip,
+        id: trip._id,
+        _id: trip._id,
+        heroImage: trip.heroImage || trip.thumbnail || (trip.images && trip.images[0]) || "",
+        status: trip.isActive ? 'published' : 'draft',
+        reviews: reviews || []
+      }
+    });
   } catch (error) {
     next(error);
   }
@@ -87,19 +98,31 @@ exports.getTrip = async (req, res, next) => {
 // @access  Public
 exports.getTripBySlug = async (req, res, next) => {
   try {
-    const trip = await Trip.findOne({ slug: req.params.slug });
+    const trip = await Trip.findOne({ slug: req.params.slug }).lean();
     if (!trip) {
       return res.status(404).json({ success: false, message: 'Trip not found' });
     }
 
-    const data = {
-      ...trip._doc,
-      id: trip._id,
-      heroImage: trip.heroImage || trip.thumbnail || (trip.images && trip.images[0]) || "",
-      status: trip.isActive ? 'published' : 'draft'
-    };
+    // Fetch related reviews (by ID or by name for legacy data)
+    const Review = require('../models/Review');
+    const reviews = await Review.find({ 
+      $or: [
+        { tripId: trip._id },
+        { tripName: trip.title }
+      ]
+    }).sort({ createdAt: -1 }).lean();
 
-    res.json({ success: true, data });
+    res.json({
+      success: true,
+      data: {
+        ...trip,
+        id: trip._id,
+        _id: trip._id,
+        heroImage: trip.heroImage || trip.thumbnail || (trip.images && trip.images[0]) || "",
+        status: trip.isActive ? 'published' : 'draft',
+        reviews: reviews || []
+      }
+    });
   } catch (error) {
     next(error);
   }
@@ -139,10 +162,57 @@ exports.updateTrip = async (req, res, next) => {
     trip = await Trip.findByIdAndUpdate(req.params.id, tripData, {
       new: true,
       runValidators: true
-    });
+    }).lean();
 
-    res.json({ success: true, data: trip });
+    // Handle embedded reviews if present
+    if (req.body.reviews && Array.isArray(req.body.reviews)) {
+      const Review = require('../models/Review');
+      for (const revData of req.body.reviews) {
+        // Skip incomplete reviews
+        if (!revData.userName || !revData.comment) continue;
+
+        // Ensure we use the correct Trip ID and Name from the updated trip
+        const revPayload = {
+          ...revData,
+          tripId: trip._id,
+          tripName: trip.title,
+          isFeatured: revData.isFeatured ?? true
+        };
+
+        // If it has a valid-looking ID, update it, otherwise create new
+        const hasId = revData._id && revData._id.length === 24;
+        const hasAltId = revData.id && revData.id.length === 24;
+
+        if (hasId || hasAltId) {
+          await Review.findByIdAndUpdate(hasId ? revData._id : revData.id, revPayload, { upsert: true });
+        } else {
+          // It's a new review
+          delete revPayload._id;
+          delete revPayload.id;
+          await Review.create(revPayload);
+        }
+      }
+    }
+
+    res.json({ 
+      success: true, 
+      data: {
+        ...trip,
+        id: trip._id,
+        _id: trip._id,
+        heroImage: trip.heroImage || trip.thumbnail || (trip.images && trip.images[0]) || "",
+        status: trip.isActive ? 'published' : 'draft'
+      } 
+    });
   } catch (error) {
+    const fs = require('fs');
+    const logMsg = `ERROR: ${error.message}\nDATA: ${JSON.stringify(req.body, null, 2)}\n\n`;
+    fs.appendFileSync('error_log.txt', logMsg);
+
+    if (error.name === 'ValidationError') {
+      const messages = Object.values(error.errors).map((err) => err.message);
+      return res.status(400).json({ success: false, message: messages.join(', ') });
+    }
     next(error);
   }
 };

@@ -48,7 +48,11 @@ const tripSchema = new mongoose.Schema({
   inclusions: [String],
   exclusions: [String],
   images: [String],
-  gallery: [String],
+  gallery: [{ 
+    url: String, 
+    alt: String, 
+    order: Number 
+  }],
   thumbnail: String,
   heroImage: String,
   itinerary: [{
@@ -61,7 +65,11 @@ const tripSchema = new mongoose.Schema({
     meals: String,
     photos: [String]
   }],
-  availableDates: [Date],
+  availableDates: [{
+    date: Date,
+    capacity: { type: Number, default: 20 },
+    bookedCount: { type: Number, default: 0 }
+  }],
   isActive: {
     type: Boolean,
     default: true
@@ -100,7 +108,8 @@ const tripSchema = new mongoose.Schema({
   }],
   faqs: [{
     question: String,
-    answer: String
+    answer: String,
+    order: Number
   }],
   status: {
     type: String,
@@ -111,6 +120,68 @@ const tripSchema = new mongoose.Schema({
     label: String,
     content: String
   }],
+  attractions: [{
+    name: String,
+    description: String,
+    image: String,
+    slug: String,
+    order: Number
+  }],
+  activities: [{
+    name: String,
+    description: String,
+    image: String,
+    slug: String,
+    order: Number
+  }],
+  accommodations: [new mongoose.Schema({
+    name: String,
+    location: String,
+    nights: String,
+    type: String,
+    starRating: String,
+    roomType: String,
+    meals: String,
+    image: String,
+    gallery: [{
+      url: String,
+      category: { type: String, default: 'All' }
+    }]
+  }, { _id: false })],
+  popupDetails: {
+    cancellation: [{ 
+      label: String, 
+      val: String 
+    }],
+    gears: [{
+      item: String,
+      price: String
+    }],
+    terms: [String],
+    carry: [{
+      label: String,
+      val: String
+    }],
+    etiquette: [{
+      title: String,
+      desc: String
+    }]
+  },
+  videos: [{
+    id: String,
+    title: String
+  }],
+  reels: [{
+    url: String,
+    thumbnail: String,
+    caption: String
+  }],
+  route: [{
+    label: String,
+    icon: { type: String, default: "car" }
+  }],
+  stickyCardPrice: Number,
+  stickyCardLabel: String, // e.g. "per person"
   seo: {
     metaTitle: { type: String, trim: true },
     metaDescription: { type: String, trim: true },
@@ -159,7 +230,6 @@ tripSchema.pre('save', function(next) {
 });
 
 // Indexes for performance
-tripSchema.index({ slug: 1 });
 tripSchema.index({ isActive: 1 });
 tripSchema.index({ category: 1 });
 tripSchema.index({ createdAt: -1 });

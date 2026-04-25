@@ -65,4 +65,21 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+// Publish page (Move draft to live)
+router.post('/:id/publish', async (req, res) => {
+  try {
+    const page = await Page.findById(req.params.id);
+    if (!page) return res.status(404).json({ success: false, message: 'Page not found' });
+
+    page.sections = [...page.draftSections];
+    page.status = 'published';
+    page.lastPublishedAt = new Date();
+    
+    await page.save();
+    res.json({ success: true, data: page });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 module.exports = router;

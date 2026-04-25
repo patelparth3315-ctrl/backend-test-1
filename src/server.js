@@ -21,6 +21,8 @@ const settingsRoutes = require('./routes/settingsRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const seoRoutes = require('./routes/seoRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
+const pageBuilderRoutes = require('./routes/pageBuilderRoutes');
+const attractionRoutes = require('./routes/attractionRoutes');
 
 // Connect to database
 connectDB();
@@ -39,6 +41,12 @@ app.use('/uploads', express.static(path.join(__dirname, '../public/uploads'), {
   maxAge: '1d',
   immutable: true
 }));
+
+// Health check
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', version: '2.0.2', timestamp: new Date().toISOString() });
+});
+
 app.use('/', seoRoutes);
 
 // Enable CORS
@@ -74,10 +82,19 @@ app.use('/api/pages', pageRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/page-builder', pageBuilderRoutes);
+app.use('/api/attractions', attractionRoutes);
 
 // Health check
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', version: '2.0.2', timestamp: new Date().toISOString() });
+});
+
+// Revalidation Proxy (Dummy for now)
+app.post('/api/revalidate', (req, res) => {
+  const { path } = req.body;
+  console.log(`[REVALIDATE] Triggered for path: ${path}`);
+  res.json({ success: true, message: `Revalidation triggered for ${path}` });
 });
 
 // @desc    Full system seed (Pages + Trips)
