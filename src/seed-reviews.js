@@ -52,6 +52,106 @@ const reviews = [
       isFeatured: true,
       instagram: "https://instagram.com/krima_travels",
       userImage: "https://images.unsplash.com/photo-1506461883276-594a12b11cf3?auto=format&fit=crop&q=80"
+    },
+    {
+      userName: "Parth Patel",
+      city: "Ahmedabad",
+      tripName: "Spiti Valley Road Trip",
+      comment: "Spiti trip was insane! Proper adventure + perfect management. Roads were crazy but team handled everything smoothly.",
+      rating: 5,
+      isFeatured: true,
+      instagram: "https://instagram.com/parthpatell.315",
+      userImage: "https://i.pravatar.cc/150?u=Parth%20Patel"
+    },
+    {
+      userName: "Hemal Patel",
+      city: "Ahmedabad",
+      tripName: "Kerala Group Trip 2026",
+      comment: "Kerala trip felt like a dream. Houseboat stay was the best part. Food and vibes were top notch.",
+      rating: 5,
+      isFeatured: true,
+      instagram: "https://instagram.com/hemalpatelhere",
+      userImage: "https://i.pravatar.cc/150?u=Hemal%20Patel"
+    },
+    {
+      userName: "Neeki Diyali",
+      city: "Ahmedabad",
+      tripName: "Bhrigu Lake Trek",
+      comment: "Bhrigu Lake trek was challenging but totally worth it. Snow views were unreal!",
+      rating: 5,
+      isFeatured: true,
+      instagram: "https://instagram.com/neeki_0606",
+      userImage: "https://i.pravatar.cc/150?u=Neeki%20Diyali"
+    },
+    {
+      userName: "Suresh Chaudhary",
+      city: "Ahmedabad",
+      tripName: "Spiti Valley Road Trip",
+      comment: "Spiti Valley is not for beginners but this team made it very comfortable. Loved the experience.",
+      rating: 5,
+      isFeatured: true,
+      instagram: "https://instagram.com/suru_chaudhary2927",
+      userImage: "https://i.pravatar.cc/150?u=Suresh%20Chaudhary"
+    },
+    {
+      userName: "Vidhi Thummar",
+      city: "Ahmedabad",
+      tripName: "Kerala Group Trip 2026",
+      comment: "Kerala trip was peaceful and well planned. Perfect mix of chill and exploration.",
+      rating: 5,
+      isFeatured: true,
+      instagram: "https://instagram.com/vidhiithummar",
+      userImage: "https://i.pravatar.cc/150?u=Vidhi%20Thummar"
+    },
+    {
+      userName: "Parth Patel",
+      city: "Ahmedabad",
+      tripName: "Spiti Valley Road Trip",
+      comment: "Loved the Spiti circuit. Chandratal Lake was the highlight. Highly recommended.",
+      rating: 5,
+      isFeatured: true,
+      instagram: "https://instagram.com/parthpatell.315",
+      userImage: "https://i.pravatar.cc/150?u=Parth%20Patel"
+    },
+    {
+      userName: "Hemal Patel",
+      city: "Ahmedabad",
+      tripName: "Bhrigu Lake Trek",
+      comment: "Bhrigu trek was my first trek and I enjoyed every bit of it. Guides were very supportive.",
+      rating: 5,
+      isFeatured: true,
+      instagram: "https://instagram.com/hemalpatelhere",
+      userImage: "https://i.pravatar.cc/150?u=Hemal%20Patel"
+    },
+    {
+      userName: "Neeki Diyali",
+      city: "Ahmedabad",
+      tripName: "Kerala Group Trip 2026",
+      comment: "Kerala waterfalls and greenery were next level. Felt refreshed after this trip.",
+      rating: 5,
+      isFeatured: true,
+      instagram: "https://instagram.com/neeki_0606",
+      userImage: "https://i.pravatar.cc/150?u=Neeki%20Diyali"
+    },
+    {
+      userName: "Suresh Chaudhary",
+      city: "Ahmedabad",
+      tripName: "Spiti Valley Road Trip",
+      comment: "Amazing Spiti experience. Roads, mountains, monasteries — everything was perfect.",
+      rating: 5,
+      isFeatured: true,
+      instagram: "https://instagram.com/suru_chaudhary2927",
+      userImage: "https://i.pravatar.cc/150?u=Suresh%20Chaudhary"
+    },
+    {
+      userName: "Vidhi Thummar",
+      city: "Ahmedabad",
+      tripName: "Bhrigu Lake Trek",
+      comment: "Bhrigu Lake view was magical. Worth every step of the trek.",
+      rating: 5,
+      isFeatured: true,
+      instagram: "https://instagram.com/vidhiithummar",
+      userImage: "https://i.pravatar.cc/150?u=Vidhi%20Thummar"
     }
 ];
 
