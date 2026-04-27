@@ -190,6 +190,18 @@ exports.updateTrip = async (req, res, next) => {
       tripData.isActive = tripData.status === 'published';
     }
 
+    // Auto-parse stringified arrays if they arrive as strings (Admin Panel bug fix)
+    const arrayFields = ['accommodations', 'itinerary', 'variants', 'travelOptions', 'roomOptions', 'highlights', 'inclusions', 'exclusions'];
+    arrayFields.forEach(field => {
+      if (typeof tripData[field] === 'string' && tripData[field].startsWith('[')) {
+        try {
+          tripData[field] = JSON.parse(tripData[field]);
+        } catch (e) {
+          console.warn(`[TRIP UPDATE] Failed to parse stringified array for field: ${field}`);
+        }
+      }
+    });
+
     trip = await Trip.findByIdAndUpdate(req.params.id, tripData, {
       new: true,
       runValidators: true
@@ -227,6 +239,7 @@ exports.updateTrip = async (req, res, next) => {
         }
       }
     }
+
 
     res.json({ 
       success: true, 

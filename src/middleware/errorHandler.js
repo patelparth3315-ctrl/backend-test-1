@@ -9,12 +9,13 @@ const errorHandler = (err, req, res, next) => {
 
   // Mongoose bad ObjectId (CastError)
   if (err.name === 'CastError') {
-    const message = 'Invalid ID format';
+    const message = err.path === '_id' ? 'Invalid ID format' : `Invalid format for field: ${err.path}`;
     return res.status(400).json({
       success: false,
       message
     });
   }
+
 
   // Mongoose duplicate key
   if (err.code === 11000) {
