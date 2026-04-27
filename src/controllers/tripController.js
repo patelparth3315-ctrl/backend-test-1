@@ -191,7 +191,7 @@ exports.updateTrip = async (req, res, next) => {
     }
 
     // Auto-parse stringified arrays if they arrive as strings (Admin Panel bug fix)
-    const arrayFields = ['accommodations', 'itinerary', 'variants', 'travelOptions', 'roomOptions', 'highlights', 'inclusions', 'exclusions'];
+    const arrayFields = ['accommodations', 'itinerary', 'variants', 'travelOptions', 'roomOptions', 'highlights', 'inclusions', 'exclusions', 'reviews'];
     arrayFields.forEach(field => {
       if (typeof tripData[field] === 'string' && tripData[field].startsWith('[')) {
         try {
@@ -208,9 +208,12 @@ exports.updateTrip = async (req, res, next) => {
     }).lean();
 
     // Handle embedded reviews if present
-    if (req.body.reviews && Array.isArray(req.body.reviews)) {
+    const reviewsToProcess = Array.isArray(tripData.reviews) ? tripData.reviews : (Array.isArray(req.body.reviews) ? req.body.reviews : null);
+
+    if (reviewsToProcess) {
       const Review = require('../models/Review');
-      for (const revData of req.body.reviews) {
+      for (const revData of reviewsToProcess) {
+
         // Skip incomplete reviews - check for existence and non-empty strings
         if (!revData.userName || !revData.comment || String(revData.userName).trim() === '' || String(revData.comment).trim() === '') {
           console.log(`[TRIP SYNC] Skipping incomplete review for: ${revData.userName || 'Anonymous'}`);
