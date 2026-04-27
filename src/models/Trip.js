@@ -44,7 +44,8 @@ const tripSchema = new mongoose.Schema({
   departureCity: String,
   ageLimit: String,
   bookingUrl: String,
-  highlights: [String],
+  highlights: [mongoose.Schema.Types.Mixed],
+
   inclusions: [String],
   exclusions: [String],
   images: [String],
