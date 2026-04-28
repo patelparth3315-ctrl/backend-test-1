@@ -1,39 +1,45 @@
 const multer = require('multer');
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
-const cloudinary = require('cloudinary').v2;
 const path = require('path');
+const fs = require('fs');
 
-// Configure Cloudinary (User needs to provide these in .env)
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'placeholder',
-  api_key: process.env.CLOUDINARY_API_KEY || 'placeholder',
-  api_secret: process.env.CLOUDINARY_API_SECRET || 'placeholder',
-});
+// ── STORAGE: Always use local disk storage ──
+// Cloudinary is not configured in .env, so we use reliable local storage.
+// The uploads directory is served statically by express in server.js.
 
-// Storage Engine
-const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: 'youthcamping/trips',
-    allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
-    transformation: [{ width: 1200, height: 800, crop: 'limit' }]
-  },
-});
+const uploadsDir = path.join(__dirname, '../../public/uploads/trips');
 
-// For Local Fallback (if Cloudinary is not configured)
+// Ensure directory exists on startup
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+  console.log('[UPLOAD] Created uploads directory:', uploadsDir);
+}
+
 const localStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadPath = path.join(__dirname, '../../public/uploads/trips');
-    cb(null, uploadPath);
+    cb(null, uploadsDir);
   },
   filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
+    // Sanitize filename: remove spaces and special chars
+    const safeName = file.originalname
+      .replace(/[^a-zA-Z0-9._-]/g, '_')
+      .replace(/__+/g, '_');
+    cb(null, `${Date.now()}-${safeName}`);
   }
 });
 
-const upload = multer({ 
-  storage: process.env.CLOUDINARY_CLOUD_NAME ? storage : localStorage,
-  limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit
+const fileFilter = (req, file, cb) => {
+  const allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
+  if (allowed.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(new Error(`Invalid file type: ${file.mimetype}. Only JPG, PNG, WEBP allowed.`), false);
+  }
+};
+
+const upload = multer({
+  storage: localStorage,
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
+  fileFilter
 });
 
 module.exports = upload;

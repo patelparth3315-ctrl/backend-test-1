@@ -1,0 +1,5 @@
+{
+  "ignore": ["public/uploads/**", "public/**", "error_log.txt"],
+  "watch": ["src"],
+  "ext": "js,json"
+}

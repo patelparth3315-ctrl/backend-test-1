@@ -1,55 +1,124 @@
 const express = require('express');
 const router = express.Router();
 const upload = require('../middleware/upload');
+const path = require('path');
+const fs = require('fs');
 
-// @route   POST /api/upload/single
-// @desc    Upload a single image
+// ── DELETE /api/upload/photo ──
+// Physically removes a file from uploads directory
+router.delete('/photo', (req, res) => {
+  try {
+    const { url } = req.body;
+    if (!url) {
+      return res.status(400).json({ success: false, message: 'No URL provided' });
+    }
+
+    // Only allow deleting files from /uploads/
+    if (!url.startsWith('/uploads/')) {
+      return res.status(400).json({ success: false, message: 'Invalid file path - must start with /uploads/' });
+    }
+
+    const fullPath = path.join(__dirname, '../../public', url);
+    console.log(`[DELETE PHOTO] Attempting to delete: ${fullPath}`);
+
+    if (fs.existsSync(fullPath)) {
+      fs.unlinkSync(fullPath);
+      console.log(`[DELETE PHOTO] ✅ Deleted: ${fullPath}`);
+      res.json({ success: true, message: 'File deleted' });
+    } else {
+      console.log(`[DELETE PHOTO] ⚠️ File not found (already deleted?): ${fullPath}`);
+      res.json({ success: true, message: 'File not found (may already be deleted)' });
+    }
+  } catch (error) {
+    console.error('[DELETE PHOTO] ❌ Error:', error.message);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// ── POST /api/upload/single ──
+// Upload a single image and return its persistent URL
 router.post('/single', upload.single('image'), (req, res) => {
-  console.log('--- UPLOAD DEBUG ---');
-  console.log('File:', req.file);
-  console.log('Body:', req.body);
-  
+  console.log('[UPLOAD SINGLE] File received:', req.file ? req.file.filename : 'NONE');
+
   if (!req.file) {
     return res.status(400).json({ success: false, message: 'No file uploaded' });
   }
-  
-  // Return the web-accessible path/url
-  const filename = req.file.filename;
-  const url = `/uploads/trips/${filename}`;
-  
+
+  // Verify the file actually exists on disk
+  const fullPath = path.join(__dirname, '../../public/uploads/trips', req.file.filename);
+  if (!fs.existsSync(fullPath)) {
+    console.error('[UPLOAD SINGLE] ❌ File was not written to disk:', fullPath);
+    return res.status(500).json({ success: false, message: 'File upload failed - not saved to disk' });
+  }
+
+  const url = `/uploads/trips/${req.file.filename}`;
+  console.log('[UPLOAD SINGLE] ✅ Saved:', url, `(${(req.file.size / 1024).toFixed(1)}KB)`);
+
   res.status(200).json({
     success: true,
-    url: url
+    url: url,
+    size: req.file.size,
+    filename: req.file.filename
   });
 });
 
-// @route   POST /api/upload/multiple
-// @desc    Upload multiple images
+// ── POST /api/upload/multiple ──
+// Upload multiple images and return their persistent URLs
 router.post('/multiple', upload.array('images', 10), (req, res) => {
   if (!req.files || req.files.length === 0) {
     return res.status(400).json({ success: false, message: 'No files uploaded' });
   }
-  
-  const urls = req.files.map(file => `/uploads/trips/${file.filename}`);
+
+  const urls = [];
+  for (const file of req.files) {
+    const fullPath = path.join(__dirname, '../../public/uploads/trips', file.filename);
+    if (fs.existsSync(fullPath)) {
+      urls.push(`/uploads/trips/${file.filename}`);
+      console.log(`[UPLOAD MULTI] ✅ Saved: /uploads/trips/${file.filename}`);
+    } else {
+      console.error(`[UPLOAD MULTI] ❌ File not saved: ${file.filename}`);
+    }
+  }
+
   res.status(200).json({
     success: true,
-    urls: urls
+    urls: urls,
+    count: urls.length
   });
 });
 
+// ── POST /api/upload/ticket ──
 const ticketUpload = require('../middleware/ticketUpload');
-
-// @route   POST /api/upload/ticket
-// @desc    Upload a train ticket (PDF/Image)
 router.post('/ticket', ticketUpload.single('ticket'), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ success: false, message: 'No ticket uploaded' });
   }
-  
+
   const url = `/uploads/tickets/${req.file.filename}`;
   res.status(200).json({
     success: true,
     url: url
+  });
+});
+
+// ── GET /api/upload/verify ──
+// Debug endpoint to check if a file exists on disk
+router.get('/verify', (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).json({ success: false, message: 'Provide ?url= parameter' });
+  }
+
+  const fullPath = path.join(__dirname, '../../public', url);
+  const exists = fs.existsSync(fullPath);
+  const stats = exists ? fs.statSync(fullPath) : null;
+
+  res.json({
+    success: true,
+    url,
+    exists,
+    size: stats ? stats.size : 0,
+    fullPath: exists ? fullPath : null
   });
 });
 

@@ -35,11 +35,22 @@ app.use(compression());
 // Body parser
 app.use(express.json({ limit: '10mb' }));
 
-// Static Files
+// Static Files — ensure upload directories exist
 const path = require('path');
+const fs = require('fs');
+const uploadsTripsDir = path.join(__dirname, '../public/uploads/trips');
+const uploadsTicketsDir = path.join(__dirname, '../public/uploads/tickets');
+if (!fs.existsSync(uploadsTripsDir)) fs.mkdirSync(uploadsTripsDir, { recursive: true });
+if (!fs.existsSync(uploadsTicketsDir)) fs.mkdirSync(uploadsTicketsDir, { recursive: true });
+console.log(`[SERVER] Uploads directory: ${uploadsTripsDir} (${fs.readdirSync(uploadsTripsDir).length} files)`);
+
 app.use('/uploads', express.static(path.join(__dirname, '../public/uploads'), {
-  maxAge: '1d',
-  immutable: true
+  maxAge: '7d',
+  immutable: true,
+  setHeaders: (res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Cache-Control', 'public, max-age=604800, immutable');
+  }
 }));
 
 // Health check

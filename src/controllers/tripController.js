@@ -191,24 +191,49 @@ exports.updateTrip = async (req, res, next) => {
     }
 
     // Auto-parse stringified arrays if they arrive as strings (Admin Panel bug fix)
-    const arrayFields = ['accommodations', 'itinerary', 'variants', 'travelOptions', 'roomOptions', 'highlights', 'inclusions', 'exclusions', 'reviews'];
-    arrayFields.forEach(field => {
-      if (typeof tripData[field] === 'string' && tripData[field].startsWith('[')) {
+    const arrayFields = ['accommodations', 'itinerary', 'variants', 'travelOptions', 'roomOptions', 'highlights', 'inclusions', 'exclusions', 'reviews', 'images', 'gallery'];
+    const tryParseArray = (val) => {
+      if (typeof val !== 'string') return val;
+      if (!val.trim().startsWith('[') && !val.trim().startsWith('{')) return val;
+      
+      try {
+        return JSON.parse(val);
+      } catch (e) {
+        // Attempt to clean JS-style string literals (e.g. ' + \n)
         try {
-          tripData[field] = JSON.parse(tripData[field]);
-        } catch (e) {
-          console.warn(`[TRIP UPDATE] Failed to parse stringified array for field: ${field}`);
+          let cleaned = val
+            .replace(/'\s*\+\s*\n\s*'/g, '')
+            .replace(/"\s*\+\s*\n\s*"/g, '')
+            .replace(/\n/g, ' ')
+            .replace(/'/g, '"')
+            .replace(/([{,]\s*)([a-zA-Z0-9_]+)\s*:/g, '$1"$2":') // Quote keys
+            .replace(/,\s*([\]}])/g, '$1'); // Trailing commas
+          return JSON.parse(cleaned);
+        } catch (e2) {
+          console.warn(`[TRIP UPDATE] Failed all attempts to parse string: ${val.substring(0, 50)}...`);
+          return val;
         }
+      }
+    };
+
+    arrayFields.forEach(field => {
+      if (tripData[field]) {
+        tripData[field] = tryParseArray(tripData[field]);
       }
     });
 
+    // Extract reviews BEFORE saving to Trip (reviews live in a separate collection)
+    const reviewsToProcess = Array.isArray(tripData.reviews) ? tripData.reviews : null;
+    delete tripData.reviews; // Don't save reviews array on the Trip document
+
+    console.log(`[TRIP UPDATE] Saving trip ${req.params.id} with fields:`, Object.keys(tripData).join(', '));
+    if (tripData.heroImage) console.log(`[TRIP UPDATE] heroImage: ${tripData.heroImage}`);
+    if (tripData.images) console.log(`[TRIP UPDATE] images count: ${tripData.images.length}`);
+
     trip = await Trip.findByIdAndUpdate(req.params.id, tripData, {
       new: true,
-      runValidators: true
+      runValidators: false  // Mixed schema fields cause CastError with validators
     }).lean();
-
-    // Handle embedded reviews if present
-    const reviewsToProcess = Array.isArray(tripData.reviews) ? tripData.reviews : (Array.isArray(req.body.reviews) ? req.body.reviews : null);
 
     if (reviewsToProcess) {
       const Review = require('../models/Review');
@@ -238,7 +263,12 @@ exports.updateTrip = async (req, res, next) => {
           // It's a new review
           delete revPayload._id;
           delete revPayload.id;
-          await Review.create(revPayload);
+          try {
+            await Review.create(revPayload);
+          } catch (revErr) {
+            console.error(`🚨 [REVIEW SYNC] Failed to create review for ${revData.userName}:`, revErr.message);
+            // Don't throw, just log and continue to allow trip update to finish
+          }
         }
       }
     }
@@ -347,6 +377,36 @@ exports.seedLiveData = async (req, res, next) => {
       await require('../models/Trip').create(t);
     }
     res.json({ success: true, message: "Seeded live trips via API" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Delete a photo file
+// @route   DELETE /api/upload/photo
+// @access  Private/Admin
+exports.deletePhoto = async (req, res, next) => {
+  try {
+    const { url } = req.body;
+    if (!url) {
+      return res.status(400).json({ success: false, message: 'No URL provided' });
+    }
+
+    // Only allow deleting files from /uploads/
+    if (!url.startsWith('/uploads/')) {
+      return res.status(400).json({ success: false, message: 'Invalid file path' });
+    }
+
+    const fs = require('fs');
+    const path = require('path');
+    const fullPath = path.join(__dirname, '../../public', url);
+
+    if (fs.existsSync(fullPath)) {
+      fs.unlinkSync(fullPath);
+      res.json({ success: true, message: 'File deleted' });
+    } else {
+      res.status(404).json({ success: false, message: 'File not found' });
+    }
   } catch (error) {
     next(error);
   }
