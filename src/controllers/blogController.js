@@ -39,13 +39,21 @@ exports.createBlog = async (req, res) => {
     res.status(201).json({ success: true, data: blog });
   } catch (err) {
     console.error("🚨 CREATE BLOG ERROR:", err.message);
+    
+    // Handle Duplicate Key Error (Slug)
+    if (err.code === 11000) {
+      return res.status(400).json({ 
+        success: false, 
+        message: "A blog with this title or slug already exists. Please choose a unique title." 
+      });
+    }
+
     if (err.name === 'ValidationError') {
       const messages = Object.values(err.errors).map((e) => e.message);
       return res.status(400).json({ 
         success: false, 
         message: "Validation failed", 
-        errors: messages,
-        receivedData: req.body 
+        errors: messages
       });
     }
     res.status(400).json({ success: false, error: err.message });
