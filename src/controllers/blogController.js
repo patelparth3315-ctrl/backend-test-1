@@ -91,6 +91,13 @@ exports.createBlog = async (req, res) => {
 // @route   PUT /api/blogs/:id
 exports.updateBlog = async (req, res) => {
   try {
+    const blogData = { ...req.body };
+    delete blogData._id;
+    delete blogData.id;
+    delete blogData.__v;
+    delete blogData.createdAt;
+    delete blogData.updatedAt;
+
     const FALLBACK_URL = "https://images.unsplash.com/photo-1596230529625-7ee10f7b09b6?q=80&w=2070";
     const sanitizeAndValidateUrls = (obj) => {
       let rejectedUrl = null;
@@ -114,12 +121,12 @@ exports.updateBlog = async (req, res) => {
       return rejectedUrl;
     };
 
-    const invalidUrl = sanitizeAndValidateUrls(req.body);
+    const invalidUrl = sanitizeAndValidateUrls(blogData);
     if (invalidUrl) {
       return res.status(400).json({ success: false, message: `Invalid image URL detected: ${invalidUrl}` });
     }
 
-    const blog = await Blog.findByIdAndUpdate(req.params.id, req.body, {
+    const blog = await Blog.findByIdAndUpdate(req.params.id, blogData, {
       new: true,
       runValidators: true
     });

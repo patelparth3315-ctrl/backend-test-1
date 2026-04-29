@@ -224,6 +224,13 @@ exports.updateTrip = async (req, res, next) => {
     }
 
     const tripData = { ...req.body };
+    // Strip immutable/internal fields that might cause 400 errors
+    delete tripData._id;
+    delete tripData.id;
+    delete tripData.__v;
+    delete tripData.createdAt;
+    delete tripData.updatedAt;
+
     if (tripData.status) {
       tripData.isActive = tripData.status === 'published';
     }

@@ -4,14 +4,22 @@ const fs = require('fs');
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
+const isCloudinaryConfigured = !!(process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET);
+
+if (!isCloudinaryConfigured) {
+  console.warn('⚠️  Cloudinary is not fully configured. The following variables are missing:');
+  if (!process.env.CLOUDINARY_CLOUD_NAME) console.warn('   - CLOUDINARY_CLOUD_NAME');
+  if (!process.env.CLOUDINARY_API_KEY) console.warn('   - CLOUDINARY_API_KEY');
+  if (!process.env.CLOUDINARY_API_SECRET) console.warn('   - CLOUDINARY_API_SECRET');
+  console.warn('   Fallback to local storage may be needed if production keys are not set in Render/Vercel.');
+}
+
 // Configure Cloudinary
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
-
-const isCloudinaryConfigured = process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET;
 
 let storage;
 

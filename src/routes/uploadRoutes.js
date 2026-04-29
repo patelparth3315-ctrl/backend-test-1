@@ -37,48 +37,76 @@ router.delete('/photo', (req, res) => {
 
 // ── POST /api/upload/single ──
 // Upload a single image and return its persistent URL
-router.post('/single', upload.single('image'), (req, res) => {
-  console.log('[UPLOAD SINGLE] File received:', req.file ? (req.file.originalname || 'Yes') : 'NONE');
+router.post('/single', (req, res, next) => {
+  upload.single('image')(req, res, (err) => {
+    if (err) {
+      console.error('[UPLOAD SINGLE] Multer/Cloudinary Error:', err.message);
+      return res.status(500).json({ 
+        success: false, 
+        message: `Upload failed: ${err.message}`,
+        error: err.code || 'UPLOAD_ERROR'
+      });
+    }
 
-  if (!req.file) {
-    return res.status(400).json({ success: false, message: 'No file uploaded' });
-  }
+    try {
+      console.log('[UPLOAD SINGLE] File received:', req.file ? (req.file.originalname || 'Yes') : 'NONE');
+      if (req.body) console.log('[UPLOAD SINGLE] Body:', JSON.stringify(req.body));
 
-  let url;
-  if (req.file && req.file.path) {
-    url = req.file.path;
-    console.log('[UPLOAD SINGLE] ✅ Saved to Cloudinary:', url);
-  } else {
-    return res.status(500).json({ success: false, message: 'Cloudinary upload failed - no URL returned' });
-  }
+      if (!req.file) {
+        return res.status(400).json({ success: false, message: 'No file uploaded. Ensure field name is "image"' });
+      }
 
-  res.status(200).json({
-    success: true,
-    url: url,
-    size: req.file.size,
-    filename: req.file.filename || req.file.originalname
+      const url = req.file.path;
+      if (!url) {
+        throw new Error('Cloudinary failed to return a URL');
+      }
+
+      console.log('[UPLOAD SINGLE] ✅ Saved to Cloudinary:', url);
+
+      res.status(200).json({
+        success: true,
+        url: url,
+        size: req.file.size,
+        filename: req.file.filename || req.file.originalname
+      });
+    } catch (innerErr) {
+      console.error('[UPLOAD SINGLE] Processing Error:', innerErr.message);
+      res.status(500).json({ success: false, message: innerErr.message });
+    }
   });
 });
 
 // ── POST /api/upload/multiple ──
 // Upload multiple images and return their persistent URLs
-router.post('/multiple', upload.array('images', 10), (req, res) => {
-  if (!req.files || req.files.length === 0) {
-    return res.status(400).json({ success: false, message: 'No files uploaded' });
-  }
-
-  const urls = [];
-  for (const file of req.files) {
-    if (file.path) {
-      urls.push(file.path);
-      console.log(`[UPLOAD MULTI] ✅ Saved to Cloudinary: ${file.path}`);
+router.post('/multiple', (req, res) => {
+  upload.array('images', 10)(req, res, (err) => {
+    if (err) {
+      console.error('[UPLOAD MULTI] Multer/Cloudinary Error:', err.message);
+      return res.status(500).json({ success: false, message: `Upload failed: ${err.message}` });
     }
-  }
 
-  res.status(200).json({
-    success: true,
-    urls: urls,
-    count: urls.length
+    try {
+      if (!req.files || req.files.length === 0) {
+        return res.status(400).json({ success: false, message: 'No files uploaded' });
+      }
+
+      const urls = [];
+      for (const file of req.files) {
+        if (file.path) {
+          urls.push(file.path);
+          console.log(`[UPLOAD MULTI] ✅ Saved to Cloudinary: ${file.path}`);
+        }
+      }
+
+      res.status(200).json({
+        success: true,
+        urls: urls,
+        count: urls.length
+      });
+    } catch (innerErr) {
+      console.error('[UPLOAD MULTI] Processing Error:', innerErr.message);
+      res.status(500).json({ success: false, message: innerErr.message });
+    }
   });
 });
 

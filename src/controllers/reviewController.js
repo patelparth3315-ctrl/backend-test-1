@@ -65,6 +65,13 @@ exports.createReview = async (req, res, next) => {
 // @access  Private/Admin
 exports.updateReview = async (req, res, next) => {
   try {
+    const reviewData = { ...req.body };
+    delete reviewData._id;
+    delete reviewData.id;
+    delete reviewData.__v;
+    delete reviewData.createdAt;
+    delete reviewData.updatedAt;
+
     const FALLBACK_URL = "https://images.unsplash.com/photo-1596230529625-7ee10f7b09b6?q=80&w=2070";
     const sanitizeAndValidateUrls = (obj) => {
       let rejectedUrl = null;
@@ -88,12 +95,12 @@ exports.updateReview = async (req, res, next) => {
       return rejectedUrl;
     };
 
-    const invalidUrl = sanitizeAndValidateUrls(req.body);
+    const invalidUrl = sanitizeAndValidateUrls(reviewData);
     if (invalidUrl) {
       return res.status(400).json({ success: false, message: `Invalid image URL detected: ${invalidUrl}` });
     }
 
-    const review = await Review.findByIdAndUpdate(req.params.id, req.body, {
+    const review = await Review.findByIdAndUpdate(req.params.id, reviewData, {
       new: true,
       runValidators: true
     });
