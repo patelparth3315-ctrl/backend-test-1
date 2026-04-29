@@ -139,6 +139,34 @@ exports.createTrip = async (req, res, next) => {
     if (tripData.status) {
       tripData.isActive = tripData.status === 'published';
     }
+
+    const validateUrls = (obj) => {
+      let badUrl = null;
+      const traverse = (o) => {
+        if (!o || typeof o !== 'object') return;
+        for (const key in o) {
+          if (typeof o[key] === 'string') {
+             const val = o[key];
+             if (val.includes('youthcamping.in/wp-content') || 
+                 val.startsWith('/uploads/') ||
+                 val === 'https://images.unsplash.com/photo-' ||
+                 (val.startsWith('photo-') && !val.startsWith('http'))) {
+               badUrl = val;
+             }
+          } else {
+             traverse(o[key]);
+          }
+        }
+      };
+      traverse(obj);
+      return badUrl;
+    };
+
+    const invalidUrl = validateUrls(tripData);
+    if (invalidUrl) {
+      return res.status(400).json({ success: false, message: `Invalid or unsafe image URL detected: ${invalidUrl}` });
+    }
+
     const trip = await Trip.create(tripData);
 
     // Handle embedded reviews if present
@@ -225,6 +253,34 @@ exports.updateTrip = async (req, res, next) => {
     // Extract reviews BEFORE saving to Trip (reviews live in a separate collection)
     const reviewsToProcess = Array.isArray(tripData.reviews) ? tripData.reviews : null;
     delete tripData.reviews; // Don't save reviews array on the Trip document
+
+    const validateUrls = (obj) => {
+      let badUrl = null;
+      const traverse = (o) => {
+        if (!o || typeof o !== 'object') return;
+        for (const key in o) {
+          if (typeof o[key] === 'string') {
+             const val = o[key];
+             // Simple heuristic: if it looks like an image URL but is invalid
+             if (val.includes('youthcamping.in/wp-content') || 
+                 val.startsWith('/uploads/') ||
+                 val === 'https://images.unsplash.com/photo-' ||
+                 (val.startsWith('photo-') && !val.startsWith('http'))) {
+               badUrl = val;
+             }
+          } else {
+             traverse(o[key]);
+          }
+        }
+      };
+      traverse(obj);
+      return badUrl;
+    };
+
+    const invalidUrl = validateUrls(tripData);
+    if (invalidUrl) {
+      return res.status(400).json({ success: false, message: `Invalid or unsafe image URL detected: ${invalidUrl}` });
+    }
 
     console.log(`[TRIP UPDATE] Saving trip ${req.params.id} with fields:`, Object.keys(tripData).join(', '));
     if (tripData.heroImage) console.log(`[TRIP UPDATE] heroImage: ${tripData.heroImage}`);
