@@ -15,37 +15,19 @@ const isCloudinaryConfigured = process.env.CLOUDINARY_CLOUD_NAME && process.env.
 
 let storage;
 
-if (isCloudinaryConfigured) {
-  storage = new CloudinaryStorage({
-    cloudinary: cloudinary,
-    params: {
-      folder: 'youthcamping/trips',
-      allowed_formats: ['jpg', 'png', 'jpeg', 'webp']
-    }
-  });
-  console.log('[UPLOAD] Using Cloudinary Storage');
-} else {
-  const uploadsDir = path.join(__dirname, '../../public/uploads/trips');
-
-  // Ensure directory exists on startup
-  if (!fs.existsSync(uploadsDir)) {
-    fs.mkdirSync(uploadsDir, { recursive: true });
-    console.log('[UPLOAD] Created uploads directory:', uploadsDir);
-  }
-
-  storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, uploadsDir);
-    },
-    filename: (req, file, cb) => {
-      const safeName = file.originalname
-        .replace(/[^a-zA-Z0-9._-]/g, '_')
-        .replace(/__+/g, '_');
-      cb(null, `${Date.now()}-${safeName}`);
-    }
-  });
-  console.log('[UPLOAD] Using Local Storage');
+if (!isCloudinaryConfigured) {
+  console.error("❌ CRITICAL ERROR: Cloudinary environment variables are missing!");
+  // We'll still export a dummy storage to prevent crashing on boot, but it will fail on upload.
 }
+
+storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'youthcamping/trips',
+    allowed_formats: ['jpg', 'png', 'jpeg', 'webp']
+  }
+});
+console.log('[UPLOAD] Enforcing Cloudinary Storage');
 
 const fileFilter = (req, file, cb) => {
   const allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];

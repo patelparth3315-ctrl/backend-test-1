@@ -140,31 +140,41 @@ exports.createTrip = async (req, res, next) => {
       tripData.isActive = tripData.status === 'published';
     }
 
-    const validateUrls = (obj) => {
-      let badUrl = null;
+    const FALLBACK_URL = "https://images.unsplash.com/photo-1596230529625-7ee10f7b09b6?q=80&w=2070";
+    
+    const sanitizeAndValidateUrls = (obj) => {
+      let rejectedUrl = null;
       const traverse = (o) => {
         if (!o || typeof o !== 'object') return;
         for (const key in o) {
           if (typeof o[key] === 'string') {
-             const val = o[key];
-             if (val.includes('youthcamping.in/wp-content') || 
-                 val.startsWith('/uploads/') ||
-                 val === 'https://images.unsplash.com/photo-' ||
-                 (val.startsWith('photo-') && !val.startsWith('http'))) {
-               badUrl = val;
-             }
+            const val = o[key].trim();
+            if (!val) continue;
+
+            // 1. Auto-fix legacy local or WordPress URLs
+            if (val.includes('youthcamping.in/wp-content') || val.startsWith('/uploads/')) {
+              console.log(`[TRIP CREATE] Auto-fixing legacy URL: ${val}`);
+              o[key] = FALLBACK_URL;
+            } 
+            // 2. Reject truly broken or partial strings that cause ORB/404
+            else if (val === 'https://images.unsplash.com/photo-' || (val.startsWith('photo-') && !val.startsWith('http'))) {
+              rejectedUrl = val;
+            }
           } else {
-             traverse(o[key]);
+            traverse(o[key]);
           }
         }
       };
       traverse(obj);
-      return badUrl;
+      return rejectedUrl;
     };
 
-    const invalidUrl = validateUrls(tripData);
+    const invalidUrl = sanitizeAndValidateUrls(tripData);
     if (invalidUrl) {
-      return res.status(400).json({ success: false, message: `Invalid or unsafe image URL detected: ${invalidUrl}` });
+      return res.status(400).json({ 
+        success: false, 
+        message: `Invalid image ID/URL detected: "${invalidUrl}". Please provide a full HTTPS URL from Cloudinary or Unsplash.` 
+      });
     }
 
     const trip = await Trip.create(tripData);
@@ -254,32 +264,41 @@ exports.updateTrip = async (req, res, next) => {
     const reviewsToProcess = Array.isArray(tripData.reviews) ? tripData.reviews : null;
     delete tripData.reviews; // Don't save reviews array on the Trip document
 
-    const validateUrls = (obj) => {
-      let badUrl = null;
+    const FALLBACK_URL = "https://images.unsplash.com/photo-1596230529625-7ee10f7b09b6?q=80&w=2070";
+    
+    const sanitizeAndValidateUrls = (obj) => {
+      let rejectedUrl = null;
       const traverse = (o) => {
         if (!o || typeof o !== 'object') return;
         for (const key in o) {
           if (typeof o[key] === 'string') {
-             const val = o[key];
-             // Simple heuristic: if it looks like an image URL but is invalid
-             if (val.includes('youthcamping.in/wp-content') || 
-                 val.startsWith('/uploads/') ||
-                 val === 'https://images.unsplash.com/photo-' ||
-                 (val.startsWith('photo-') && !val.startsWith('http'))) {
-               badUrl = val;
-             }
+            const val = o[key].trim();
+            if (!val) continue;
+
+            // 1. Auto-fix legacy local or WordPress URLs
+            if (val.includes('youthcamping.in/wp-content') || val.startsWith('/uploads/')) {
+              console.log(`[TRIP UPDATE] Auto-fixing legacy URL: ${val}`);
+              o[key] = FALLBACK_URL;
+            } 
+            // 2. Reject truly broken or partial strings that cause ORB/404
+            else if (val === 'https://images.unsplash.com/photo-' || (val.startsWith('photo-') && !val.startsWith('http'))) {
+              rejectedUrl = val;
+            }
           } else {
-             traverse(o[key]);
+            traverse(o[key]);
           }
         }
       };
       traverse(obj);
-      return badUrl;
+      return rejectedUrl;
     };
 
-    const invalidUrl = validateUrls(tripData);
+    const invalidUrl = sanitizeAndValidateUrls(tripData);
     if (invalidUrl) {
-      return res.status(400).json({ success: false, message: `Invalid or unsafe image URL detected: ${invalidUrl}` });
+      return res.status(400).json({ 
+        success: false, 
+        message: `Invalid image ID/URL detected: "${invalidUrl}". Please provide a full HTTPS URL from Cloudinary or Unsplash.` 
+      });
     }
 
     console.log(`[TRIP UPDATE] Saving trip ${req.params.id} with fields:`, Object.keys(tripData).join(', '));

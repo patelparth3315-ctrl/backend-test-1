@@ -45,19 +45,11 @@ router.post('/single', upload.single('image'), (req, res) => {
   }
 
   let url;
-  if (req.file.path && req.file.path.startsWith('http')) {
-    // Cloudinary upload
+  if (req.file && req.file.path) {
     url = req.file.path;
     console.log('[UPLOAD SINGLE] ✅ Saved to Cloudinary:', url);
   } else {
-    // Local upload
-    const fullPath = path.join(__dirname, '../../public/uploads/trips', req.file.filename);
-    if (!fs.existsSync(fullPath)) {
-      console.error('[UPLOAD SINGLE] ❌ File was not written to disk:', fullPath);
-      return res.status(500).json({ success: false, message: 'File upload failed - not saved to disk' });
-    }
-    url = `/uploads/trips/${req.file.filename}`;
-    console.log('[UPLOAD SINGLE] ✅ Saved locally:', url);
+    return res.status(500).json({ success: false, message: 'Cloudinary upload failed - no URL returned' });
   }
 
   res.status(200).json({
@@ -77,17 +69,9 @@ router.post('/multiple', upload.array('images', 10), (req, res) => {
 
   const urls = [];
   for (const file of req.files) {
-    if (file.path && file.path.startsWith('http')) {
+    if (file.path) {
       urls.push(file.path);
       console.log(`[UPLOAD MULTI] ✅ Saved to Cloudinary: ${file.path}`);
-    } else {
-      const fullPath = path.join(__dirname, '../../public/uploads/trips', file.filename);
-      if (fs.existsSync(fullPath)) {
-        urls.push(`/uploads/trips/${file.filename}`);
-        console.log(`[UPLOAD MULTI] ✅ Saved locally: /uploads/trips/${file.filename}`);
-      } else {
-        console.error(`[UPLOAD MULTI] ❌ File not saved: ${file.filename}`);
-      }
     }
   }
 

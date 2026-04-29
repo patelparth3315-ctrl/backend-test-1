@@ -34,7 +34,34 @@ exports.getBlog = async (req, res) => {
 // @route   POST /api/blogs
 exports.createBlog = async (req, res) => {
   try {
-    console.log("🚀 CREATE BLOG REQ BODY:", JSON.stringify(req.body, null, 2));
+    const FALLBACK_URL = "https://images.unsplash.com/photo-1596230529625-7ee10f7b09b6?q=80&w=2070";
+    const sanitizeAndValidateUrls = (obj) => {
+      let rejectedUrl = null;
+      const traverse = (o) => {
+        if (!o || typeof o !== 'object') return;
+        for (const key in o) {
+          if (typeof o[key] === 'string') {
+            const val = o[key].trim();
+            if (!val) continue;
+            if (val.includes('youthcamping.in/wp-content') || val.startsWith('/uploads/')) {
+              o[key] = FALLBACK_URL;
+            } else if (val === 'https://images.unsplash.com/photo-' || (val.startsWith('photo-') && !val.startsWith('http'))) {
+              rejectedUrl = val;
+            }
+          } else {
+            traverse(o[key]);
+          }
+        }
+      };
+      traverse(obj);
+      return rejectedUrl;
+    };
+
+    const invalidUrl = sanitizeAndValidateUrls(req.body);
+    if (invalidUrl) {
+      return res.status(400).json({ success: false, message: `Invalid image URL detected: ${invalidUrl}` });
+    }
+
     const blog = await Blog.create(req.body);
     res.status(201).json({ success: true, data: blog });
   } catch (err) {
@@ -64,7 +91,34 @@ exports.createBlog = async (req, res) => {
 // @route   PUT /api/blogs/:id
 exports.updateBlog = async (req, res) => {
   try {
-    console.log("🚀 UPDATE BLOG REQ BODY:", JSON.stringify(req.body, null, 2));
+    const FALLBACK_URL = "https://images.unsplash.com/photo-1596230529625-7ee10f7b09b6?q=80&w=2070";
+    const sanitizeAndValidateUrls = (obj) => {
+      let rejectedUrl = null;
+      const traverse = (o) => {
+        if (!o || typeof o !== 'object') return;
+        for (const key in o) {
+          if (typeof o[key] === 'string') {
+            const val = o[key].trim();
+            if (!val) continue;
+            if (val.includes('youthcamping.in/wp-content') || val.startsWith('/uploads/')) {
+              o[key] = FALLBACK_URL;
+            } else if (val === 'https://images.unsplash.com/photo-' || (val.startsWith('photo-') && !val.startsWith('http'))) {
+              rejectedUrl = val;
+            }
+          } else {
+            traverse(o[key]);
+          }
+        }
+      };
+      traverse(obj);
+      return rejectedUrl;
+    };
+
+    const invalidUrl = sanitizeAndValidateUrls(req.body);
+    if (invalidUrl) {
+      return res.status(400).json({ success: false, message: `Invalid image URL detected: ${invalidUrl}` });
+    }
+
     const blog = await Blog.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true
