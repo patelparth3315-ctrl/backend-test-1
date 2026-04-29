@@ -103,6 +103,11 @@ const tripSchema = new mongoose.Schema({
     etiquette: [{
       title: String,
       desc: String
+    }],
+    customPolicies: [{
+      label: String,
+      type: { type: String, enum: ["list", "simple", "categorical"], default: "simple" },
+      content: mongoose.Schema.Types.Mixed
     }]
   },
   videos: [{
