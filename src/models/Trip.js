@@ -94,10 +94,7 @@ const tripSchema = new mongoose.Schema({
       label: String, 
       val: String 
     }],
-    gears: [{
-      item: String,
-      price: String
-    }],
+    gears: [mongoose.Schema.Types.Mixed],
     terms: [String],
     carry: [mongoose.Schema.Types.Mixed],
     etiquette: [{
