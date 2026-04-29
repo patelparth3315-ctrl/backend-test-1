@@ -99,10 +99,7 @@ const tripSchema = new mongoose.Schema({
       price: String
     }],
     terms: [String],
-    carry: [{
-      label: String,
-      val: String
-    }],
+    carry: [mongoose.Schema.Types.Mixed],
     etiquette: [{
       title: String,
       desc: String
