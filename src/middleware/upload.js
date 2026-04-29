@@ -1,31 +1,51 @@
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
-// ── STORAGE: Always use local disk storage ──
-// Cloudinary is not configured in .env, so we use reliable local storage.
-// The uploads directory is served statically by express in server.js.
-
-const uploadsDir = path.join(__dirname, '../../public/uploads/trips');
-
-// Ensure directory exists on startup
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-  console.log('[UPLOAD] Created uploads directory:', uploadsDir);
-}
-
-const localStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadsDir);
-  },
-  filename: (req, file, cb) => {
-    // Sanitize filename: remove spaces and special chars
-    const safeName = file.originalname
-      .replace(/[^a-zA-Z0-9._-]/g, '_')
-      .replace(/__+/g, '_');
-    cb(null, `${Date.now()}-${safeName}`);
-  }
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
 });
+
+const isCloudinaryConfigured = process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET;
+
+let storage;
+
+if (isCloudinaryConfigured) {
+  storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+      folder: 'youthcamping/trips',
+      allowed_formats: ['jpg', 'png', 'jpeg', 'webp']
+    }
+  });
+  console.log('[UPLOAD] Using Cloudinary Storage');
+} else {
+  const uploadsDir = path.join(__dirname, '../../public/uploads/trips');
+
+  // Ensure directory exists on startup
+  if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+    console.log('[UPLOAD] Created uploads directory:', uploadsDir);
+  }
+
+  storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, uploadsDir);
+    },
+    filename: (req, file, cb) => {
+      const safeName = file.originalname
+        .replace(/[^a-zA-Z0-9._-]/g, '_')
+        .replace(/__+/g, '_');
+      cb(null, `${Date.now()}-${safeName}`);
+    }
+  });
+  console.log('[UPLOAD] Using Local Storage');
+}
 
 const fileFilter = (req, file, cb) => {
   const allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
@@ -37,7 +57,7 @@ const fileFilter = (req, file, cb) => {
 };
 
 const upload = multer({
-  storage: localStorage,
+  storage: storage,
   limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
   fileFilter
 });

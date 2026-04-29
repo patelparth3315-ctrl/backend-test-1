@@ -38,27 +38,33 @@ router.delete('/photo', (req, res) => {
 // ── POST /api/upload/single ──
 // Upload a single image and return its persistent URL
 router.post('/single', upload.single('image'), (req, res) => {
-  console.log('[UPLOAD SINGLE] File received:', req.file ? req.file.filename : 'NONE');
+  console.log('[UPLOAD SINGLE] File received:', req.file ? (req.file.originalname || 'Yes') : 'NONE');
 
   if (!req.file) {
     return res.status(400).json({ success: false, message: 'No file uploaded' });
   }
 
-  // Verify the file actually exists on disk
-  const fullPath = path.join(__dirname, '../../public/uploads/trips', req.file.filename);
-  if (!fs.existsSync(fullPath)) {
-    console.error('[UPLOAD SINGLE] ❌ File was not written to disk:', fullPath);
-    return res.status(500).json({ success: false, message: 'File upload failed - not saved to disk' });
+  let url;
+  if (req.file.path && req.file.path.startsWith('http')) {
+    // Cloudinary upload
+    url = req.file.path;
+    console.log('[UPLOAD SINGLE] ✅ Saved to Cloudinary:', url);
+  } else {
+    // Local upload
+    const fullPath = path.join(__dirname, '../../public/uploads/trips', req.file.filename);
+    if (!fs.existsSync(fullPath)) {
+      console.error('[UPLOAD SINGLE] ❌ File was not written to disk:', fullPath);
+      return res.status(500).json({ success: false, message: 'File upload failed - not saved to disk' });
+    }
+    url = `/uploads/trips/${req.file.filename}`;
+    console.log('[UPLOAD SINGLE] ✅ Saved locally:', url);
   }
-
-  const url = `/uploads/trips/${req.file.filename}`;
-  console.log('[UPLOAD SINGLE] ✅ Saved:', url, `(${(req.file.size / 1024).toFixed(1)}KB)`);
 
   res.status(200).json({
     success: true,
     url: url,
     size: req.file.size,
-    filename: req.file.filename
+    filename: req.file.filename || req.file.originalname
   });
 });
 
@@ -71,12 +77,17 @@ router.post('/multiple', upload.array('images', 10), (req, res) => {
 
   const urls = [];
   for (const file of req.files) {
-    const fullPath = path.join(__dirname, '../../public/uploads/trips', file.filename);
-    if (fs.existsSync(fullPath)) {
-      urls.push(`/uploads/trips/${file.filename}`);
-      console.log(`[UPLOAD MULTI] ✅ Saved: /uploads/trips/${file.filename}`);
+    if (file.path && file.path.startsWith('http')) {
+      urls.push(file.path);
+      console.log(`[UPLOAD MULTI] ✅ Saved to Cloudinary: ${file.path}`);
     } else {
-      console.error(`[UPLOAD MULTI] ❌ File not saved: ${file.filename}`);
+      const fullPath = path.join(__dirname, '../../public/uploads/trips', file.filename);
+      if (fs.existsSync(fullPath)) {
+        urls.push(`/uploads/trips/${file.filename}`);
+        console.log(`[UPLOAD MULTI] ✅ Saved locally: /uploads/trips/${file.filename}`);
+      } else {
+        console.error(`[UPLOAD MULTI] ❌ File not saved: ${file.filename}`);
+      }
     }
   }
 
