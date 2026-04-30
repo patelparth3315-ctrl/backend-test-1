@@ -21,22 +21,32 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-let storage;
-
-if (!isCloudinaryConfigured) {
-  console.error("❌ CRITICAL ERROR: Cloudinary environment variables are missing!");
-  // We'll still export a dummy storage to prevent crashing on boot, but it will fail on upload.
+if (isCloudinaryConfigured) {
+  storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+      folder: 'youthcamping/trips',
+      allowed_formats: ['jpg', 'png', 'jpeg', 'webp'],
+      transformation: [{ width: 1200, crop: 'limit' }, { fetch_format: 'auto', quality: 'auto' }]
+    }
+  });
+  console.log('[UPLOAD] ✅ Cloudinary Storage configured and active');
+} else {
+  console.warn('[UPLOAD] ⚠️ Falling back to LOCAL DISK STORAGE because Cloudinary is not configured');
+  storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      const uploadDir = 'public/uploads/trips';
+      if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true });
+      }
+      cb(null, uploadDir);
+    },
+    filename: (req, file, cb) => {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+      cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
+    }
+  });
 }
-
-storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: 'youthcamping/trips',
-    allowed_formats: ['jpg', 'png', 'jpeg', 'webp'],
-    transformation: [{ width: 1200, crop: 'limit' }, { fetch_format: 'auto', quality: 'auto' }]
-  }
-});
-console.log('[UPLOAD] Enforcing Cloudinary Storage');
 
 const fileFilter = (req, file, cb) => {
   const allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
@@ -49,7 +59,7 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 2 * 1024 * 1024 }, // 2MB limit
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
   fileFilter
 });
 

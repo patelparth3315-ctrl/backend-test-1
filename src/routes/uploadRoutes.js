@@ -56,12 +56,20 @@ router.post('/single', (req, res, next) => {
         return res.status(400).json({ success: false, message: 'No file uploaded. Ensure field name is "image"' });
       }
 
-      const url = req.file.path;
-      if (!url) {
-        throw new Error('Cloudinary failed to return a URL');
+      let url = req.file.path;
+      
+      // If it's a local file (not a Cloudinary URL), normalize it to a relative web path
+      if (!url.startsWith('http')) {
+        // Multer diskStorage path looks like "public/uploads/trips/image-..."
+        // We want "/uploads/trips/image-..."
+        url = '/' + url.replace(/\\/g, '/').replace(/^public\//, '');
       }
 
-      console.log('[UPLOAD SINGLE] ✅ Saved to Cloudinary:', url);
+      if (!url) {
+        throw new Error('File processing failed - no URL generated');
+      }
+
+      console.log('[UPLOAD SINGLE] ✅ Success:', url);
 
       res.status(200).json({
         success: true,
@@ -92,9 +100,14 @@ router.post('/multiple', (req, res) => {
 
       const urls = [];
       for (const file of req.files) {
-        if (file.path) {
-          urls.push(file.path);
-          console.log(`[UPLOAD MULTI] ✅ Saved to Cloudinary: ${file.path}`);
+        let url = file.path;
+        if (url) {
+          // Local path normalization
+          if (!url.startsWith('http')) {
+            url = '/' + url.replace(/\\/g, '/').replace(/^public\//, '');
+          }
+          urls.push(url);
+          console.log(`[UPLOAD MULTI] ✅ Success: ${url}`);
         }
       }
 
