@@ -32,7 +32,8 @@ storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: 'youthcamping/trips',
-    allowed_formats: ['jpg', 'png', 'jpeg', 'webp']
+    allowed_formats: ['jpg', 'png', 'jpeg', 'webp'],
+    transformation: [{ width: 1200, crop: 'limit' }, { fetch_format: 'auto', quality: 'auto' }]
   }
 });
 console.log('[UPLOAD] Enforcing Cloudinary Storage');
@@ -48,7 +49,7 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
+  limits: { fileSize: 2 * 1024 * 1024 }, // 2MB limit
   fileFilter
 });
 

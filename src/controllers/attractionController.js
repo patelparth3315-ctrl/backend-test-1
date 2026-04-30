@@ -9,6 +9,18 @@ exports.getAttractions = async (req, res) => {
   }
 };
 
+exports.getAttractionBySlug = async (req, res) => {
+  try {
+    const attraction = await Attraction.findOne({ slug: req.params.slug });
+    if (!attraction) {
+      return res.status(404).json({ message: 'Attraction not found' });
+    }
+    res.status(200).json(attraction);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 exports.createAttraction = async (req, res) => {
   try {
     const attraction = new Attraction(req.body);

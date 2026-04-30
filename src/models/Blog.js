@@ -15,6 +15,10 @@ const blogSchema = new mongoose.Schema({
     required: [true, 'Please provide an author name'],
     default: 'Expedition Team'
   },
+  authorImage: {
+    type: String,
+    default: ''
+  },
   content: {
     type: String,
     required: [true, 'Please provide blog content']
