@@ -159,50 +159,61 @@ exports.retrySync = async (req, res, next) => {
 
 // Helper: Sync Booking to Sheets with Tracking
 async function syncBookingToSheets(booking) {
+  const axios = require('axios');
   const masterScriptUrl = process.env.GOOGLE_APPS_SCRIPT_URL;
+  
   if (!masterScriptUrl || !masterScriptUrl.startsWith('http')) {
-    console.warn('[SYNC] Missing AppScript URL');
+    console.warn('[SYNC] 🚨 Missing AppScript URL in .env');
+    booking.syncStatus = 'failed';
+    await booking.save();
     return false;
   }
 
   try {
-    booking.syncAttempts += 1;
+    booking.syncAttempts = (booking.syncAttempts || 0) + 1;
     booking.lastSyncAt = new Date();
     
-    const response = await fetch(masterScriptUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        bookingId: booking.bookingId,
-        timestamp: new Date().toISOString(),
-        salesPersonName: booking.salesPersonName || 'Direct',
-        name: booking.userName,
-        phone: booking.phone,
-        email: booking.email,
-        tripName: booking.tripTitle,
-        date: booking.travelDate || 'TBD',
-        pickupLocation: booking.pickupCity || 'Not Specified',
-        participants: booking.travelers,
-        totalAmount: booking.totalAmount,
-        paidAmount: booking.paidAmount,
-        remainingAmount: (booking.totalAmount || 0) - (booking.paidAmount || 0),
-        paymentMode: booking.paymentMode || 'N/A',
-        status: booking.status,
-        notes: booking.notes
-      })
+    console.log(`[SYNC] 📡 Attempting axios sync for ${booking.bookingId}...`);
+    
+    const payload = {
+      bookingId: booking.bookingId || booking._id,
+      timestamp: new Date().toISOString(),
+      salesPersonName: booking.salesPersonName || 'Direct',
+      name: booking.userName,
+      phone: booking.phone,
+      email: booking.email,
+      tripName: booking.tripTitle,
+      date: booking.travelDate ? new Date(booking.travelDate).toISOString().split('T')[0] : 'TBD',
+      pickupLocation: booking.pickupCity || 'Not Specified',
+      participants: booking.travelers || 1,
+      totalAmount: booking.totalAmount || 0,
+      paidAmount: booking.paidAmount || 0,
+      remainingAmount: (booking.totalAmount || 0) - (booking.paidAmount || 0),
+      paymentMode: booking.paymentMode || 'N/A',
+      status: booking.status || 'Pending',
+      notes: booking.notes || ''
+    };
+
+    const response = await axios.post(masterScriptUrl, payload, {
+      timeout: 15000,
+      maxRedirects: 5,
+      headers: { 'Content-Type': 'application/json' }
     });
 
-    const result = await response.json();
-    if (result.success) {
+    console.log(`[SYNC] ✅ Result for ${booking.bookingId}:`, response.data);
+
+    if (response.data && response.data.success) {
       booking.syncStatus = 'synced';
     } else {
+      console.error('[SYNC] ❌ AppScript returned failure:', response.data?.error);
       booking.syncStatus = 'failed';
     }
     await booking.save();
-    return result.success;
+    return response.data?.success;
   } catch (err) {
-    console.error('[SYNC] Fatal Error:', err);
+    console.error(`[SYNC] 🚨 Fatal Error for ${booking.bookingId}:`, err.message);
     booking.syncStatus = 'failed';
+    booking.adminNotes = (booking.adminNotes || '') + `\n[SYNC FAILED ${new Date().toISOString()}]: ${err.message}`;
     await booking.save();
     return false;
   }

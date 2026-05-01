@@ -27,25 +27,31 @@ exports.createBookingForm = async (req, res, next) => {
     }
 
     // 2. Initialize the tab in the Master Google Sheet
+    const axios = require('axios');
     const appsScriptUrl = process.env.GOOGLE_APPS_SCRIPT_URL;
     let sheetUrl = "";
-    console.log('[BOOKING-FORM] Attempting Sheet Init with URL:', appsScriptUrl);
+    console.log('[BOOKING-FORM] 📡 Attempting Axios Sheet Init for:', tripName);
     
     if (appsScriptUrl && appsScriptUrl.startsWith('http')) {
       try {
-        const response = await fetch(appsScriptUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ tripName, date, isInit: true, name: "SYSTEM_INIT" })
+        const response = await axios.post(appsScriptUrl, {
+          tripName, date, isInit: true, name: "SYSTEM_INIT"
+        }, {
+          timeout: 20000,
+          maxRedirects: 5
         });
-        const result = await response.json();
-        console.log('[BOOKING-FORM] Sheet Init Result:', result);
-        sheetUrl = result.sheetUrl || "";
+
+        if (response.data && response.data.success) {
+          console.log('[BOOKING-FORM] ✅ Sheet Init SUCCESS');
+          sheetUrl = response.data.sheetUrl || "";
+        } else {
+          console.error('[BOOKING-FORM] ❌ Sheet Init FAILED:', response.data?.error);
+        }
       } catch (err) {
-        console.error('[BOOKING-FORM] Sheet Init Error:', err);
+        console.error('[BOOKING-FORM] 🚨 Axios Sheet Init Error:', err.message);
       }
     } else {
-      console.warn('[BOOKING-FORM] Skipping Sheet Init: URL missing or invalid');
+      console.warn('[BOOKING-FORM] ⚠️ Skipping Sheet Init: GOOGLE_APPS_SCRIPT_URL missing in .env');
     }
 
 
