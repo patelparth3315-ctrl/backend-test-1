@@ -181,18 +181,21 @@ exports.createPublicBooking = async (req, res, next) => {
       }).catch(err => console.error('[MASTER-SHEET] Sync Error:', err));
     }
 
-    // 3. Create a pending booking in our system (CRM Integration)
-    // This ensures the data is also visible in our Admin Panel
+    // 3. Find the trip to get tripId
+    const trip = await Trip.findOne({ title: { $regex: new RegExp(`^${tripName}$`, 'i') } });
+    
+    // 4. Create a pending booking in our system (CRM Integration)
     const newBooking = await Booking.create({
       userName: name,
       email: email || 'no-email@youthcamping.in',
       phone: phone,
+      tripId: trip ? trip._id : null,
       tripTitle: tripName,
+      totalAmount: trip ? trip.price : 0,
       travelers: participants || 1,
       status: 'pending',
-      amount: 0, // Admin will set this later or we can fetch from Trip
       paidAmount: 0,
-      notes: `Source: Public Unified Form. Sharing: ${roomSharing}, Train: ${trainOption}`
+      notes: `Source: Public Unified Form. Trip Name: ${tripName}. Sharing: ${roomSharing}, Train: ${trainOption}`
     });
 
     res.status(201).json({
@@ -200,6 +203,7 @@ exports.createPublicBooking = async (req, res, next) => {
       message: 'Booking submitted successfully',
       data: newBooking
     });
+
   } catch (error) {
     next(error);
   }

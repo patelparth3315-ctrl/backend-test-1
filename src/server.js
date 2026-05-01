@@ -56,15 +56,13 @@ app.use('/uploads', express.static(path.join(__dirname, '../public/uploads'), {
   }
 }));
 
-// Health check
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok', version: '2.0.2', timestamp: new Date().toISOString() });
+// Logging middleware
+app.use((req, res, next) => {
+  console.log(`[REQUEST] ${req.method} ${req.url}`);
+  next();
 });
 
-app.use('/', seoRoutes);
-
 // Enable CORS
-// ...
 app.use(cors({
   origin: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
@@ -76,15 +74,20 @@ app.use(cors({
 // Handle preflight requests
 app.options('*', cors());
 
+// Health check
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', version: '2.0.3', timestamp: new Date().toISOString() });
+});
+
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 5000, // Increased for production testing
+  max: 5000,
   message: { success: false, message: 'Too many requests' }
 });
 app.use('/api', limiter);
 
-// Mount routes
+// Mount API routes BEFORE SEO/catch-all routes
 app.use('/api/admin', adminRoutes);
 app.use('/api/trips', tripRoutes);
 app.use('/api/bookings', bookingRoutes);
@@ -102,10 +105,8 @@ app.use('/api/payments', paymentRoutes);
 app.use('/api/vendors', vendorRoutes);
 app.use('/api/booking-forms', bookingFormRoutes);
 
-// Health check
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok', version: '2.0.2', timestamp: new Date().toISOString() });
-});
+app.use('/', seoRoutes);
+
 
 // Revalidation Proxy (Dummy for now)
 app.post('/api/revalidate', (req, res) => {
