@@ -162,7 +162,10 @@ exports.getShareMessage = async (req, res, next) => {
 // @access  Public
 exports.createPublicBooking = async (req, res, next) => {
   try {
-    const { tripName, date, name, phone, email, participants, roomSharing, trainOption } = req.body;
+    const { 
+      tripName, date, name, phone, email, participants, 
+      roomSharing, trainOption, participantsList 
+    } = req.body;
 
     // 1. Basic Validation
     if (!tripName || !name || !phone) {
@@ -176,7 +179,7 @@ exports.createPublicBooking = async (req, res, next) => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          tripName, date, name, phone, email, participants, roomSharing, trainOption
+          tripName, date, name, phone, email, participants, roomSharing, trainOption, participantsList
         })
       }).catch(err => console.error('[MASTER-SHEET] Sync Error:', err));
     }
@@ -195,8 +198,11 @@ exports.createPublicBooking = async (req, res, next) => {
       travelers: participants || 1,
       status: 'pending',
       paidAmount: 0,
+      participantsList: participantsList || [],
       notes: `Source: Public Unified Form. Trip Name: ${tripName}. Sharing: ${roomSharing}, Train: ${trainOption}`
     });
+
+
 
     res.status(201).json({
       success: true,

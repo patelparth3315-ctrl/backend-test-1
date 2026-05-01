@@ -62,6 +62,13 @@ const bookingSchema = new mongoose.Schema({
       default: 'Confirmed'
     },
     ticketUrl: String
+  }],
+  participantsList: [{
+    name: String,
+    phone: String,
+    govId: String,
+    age: Number,
+    gender: String
   }]
 }, {
   timestamps: true
