@@ -212,18 +212,42 @@ exports.createPublicBooking = async (req, res, next) => {
     const masterScriptUrl = process.env.GOOGLE_APPS_SCRIPT_URL;
     console.log('[MASTER-SHEET] Attempting sync to:', masterScriptUrl);
     
-    if (masterScriptUrl) {
+    if (masterScriptUrl && masterScriptUrl.startsWith('http')) {
       fetch(masterScriptUrl, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        redirect: 'follow',
         body: JSON.stringify({
-          tripName, date, name, phone, email, participants, roomSharing, trainOption, participantsList
+          tripName, 
+          date, 
+          name, 
+          phone, 
+          email, 
+          participants, 
+          roomSharing, 
+          trainOption, 
+          participantsList,
+          timestamp: new Date().toISOString()
         })
       })
-      .then(res => res.json())
-      .then(result => console.log('[MASTER-SHEET] Sync Result:', result))
-      .catch(err => console.error('[MASTER-SHEET] Sync Error:', err));
+      .then(async (res) => {
+        const text = await res.text();
+        console.log(`[MASTER-SHEET] Response (${res.status}):`, text);
+        try {
+          return JSON.parse(text);
+        } catch {
+          return { message: text };
+        }
+      })
+      .then(result => console.log('[MASTER-SHEET] Final Result:', result))
+      .catch(err => console.error('[MASTER-SHEET] Fatal Sync Error:', err));
+    } else {
+      console.warn('[MASTER-SHEET] Skipping sync: URL is missing or invalid');
     }
+
 
 
     // 3. Find the trip to get tripId
