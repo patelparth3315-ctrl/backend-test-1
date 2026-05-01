@@ -19,8 +19,7 @@ const bookingFormSchema = new mongoose.Schema({
     required: true
   },
   sheetUrl: {
-    type: String,
-    required: true
+    type: String
   },
   sheetId: String,
   formId: String,
