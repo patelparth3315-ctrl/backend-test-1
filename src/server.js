@@ -23,6 +23,9 @@ const seoRoutes = require('./routes/seoRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
 const pageBuilderRoutes = require('./routes/pageBuilderRoutes');
 const attractionRoutes = require('./routes/attractionRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
+const vendorRoutes = require('./routes/vendorRoutes');
+const bookingFormRoutes = require('./routes/bookingFormRoutes');
 
 // Connect to database
 connectDB();
@@ -95,6 +98,9 @@ app.use('/api/reviews', reviewRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/page-builder', pageBuilderRoutes);
 app.use('/api/attractions', attractionRoutes);
+app.use('/api/payments', paymentRoutes);
+app.use('/api/vendors', vendorRoutes);
+app.use('/api/booking-forms', bookingFormRoutes);
 
 // Health check
 app.get('/health', (req, res) => {
