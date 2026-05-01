@@ -29,8 +29,9 @@ exports.createBookingForm = async (req, res, next) => {
     // 2. Initialize the tab in the Master Google Sheet
     const appsScriptUrl = process.env.GOOGLE_APPS_SCRIPT_URL;
     let sheetUrl = "";
+    console.log('[BOOKING-FORM] Attempting Sheet Init with URL:', appsScriptUrl);
     
-    if (appsScriptUrl) {
+    if (appsScriptUrl && appsScriptUrl.startsWith('http')) {
       try {
         const response = await fetch(appsScriptUrl, {
           method: 'POST',
@@ -38,11 +39,15 @@ exports.createBookingForm = async (req, res, next) => {
           body: JSON.stringify({ tripName, date, isInit: true, name: "SYSTEM_INIT" })
         });
         const result = await response.json();
+        console.log('[BOOKING-FORM] Sheet Init Result:', result);
         sheetUrl = result.sheetUrl || "";
       } catch (err) {
         console.error('[BOOKING-FORM] Sheet Init Error:', err);
       }
+    } else {
+      console.warn('[BOOKING-FORM] Skipping Sheet Init: URL missing or invalid');
     }
+
 
     // 3. Store the record in our DB
     const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
