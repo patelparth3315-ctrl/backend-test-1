@@ -66,7 +66,7 @@ const bookingSchema = new mongoose.Schema({
   participantsList: [{
     name: String,
     phone: String,
-    govId: String,
+    email: String,
     age: Number,
     gender: String
   }]
