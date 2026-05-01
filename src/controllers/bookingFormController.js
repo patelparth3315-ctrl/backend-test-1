@@ -53,7 +53,7 @@ exports.createBookingForm = async (req, res, next) => {
       tripName,
       date,
       formUrl: internalUrl,
-      sheetUrl: sheetUrl || "Master Sheet",
+      sheetUrl: sheetUrl || "",
     });
 
     res.status(201).json({ success: true, data: record });
