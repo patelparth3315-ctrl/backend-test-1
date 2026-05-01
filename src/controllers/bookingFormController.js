@@ -210,6 +210,8 @@ exports.createPublicBooking = async (req, res, next) => {
     // 2. Push to Master Google Sheet
 
     const masterScriptUrl = process.env.GOOGLE_APPS_SCRIPT_URL;
+    console.log('[MASTER-SHEET] Attempting sync to:', masterScriptUrl);
+    
     if (masterScriptUrl) {
       fetch(masterScriptUrl, {
         method: 'POST',
@@ -217,8 +219,12 @@ exports.createPublicBooking = async (req, res, next) => {
         body: JSON.stringify({
           tripName, date, name, phone, email, participants, roomSharing, trainOption, participantsList
         })
-      }).catch(err => console.error('[MASTER-SHEET] Sync Error:', err));
+      })
+      .then(res => res.json())
+      .then(result => console.log('[MASTER-SHEET] Sync Result:', result))
+      .catch(err => console.error('[MASTER-SHEET] Sync Error:', err));
     }
+
 
     // 3. Find the trip to get tripId
     const trip = await Trip.findOne({ title: { $regex: new RegExp(`^${tripName}$`, 'i') } });
