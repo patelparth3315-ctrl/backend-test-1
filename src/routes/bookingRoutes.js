@@ -6,7 +6,8 @@ const {
   getBooking,
   updateBookingStatus,
   updateBooking,
-  deleteBooking
+  deleteBooking,
+  retrySync
 } = require('../controllers/bookingController');
 const { protect, protectUser } = require('../middleware/auth');
 
@@ -18,6 +19,7 @@ router.get('/', protect, getBookings);
 router.get('/:id', protect, getBooking);
 router.put('/:id', protect, updateBooking);
 router.patch('/:id/status', protect, updateBookingStatus);
+router.patch('/:id/retry-sync', protect, retrySync);
 router.delete('/:id', protect, deleteBooking);
 
 module.exports = router;

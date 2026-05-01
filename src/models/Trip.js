@@ -60,7 +60,8 @@ const tripSchema = new mongoose.Schema({
   availableDates: [{
     date: Date,
     capacity: { type: Number, default: 20 },
-    bookedCount: { type: Number, default: 0 }
+    bookedCount: { type: Number, default: 0 },
+    cutoffDays: { type: Number, default: 2 }
   }],
   isActive: {
     type: Boolean,
@@ -161,9 +162,14 @@ tripSchema.pre('save', function(next) {
     }
   }
 
-  // Map status to isActive for backward compatibility with existing queries
+  // Mapping status to isActive for backward compatibility
   if (this.isModified('status')) {
     this.isActive = this.status === 'published';
+  }
+
+  // Duration Normalization (remove leading zeros, e.g., '06 Days' -> '6 Days')
+  if (this.isModified('duration') && this.duration) {
+    this.duration = this.duration.replace(/\b0+(\d)/g, '$1');
   }
   
   next();

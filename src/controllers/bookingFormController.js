@@ -198,8 +198,36 @@ exports.createPublicBooking = async (req, res, next) => {
       return res.status(400).json({ success: false, message: 'Missing required fields' });
     }
 
-    // 1b. Check for existing booking (Duplicate Prevention)
-    // BYPASS for testing: If name is "TESTER", we skip duplicate check
+    // 1b. Check Trip Capacity & Cutoff Date
+    const trip = await Trip.findOne({ title: { $regex: new RegExp(`^${tripName}$`, 'i') } });
+    if (trip && trip.availableDates) {
+      const selectedDateObj = trip.availableDates.find(d => {
+        const dStr = new Date(d.date).toISOString().split('T')[0];
+        return dStr === date;
+      });
+
+      if (selectedDateObj) {
+        // Cutoff check
+        const now = new Date();
+        const tripDate = new Date(selectedDateObj.date);
+        const diffDays = Math.ceil((tripDate.getTime() - now.getTime()) / (1000 * 3600 * 24));
+        
+        if (diffDays < (selectedDateObj.cutoffDays || 0)) {
+          return res.status(400).json({ success: false, message: 'Bookings for this date are now closed.' });
+        }
+
+        // Capacity check
+        if (selectedDateObj.bookedCount + (participants || 1) > selectedDateObj.capacity) {
+          return res.status(400).json({ success: false, message: 'Sorry, this batch is full. Please choose another date or contact support for the waitlist.' });
+        }
+
+        // Increment bookedCount (optimistic)
+        selectedDateObj.bookedCount += (participants || 1);
+        await trip.save();
+      }
+    }
+
+    // 1c. Check for existing booking (Duplicate Prevention)
     if (name !== 'TESTER') {
       const existingBooking = await Booking.findOne({ 
         phone, 
@@ -215,51 +243,11 @@ exports.createPublicBooking = async (req, res, next) => {
       }
     }
 
-    // 2. Push to Master Google Sheet
+    // 2. Generate Unique Booking ID
+    const bookingId = "YC-" + Math.random().toString(36).substr(2, 6).toUpperCase();
 
-    const masterScriptUrl = process.env.GOOGLE_APPS_SCRIPT_URL;
-    console.log('[MASTER-SHEET] Attempting sync to:', masterScriptUrl);
-    
-    if (masterScriptUrl && masterScriptUrl.startsWith('http')) {
-      fetch(masterScriptUrl, {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        redirect: 'follow',
-        body: JSON.stringify({
-          tripName, 
-          date, 
-          name, 
-          phone, 
-          email, 
-          participants, 
-          roomSharing, 
-          trainOption, 
-          participantsList,
-          timestamp: new Date().toISOString()
-        })
-      })
-      .then(async (res) => {
-        const text = await res.text();
-        console.log(`[MASTER-SHEET] Response (${res.status}):`, text);
-        try {
-          return JSON.parse(text);
-        } catch {
-          return { message: text };
-        }
-      })
-      .then(result => console.log('[MASTER-SHEET] Final Result:', result))
-      .catch(err => console.error('[MASTER-SHEET] Fatal Sync Error:', err));
-    } else {
-      console.warn('[MASTER-SHEET] Skipping sync: URL is missing or invalid');
-    }
-
-
-
-    // 3. Find the trip to get tripId
-    const trip = await Trip.findOne({ title: { $regex: new RegExp(`^${tripName}$`, 'i') } });
+    // 3. Find the trip to get tripId (reuse already found trip)
+    // const trip = await Trip.findOne({ title: { $regex: new RegExp(`^${tripName}$`, 'i') } });
     
     // 4. Create a pending booking in our system (CRM Integration)
     const newBooking = await Booking.create({
@@ -272,11 +260,14 @@ exports.createPublicBooking = async (req, res, next) => {
       travelers: participants || 1,
       status: 'pending',
       paidAmount: 0,
+      pickupCity: req.body.pickupCity || '',
+      specialRequests: req.body.specialRequests || '',
+      idProofUrl: req.body.idProofUrl || '',
+      salesPersonName: req.body.salesPersonName || 'Direct',
+      bookingId: bookingId,
       participantsList: participantsList || [],
       notes: `Source: Public Unified Form. Trip Name: ${tripName}. Sharing: ${roomSharing}, Train: ${trainOption}`
     });
-
-
 
     res.status(201).json({
       success: true,

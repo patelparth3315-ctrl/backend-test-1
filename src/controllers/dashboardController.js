@@ -18,9 +18,9 @@ exports.getStats = async (req, res, next) => {
       { $group: { _id: null, total: { $sum: '$amount' } } }
     ]);
     
-    // Fallback: also count confirmed booking revenue for backward compat
+    // Fallback: also count confirmed/accepted booking revenue for backward compat
     const bookingRevenue = await Booking.aggregate([
-      { $match: { status: 'confirmed' } },
+      { $match: { status: { $in: ['confirmed', 'accepted'] } } },
       { $group: { _id: null, total: { $sum: '$totalAmount' } } }
     ]);
     
@@ -36,7 +36,7 @@ exports.getStats = async (req, res, next) => {
 
     // 2. Pending Payments (total booking amounts - total payments received)
     const totalBookingValue = await Booking.aggregate([
-      { $match: { status: { $ne: 'cancelled' } } },
+      { $match: { status: { $in: ['confirmed', 'accepted', 'completed'] } } },
       { $group: { _id: null, total: { $sum: '$totalAmount' } } }
     ]);
     const pendingPayments = (totalBookingValue[0]?.total || 0) - actualPaymentsTotal;
@@ -77,7 +77,7 @@ exports.getStats = async (req, res, next) => {
     let monthlySourceData = monthlyData;
     if (monthlyData.length === 0) {
       monthlySourceData = await Booking.aggregate([
-        { $match: { status: 'confirmed', createdAt: { $gte: sixMonthsAgo } } },
+        { $match: { status: { $in: ['confirmed', 'accepted'] }, createdAt: { $gte: sixMonthsAgo } } },
         {
           $group: {
             _id: { month: { $month: '$createdAt' }, year: { $year: '$createdAt' } },
@@ -119,6 +119,26 @@ exports.getStats = async (req, res, next) => {
       'availableDates.date': { $gte: new Date() }
     }).select('title location duration availableDates').limit(5).sort('availableDates.date');
 
+    // 9. Salesperson Performance Analytics
+    const salesStats = await Booking.aggregate([
+      { $match: { status: { $ne: 'cancelled' } } },
+      { $group: {
+        _id: '$salesPersonName',
+        totalBookings: { $sum: 1 },
+        acceptedBookings: { $sum: { $cond: [{ $in: ['$status', ['accepted', 'confirmed', 'completed']] }, 1, 0] } },
+        revenue: { $sum: { $cond: [{ $in: ['$status', ['accepted', 'confirmed', 'completed']] }, '$totalAmount', 0] } }
+      }},
+      { $sort: { revenue: -1 } }
+    ]);
+
+    const leaderboard = salesStats.map(s => ({
+      name: s._id || 'Direct',
+      total: s.totalBookings,
+      accepted: s.acceptedBookings,
+      revenue: s.revenue,
+      conversion: s.totalBookings > 0 ? Math.round((s.acceptedBookings / s.totalBookings) * 100) : 0
+    }));
+
     res.json({
       success: true,
       data: {
@@ -149,7 +169,8 @@ exports.getStats = async (req, res, next) => {
           createdAt: b.createdAt
         })),
         monthlyRevenue,
-        bookingsByStatus
+        bookingsByStatus,
+        leaderboard
       }
     });
   } catch (error) {

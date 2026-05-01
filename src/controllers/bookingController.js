@@ -40,6 +40,16 @@ exports.getBookings = async (req, res, next) => {
     const query = {};
     if (req.query.status) query.status = req.query.status;
 
+    // RBAC: Agents only see their own bookings
+    if (req.admin.role === 'agent') {
+      query.$or = [
+        { salesPersonId: req.admin._id },
+        { salesPersonName: req.admin.name }
+      ];
+    } else if (req.query.salesperson) {
+      query.salesPersonName = req.query.salesperson;
+    }
+
     const bookings = await Booking.find(query)
       .populate('tripId', 'title')
       .populate('userId', 'name email')
@@ -104,6 +114,7 @@ exports.updateBookingStatus = async (req, res, next) => {
     if (paymentStatus) updateData.paymentStatus = paymentStatus;
     if (adminNotes !== undefined) updateData.adminNotes = adminNotes;
     if (paidAmount !== undefined) updateData.paidAmount = paidAmount;
+    if (req.body.paymentMode) updateData.paymentMode = req.body.paymentMode;
     if (req.body.trainTickets !== undefined) updateData.trainTickets = req.body.trainTickets;
 
     booking = await Booking.findByIdAndUpdate(
@@ -112,21 +123,90 @@ exports.updateBookingStatus = async (req, res, next) => {
       { new: true, runValidators: true }
     );
 
+    // TRIGGER GOOGLE SHEETS SYNC IF ACCEPTED OR CONFIRMED
+    const isSyncStatus = status === 'accepted' || status === 'confirmed';
+    const wasSyncStatus = booking.status === 'accepted' || booking.status === 'confirmed';
+    
+    if (isSyncStatus || (wasSyncStatus && !status)) {
+      if (booking.syncStatus !== 'synced' || status) {
+        await syncBookingToSheets(booking);
+      }
+    }
+
     res.json({
       success: true,
-      data: {
-        id: booking._id,
-        status: booking.status,
-        paymentStatus: booking.paymentStatus,
-        adminNotes: booking.adminNotes,
-        paidAmount: booking.paidAmount,
-        trainTickets: booking.trainTickets
-      }
+      data: booking
     });
   } catch (error) {
     next(error);
   }
 };
+
+// @desc    Retry Google Sheets Sync
+// @route   POST /api/bookings/:id/retry-sync
+// @access  Private/Admin
+exports.retrySync = async (req, res, next) => {
+  try {
+    const booking = await Booking.findById(req.params.id);
+    if (!booking) return res.status(404).json({ success: false, message: 'Booking not found' });
+    
+    const result = await syncBookingToSheets(booking);
+    res.json({ success: true, message: result ? 'Sync successful' : 'Sync failed', data: booking });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Helper: Sync Booking to Sheets with Tracking
+async function syncBookingToSheets(booking) {
+  const masterScriptUrl = process.env.GOOGLE_APPS_SCRIPT_URL;
+  if (!masterScriptUrl || !masterScriptUrl.startsWith('http')) {
+    console.warn('[SYNC] Missing AppScript URL');
+    return false;
+  }
+
+  try {
+    booking.syncAttempts += 1;
+    booking.lastSyncAt = new Date();
+    
+    const response = await fetch(masterScriptUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        bookingId: booking.bookingId,
+        timestamp: new Date().toISOString(),
+        salesPersonName: booking.salesPersonName || 'Direct',
+        name: booking.userName,
+        phone: booking.phone,
+        email: booking.email,
+        tripName: booking.tripTitle,
+        date: booking.travelDate || 'TBD',
+        pickupLocation: booking.pickupCity || 'Not Specified',
+        participants: booking.travelers,
+        totalAmount: booking.totalAmount,
+        paidAmount: booking.paidAmount,
+        remainingAmount: (booking.totalAmount || 0) - (booking.paidAmount || 0),
+        paymentMode: booking.paymentMode || 'N/A',
+        status: booking.status,
+        notes: booking.notes
+      })
+    });
+
+    const result = await response.json();
+    if (result.success) {
+      booking.syncStatus = 'synced';
+    } else {
+      booking.syncStatus = 'failed';
+    }
+    await booking.save();
+    return result.success;
+  } catch (err) {
+    console.error('[SYNC] Fatal Error:', err);
+    booking.syncStatus = 'failed';
+    await booking.save();
+    return false;
+  }
+}
 
 // @desc    Delete booking
 // @route   DELETE /api/bookings/:id

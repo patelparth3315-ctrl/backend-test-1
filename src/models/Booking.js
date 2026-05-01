@@ -29,22 +29,49 @@ const bookingSchema = new mongoose.Schema({
     required: true,
     min: 1
   },
+  status: {
+    type: String,
+    enum: ['pending', 'confirmed', 'cancelled', 'completed', 'accepted', 'rejected'],
+    default: 'pending'
+  },
   travelDate: Date,
   totalAmount: Number,
   paidAmount: {
     type: Number,
     default: 0
   },
-  status: {
-    type: String,
-    enum: ['pending', 'confirmed', 'cancelled', 'completed'],
-    default: 'pending'
-  },
   paymentStatus: {
     type: String,
     enum: ['unpaid', 'partial', 'paid'],
     default: 'unpaid'
   },
+  paymentMode: {
+    type: String,
+    enum: ['UPI', 'Cash', 'Bank Transfer', 'Other', 'None'],
+    default: 'None'
+  },
+  pickupCity: String,
+  specialRequests: String,
+  idProofUrl: String,
+  salesPersonId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Admin'
+  },
+  salesPersonName: String,
+  bookingId: {
+    type: String,
+    unique: true
+  },
+  syncStatus: {
+    type: String,
+    enum: ['pending', 'synced', 'failed'],
+    default: 'pending'
+  },
+  syncAttempts: {
+    type: Number,
+    default: 0
+  },
+  lastSyncAt: Date,
   notes: String,
   adminNotes: String,
   trainTickets: [{
