@@ -157,6 +157,27 @@ exports.getShareMessage = async (req, res, next) => {
   }
 };
 
+// @desc    Update a booking form (e.g. manual sheet URL)
+// @route   PUT /api/booking-forms/:id
+// @access  Private/Admin
+exports.updateBookingForm = async (req, res, next) => {
+  try {
+    const form = await BookingForm.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+
+    if (!form) {
+      return res.status(404).json({ success: false, message: 'Form not found' });
+    }
+
+    res.json({ success: true, data: form });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // @desc    Submit booking from public form to Master Google Sheet
 // @route   POST /api/booking-forms/public-submit
 // @access  Public

@@ -5,6 +5,7 @@ const {
   getBookingForms,
   lookupBookingForm,
   deleteBookingForm,
+  updateBookingForm,
   getShareMessage,
   createPublicBooking
 } = require('../controllers/bookingFormController');
@@ -19,7 +20,9 @@ router.use(protect);
 router.post('/create', createBookingForm);
 router.get('/', getBookingForms);
 router.get('/lookup', lookupBookingForm);
+router.put('/:id', updateBookingForm);
 router.post('/share-message', getShareMessage);
+
 router.delete('/:id', deleteBookingForm);
 
 module.exports = router;
