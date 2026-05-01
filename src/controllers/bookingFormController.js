@@ -172,7 +172,22 @@ exports.createPublicBooking = async (req, res, next) => {
       return res.status(400).json({ success: false, message: 'Missing required fields' });
     }
 
+    // 1b. Check for existing booking (Duplicate Prevention)
+    const existingBooking = await Booking.findOne({ 
+      phone, 
+      tripTitle: tripName 
+    });
+
+    if (existingBooking) {
+      return res.json({ 
+        success: true, 
+        message: 'Your booking is already saved! Our team will contact you soon.',
+        data: existingBooking 
+      });
+    }
+
     // 2. Push to Master Google Sheet
+
     const masterScriptUrl = process.env.GOOGLE_APPS_SCRIPT_URL;
     if (masterScriptUrl) {
       fetch(masterScriptUrl, {
