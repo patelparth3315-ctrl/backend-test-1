@@ -199,17 +199,20 @@ exports.createPublicBooking = async (req, res, next) => {
     }
 
     // 1b. Check for existing booking (Duplicate Prevention)
-    const existingBooking = await Booking.findOne({ 
-      phone, 
-      tripTitle: tripName 
-    });
-
-    if (existingBooking) {
-      return res.json({ 
-        success: true, 
-        message: 'Your booking is already saved! Our team will contact you soon.',
-        data: existingBooking 
+    // BYPASS for testing: If name is "TESTER", we skip duplicate check
+    if (name !== 'TESTER') {
+      const existingBooking = await Booking.findOne({ 
+        phone, 
+        tripTitle: tripName 
       });
+
+      if (existingBooking) {
+        return res.json({ 
+          success: true, 
+          message: 'Your booking is already saved! Our team will contact you soon.',
+          data: existingBooking 
+        });
+      }
     }
 
     // 2. Push to Master Google Sheet
