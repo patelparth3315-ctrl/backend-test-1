@@ -26,6 +26,8 @@ const attractionRoutes = require('./routes/attractionRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const vendorRoutes = require('./routes/vendorRoutes');
 const bookingFormRoutes = require('./routes/bookingFormRoutes');
+const quotationRoutes = require('./routes/quotationRoutes');
+const aiRoutes = require('./routes/aiRoutes');
 
 // Connect to database
 connectDB();
@@ -74,9 +76,20 @@ app.use(cors({
 // Handle preflight requests
 app.options('*', cors());
 
-// Health check
+// Health check & Diagnostics
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', version: '2.0.3', timestamp: new Date().toISOString() });
+  const scriptUrl = process.env.GOOGLE_APPS_SCRIPT_URL || '';
+  res.json({ 
+    status: 'ok', 
+    version: '2.0.4', 
+    timestamp: new Date().toISOString(),
+    diagnostics: {
+      hasGoogleScriptUrl: !!scriptUrl,
+      googleScriptUrlPreview: scriptUrl ? `${scriptUrl.substring(0, 15)}...${scriptUrl.substring(scriptUrl.length - 10)}` : 'MISSING',
+      nodeVersion: process.version,
+      env: process.env.NODE_ENV
+    }
+  });
 });
 
 // Rate limiting
@@ -104,6 +117,8 @@ app.use('/api/attractions', attractionRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/vendors', vendorRoutes);
 app.use('/api/booking-forms', bookingFormRoutes);
+app.use('/api/quotations', quotationRoutes);
+app.use('/api/ai', aiRoutes);
 
 app.use('/', seoRoutes);
 
