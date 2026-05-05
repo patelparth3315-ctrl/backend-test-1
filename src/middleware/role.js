@@ -1,17 +1,24 @@
-const requireRole = (role) => (req, res, next) => {
-  const user = req.admin || req.user;
-  
-  if (!user) {
-    return res.status(401).json({ success: false, message: 'Not authorized' });
-  }
+const authorize = (...roles) => {
+  return (req, res, next) => {
+    const user = req.admin || req.user;
+    
+    if (!user) {
+      return res.status(401).json({ success: false, message: 'Not authorized' });
+    }
 
-  // Superadmin bypasses everything
-  if (user.role === 'superadmin') return next();
+    // Super admins have access to everything
+    if (user.role === 'admin') {
+      return next();
+    }
 
-  if (user.role !== role && user.role !== 'admin') {
-    return res.status(403).json({ success: false, error: 'Forbidden' });
-  }
-  next();
+    if (!roles.includes(user.role)) {
+      return res.status(403).json({ 
+        success: false, 
+        message: `User role ${user.role} is not authorized to access this route` 
+      });
+    }
+    next();
+  };
 };
 
-module.exports = requireRole;
+module.exports = authorize;

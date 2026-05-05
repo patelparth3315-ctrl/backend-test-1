@@ -2,8 +2,8 @@ const Admin = require('../models/Admin');
 const jwt = require('jsonwebtoken');
 
 // Generate JWT
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
+const generateToken = (id, role) => {
+  return jwt.sign({ id, role }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN || '7d',
   });
 };
@@ -29,7 +29,7 @@ exports.adminLogin = async (req, res, next) => {
         name: 'Super Admin',
         email: rootEmail,
         password: rootPassword,
-        role: 'superadmin'
+        role: 'admin'
       });
     } else {
       // Force update password if it doesn't match the .env (Self-healing)
@@ -54,12 +54,12 @@ exports.adminLogin = async (req, res, next) => {
       return res.json({
         success: true,
         data: {
-          token: generateToken('root_admin_bypass'),
+          token: generateToken('root_admin_bypass', 'admin'),
           admin: {
             id: 'root_admin_bypass',
             name: 'Master Admin',
             email: rootEmail,
-            role: 'superadmin'
+            role: 'admin'
           }
         }
       });
@@ -78,7 +78,7 @@ exports.adminLogin = async (req, res, next) => {
       res.json({
         success: true,
         data: {
-          token: generateToken(admin._id),
+          token: generateToken(admin._id, admin.role),
           admin: {
             id: admin._id,
             name: admin.name,

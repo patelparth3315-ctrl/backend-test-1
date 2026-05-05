@@ -28,6 +28,8 @@ const vendorRoutes = require('./routes/vendorRoutes');
 const bookingFormRoutes = require('./routes/bookingFormRoutes');
 const quotationRoutes = require('./routes/quotationRoutes');
 const aiRoutes = require('./routes/aiRoutes');
+const questionRoutes = require('./routes/questionRoutes');
+const dynamicFormRoutes = require('./routes/dynamicFormRoutes');
 
 // Connect to database
 connectDB();
@@ -119,6 +121,8 @@ app.use('/api/vendors', vendorRoutes);
 app.use('/api/booking-forms', bookingFormRoutes);
 app.use('/api/quotations', quotationRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/questions', questionRoutes);
+app.use('/api/dynamic-forms', dynamicFormRoutes);
 
 app.use('/', seoRoutes);
 
